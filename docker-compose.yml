@@ -1,0 +1,22 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: appmunicipal-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: appmunicipal
+      MYSQL_USER: municipal
+      MYSQL_PASSWORD: Municipal123*
+      MYSQL_ROOT_PASSWORD: RootMunicipal123*
+    ports:
+      - "3306:3306"
+    volumes:
+      - appmunicipal_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pRootMunicipal123*"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  appmunicipal_mysql_data:

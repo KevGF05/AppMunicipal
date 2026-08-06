@@ -1,0 +1,22 @@
+# Android
+android-app/.gradle/
+android-app/.idea/
+android-app/local.properties
+android-app/app/build/
+android-app/build/
+android-app/.tools/
+
+# Backend
+backend/target/
+backend/data/
+backend/uploads/
+backend/.tools/
+
+# IDE y sistema
+*.iml
+*.log
+.DS_Store
+.vscode/
+
+# Variables locales
+.env
