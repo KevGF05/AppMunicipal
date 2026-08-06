@@ -1,0 +1,17 @@
+APP MUNICIPAL - PASOS RAPIDOS
+
+1. Abra la carpeta backend.
+2. Ejecute run-backend.bat y deje la ventana abierta.
+3. Compruebe en el navegador:
+   http://localhost:8080/api/public/health
+4. Abra la carpeta android-app en Android Studio.
+5. Copie local.properties.example como local.properties.
+6. Coloque su clave real en MAPS_API_KEY.
+7. Mantenga API_BASE_URL=http://10.0.2.2:8080/ para el emulador.
+8. Ejecute la aplicación en Pixel 7, Android 14, API 34, Google Play.
+
+CREDENCIALES:
+Administrador: admin@municipalidad.hn / Admin123*
+Técnico: tecnico1@municipalidad.hn / Tecnico123*
+
+Consulte README.md y la carpeta docs para instrucciones completas.

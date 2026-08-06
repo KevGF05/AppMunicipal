@@ -1,0 +1,9 @@
+flowchart LR
+    A[Ciudadano anónimo] --> B[Aplicación Android]
+    C[Administrador] --> B
+    D[Técnico] --> B
+    B -->|Retrofit HTTP/JSON| E[API REST Spring Boot]
+    E --> F[(H2 o MySQL)]
+    E --> G[Carpeta de fotografías]
+    B --> H[(SQLite local de seguimiento)]
+    B --> I[Google Maps SDK]

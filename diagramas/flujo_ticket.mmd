@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> CREADO: Ciudadano envía reporte
+    CREADO --> APROBADO: Administrador aprueba
+    CREADO --> RECHAZADO: Administrador rechaza
+    APROBADO --> RECHAZADO: Administrador rechaza
+    APROBADO --> ASIGNADO: Administrador asigna técnico
+    ASIGNADO --> ASIGNADO: Administrador reasigna
+    ASIGNADO --> EN_PROCESO: Técnico inicia
+    ASIGNADO --> CERRADO: Técnico cierra con evidencia
+    EN_PROCESO --> CERRADO: Técnico cierra con evidencia
