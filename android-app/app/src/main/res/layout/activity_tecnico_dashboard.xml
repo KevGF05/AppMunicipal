@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/municipal_background"
+    android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Tickets asignados" android:textColor="@color/municipal_text" android:textSize="25sp" android:textStyle="bold" />
+        <TextView android:id="@+id/textBienvenida" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/municipal_muted" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton android:id="@+id/buttonActualizar" style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Actualizar" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/buttonCerrarSesion" style="@style/Widget.Material3.Button.TextButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cerrar sesión" />
+        </LinearLayout>
+    </LinearLayout>
+    <ProgressBar android:id="@+id/progressTecnico" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:visibility="gone" />
+    <TextView android:id="@+id/textVacio" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:padding="24dp" android:text="No tiene tickets asignados." android:textColor="@color/municipal_muted" android:visibility="gone" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/recyclerReportes" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:paddingBottom="18dp" />
+</LinearLayout>

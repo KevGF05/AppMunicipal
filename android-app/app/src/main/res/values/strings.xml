@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">App Municipal</string>
+    <string name="registro_actividad_vial">Registro de Actividad Vial</string>
+    <string name="descripcion_pantalla">Registre el problema vial, seleccione su ubicación exacta y adjunte una evidencia fotográfica.</string>
+    <string name="tipo_trabajo">Tipo de reporte</string>
+    <string name="ubicacion">Ubicación seleccionada</string>
+    <string name="seleccionar_en_mapa">Seleccionar ubicación en el mapa</string>
+    <string name="ubicacion_requerida_nota">La ubicación debe confirmarse mediante un pin en el mapa.</string>
+    <string name="coordenadas_pendientes">Coordenadas: pendientes</string>
+    <string name="detalle">Detalle del reporte</string>
+    <string name="evidencia_fotografica">Evidencia fotográfica *</string>
+    <string name="foto_obligatoria_nota">La fotografía es obligatoria. El botón de registro se habilita después de tomarla.</string>
+    <string name="tomar_foto">Tomar fotografía</string>
+    <string name="registrar_actividad">Registrar actividad</string>
+    <string name="privacidad_nota">La fotografía se guarda en el almacenamiento privado de la aplicación.</string>
+    <string name="consentimiento">Confirmo que la evidencia no muestra información personal innecesaria.</string>
+    <string name="foto_no_disponible">Vista previa de la evidencia</string>
+
+    <string name="seleccionar_ubicacion">Seleccionar ubicación</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="instruccion_mapa">Toque el punto exacto del mapa. Después puede mantener presionado y arrastrar el pin para ajustar la ubicación.</string>
+    <string name="ubicacion_reporte">Ubicación del reporte</string>
+    <string name="direccion_seleccionada">Dirección seleccionada</string>
+    <string name="sin_ubicacion_seleccionada">Aún no ha colocado el pin.</string>
+    <string name="buscando_direccion">Buscando la dirección…</string>
+    <string name="confirmar_ubicacion">Usar esta ubicación</string>
+    <string name="formato_coordenadas">Latitud: %.6f · Longitud: %.6f</string>
+    <string name="direccion_coordenadas">Ubicación en latitud %.6f, longitud %.6f</string>
+</resources>

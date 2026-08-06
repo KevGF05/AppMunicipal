@@ -1,0 +1,8 @@
+<resources>
+    <color name="municipal_primary">#0B4F6C</color>
+    <color name="municipal_secondary">#1985A1</color>
+    <color name="municipal_background">#F5F7FA</color>
+    <color name="municipal_surface">#FFFFFF</color>
+    <color name="municipal_text">#1F2937</color>
+    <color name="municipal_muted">#5F6B7A</color>
+</resources>

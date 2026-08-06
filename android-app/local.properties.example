@@ -1,0 +1,10 @@
+# Copie este archivo como local.properties y ajuste los valores.
+# Android Studio normalmente agrega sdk.dir automáticamente.
+sdk.dir=C\:\\Users\\SU_USUARIO\\AppData\\Local\\Android\\Sdk
+MAPS_API_KEY=SU_CLAVE_REAL_DE_GOOGLE_MAPS
+
+# Emulador Android: accede al backend que corre en esta computadora.
+API_BASE_URL=http://10.0.2.2:8080/
+
+# Para un teléfono físico en la misma red, use la IP de la computadora, por ejemplo:
+# API_BASE_URL=http://192.168.1.50:8080/

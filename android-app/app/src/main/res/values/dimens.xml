@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="evidence_placeholder_padding">64dp</dimen>
+</resources>

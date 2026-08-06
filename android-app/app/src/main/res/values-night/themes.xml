@@ -1,0 +1,8 @@
+<resources>
+    <style name="Theme.AppMunicipal" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/municipal_secondary</item>
+        <item name="colorSecondary">@color/municipal_primary</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>
