@@ -18,14 +18,14 @@ val apiBaseUrl = localProperties.getProperty(
 
 android {
     namespace = "com.example.appmunicipal"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.appmunicipal"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 10
-        versionName = "2.0"
+        targetSdk = 36
+        versionCode = 15
+        versionName = "2.5"
 
         // Se puede sobrescribir en local.properties para un teléfono físico o servidor público.
         buildConfigField(
@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.android.gms:play-services-maps:20.0.0")
 

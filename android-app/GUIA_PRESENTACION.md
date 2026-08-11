@@ -48,7 +48,7 @@ git log --oneline
 
 1. Muestre que el backend responde en `/api/public/health`.
 2. En Android cree un reporte anónimo.
-3. Muestre el código y token generados.
+3. Muestre el código de seguimiento generado.
 4. Inicie sesión como administrador.
 5. Apruebe y asigne el reporte.
 6. Cierre sesión e ingrese como técnico.
@@ -60,7 +60,7 @@ git log --oneline
 ## Puntos técnicos para explicar
 
 - El ciudadano no se autentica y no entrega datos personales.
-- El código más token evita que cualquiera consulte todos los reportes.
+- El código de seguimiento contiene una sección aleatoria y permite consultar únicamente el estado público del ticket.
 - El administrador y técnico reciben permisos diferentes.
 - El servidor valida las reglas aunque alguien modifique la aplicación.
 - La fotografía se guarda como archivo y la base almacena su ruta.

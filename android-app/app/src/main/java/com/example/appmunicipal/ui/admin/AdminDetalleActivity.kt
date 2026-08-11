@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.appmunicipal.data.repository.AppRepository
+import com.example.appmunicipal.ui.auth.PersonalSessionActivity
 import com.example.appmunicipal.databinding.ActivityAdminDetalleBinding
 import com.example.appmunicipal.databinding.DialogAsignarBinding
 import com.example.appmunicipal.model.ReportResponse
 import com.example.appmunicipal.model.TechnicianResponse
 import com.example.appmunicipal.util.ImageLoader
 import com.example.appmunicipal.util.UiFormat
-import com.google.android.material.textfield.TextInputEditText
+import com.example.appmunicipal.util.applySafeSystemInsets
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
-class AdminDetalleActivity : AppCompatActivity() {
+class AdminDetalleActivity : PersonalSessionActivity() {
     private lateinit var binding: ActivityAdminDetalleBinding
     private val repository by lazy { AppRepository(this) }
     private val reportId by lazy { intent.getLongExtra(EXTRA_ID, -1L) }
@@ -27,10 +28,14 @@ class AdminDetalleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminDetalleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.applySafeSystemInsets()
+
         binding.buttonVolver.setOnClickListener { finish() }
         binding.buttonAprobar.setOnClickListener { aprobar() }
         binding.buttonRechazar.setOnClickListener { mostrarRechazo() }
-        binding.buttonAsignar.setOnClickListener { mostrarAsignacion() }
+        binding.buttonAsignar.setOnClickListener { mostrarAsignacion(reasignar = false) }
+        binding.buttonReasignar.setOnClickListener { mostrarAsignacion(reasignar = true) }
+
         if (reportId <= 0) finish() else cargar()
     }
 
@@ -49,7 +54,7 @@ class AdminDetalleActivity : AppCompatActivity() {
         binding.textCodigo.text = report.code
         binding.textTipo.text = report.type
         binding.textEstado.text = UiFormat.estado(report.status)
-        binding.textPrioridad.text = UiFormat.prioridad(report.priority)
+        binding.textPrioridad.text = "Prioridad: ${UiFormat.prioridad(report.priority)}"
         binding.textDireccion.text = report.address
         binding.textCoordenadas.text = "${report.latitude}, ${report.longitude}"
         binding.textDetalle.text = report.description
@@ -63,9 +68,7 @@ class AdminDetalleActivity : AppCompatActivity() {
             "${UiFormat.estado(item.newStatus)} · ${item.actor}\n${item.comment.orEmpty()}"
         }.ifBlank { "Sin historial." }
 
-        binding.buttonAprobar.visibility = if (report.status == "CREADO") View.VISIBLE else View.GONE
-        binding.buttonRechazar.visibility = if (report.status == "CREADO" || report.status == "APROBADO") View.VISIBLE else View.GONE
-        binding.buttonAsignar.visibility = if (report.status == "APROBADO" || report.status == "ASIGNADO") View.VISIBLE else View.GONE
+        actualizarAcciones(report)
 
         lifecycleScope.launch { ImageLoader.cargar(report.initialPhotoUrl, binding.imageInicial) }
         if (!report.finalPhotoUrl.isNullOrBlank()) {
@@ -76,6 +79,20 @@ class AdminDetalleActivity : AppCompatActivity() {
             binding.labelFotoFinal.visibility = View.GONE
             binding.imageFinal.visibility = View.GONE
         }
+    }
+
+    private fun actualizarAcciones(report: ReportResponse) {
+        val creado = report.status == "CREADO"
+        val aprobado = report.status == "APROBADO"
+        val asignadoOEnProceso = report.status == "ASIGNADO" || report.status == "EN_PROCESO"
+
+        binding.buttonAprobar.visibility = if (creado) View.VISIBLE else View.GONE
+        binding.buttonRechazar.visibility = if (creado || aprobado) View.VISIBLE else View.GONE
+        binding.buttonAsignar.visibility = if (aprobado && report.assignedTechnicianId == null) View.VISIBLE else View.GONE
+        binding.buttonReasignar.visibility = if (asignadoOEnProceso && report.assignedTechnicianId != null) View.VISIBLE else View.GONE
+
+        val hayAcciones = creado || aprobado || asignadoOEnProceso
+        binding.cardAcciones.visibility = if (hayAcciones) View.VISIBLE else View.GONE
     }
 
     private fun aprobar() = ejecutar { repository.aprobar(reportId) }
@@ -99,38 +116,58 @@ class AdminDetalleActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun mostrarAsignacion() {
+    private fun mostrarAsignacion(reasignar: Boolean) {
         lifecycleScope.launch {
-            runCatching { repository.tecnicos() }
-                .onSuccess { technicians -> abrirDialogoAsignar(technicians) }
+            runCatching { repository.tecnicosDisponibles() }
+                .onSuccess { technicians -> abrirDialogoAsignar(technicians, reasignar) }
                 .onFailure { mostrarError(it) }
         }
     }
 
-    private fun abrirDialogoAsignar(technicians: List<TechnicianResponse>) {
-        if (technicians.isEmpty()) {
-            mostrarMensaje("No hay técnicos disponibles.")
+    private fun abrirDialogoAsignar(
+        technicians: List<TechnicianResponse>,
+        reasignar: Boolean
+    ) {
+        val disponibles = if (reasignar) {
+            technicians.filter { it.id != current?.assignedTechnicianId }
+        } else {
+            technicians
+        }
+
+        if (disponibles.isEmpty()) {
+            mostrarMensaje(
+                if (reasignar) "No hay otro técnico activo disponible para reasignar."
+                else "No hay técnicos activos disponibles."
+            )
             return
         }
+
         val dialogBinding = DialogAsignarBinding.inflate(layoutInflater)
-        val labels = technicians.map { "${it.name} · ${it.email}" }
-        dialogBinding.autoTecnico.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, labels))
+        val labels = disponibles.map { "${it.name} · ${it.email}" }
+        dialogBinding.autoTecnico.setAdapter(
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, labels)
+        )
         dialogBinding.autoPrioridad.setAdapter(
             ArrayAdapter(this, android.R.layout.simple_list_item_1, listOf("BAJA", "MEDIA", "ALTA", "URGENTE"))
         )
-        current?.assignedTechnicianId?.let { id ->
-            technicians.indexOfFirst { it.id == id }.takeIf { it >= 0 }?.let { index ->
-                dialogBinding.autoTecnico.setText(labels[index], false)
-            }
-        }
         dialogBinding.autoPrioridad.setText(current?.priority ?: "MEDIA", false)
+        dialogBinding.editObservacion.hint = if (reasignar) {
+            "Motivo u observación de la reasignación"
+        } else {
+            "Observación para el técnico (opcional)"
+        }
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Asignar ticket")
+            .setTitle(if (reasignar) "Reasignar técnico" else "Asignar técnico")
+            .setMessage(
+                if (reasignar) "Seleccione un técnico diferente. El ticket volverá al estado Asignado."
+                else "Seleccione el técnico responsable y la prioridad."
+            )
             .setView(dialogBinding.root)
-            .setPositiveButton("Asignar", null)
+            .setPositiveButton(if (reasignar) "Reasignar" else "Asignar", null)
             .setNegativeButton("Cancelar", null)
             .create()
+
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val index = labels.indexOf(dialogBinding.autoTecnico.text.toString())
@@ -139,14 +176,18 @@ class AdminDetalleActivity : AppCompatActivity() {
                     mostrarMensaje("Seleccione técnico y prioridad.")
                     return@setOnClickListener
                 }
+
                 dialog.dismiss()
-                ejecutar {
-                    repository.asignar(
-                        reportId,
-                        technicians[index].id,
-                        priority,
-                        dialogBinding.editObservacion.text?.toString()?.trim()
-                    )
+                val tecnico = disponibles[index]
+                val observacion = dialogBinding.editObservacion.text?.toString()?.trim()
+                if (reasignar) {
+                    ejecutar {
+                        repository.reasignar(reportId, tecnico.id, priority, observacion)
+                    }
+                } else {
+                    ejecutar {
+                        repository.asignar(reportId, tecnico.id, priority, observacion)
+                    }
                 }
             }
         }
@@ -157,14 +198,22 @@ class AdminDetalleActivity : AppCompatActivity() {
         binding.progressDetalle.visibility = View.VISIBLE
         lifecycleScope.launch {
             runCatching { action() }
-                .onSuccess { mostrar(it); mostrarMensaje("Acción realizada correctamente.") }
+                .onSuccess {
+                    mostrar(it)
+                    mostrarMensaje("Acción realizada correctamente.")
+                }
                 .onFailure { mostrarError(it) }
             binding.progressDetalle.visibility = View.GONE
         }
     }
 
-    private fun mostrarError(error: Throwable) = mostrarMensaje(error.message ?: "No fue posible completar la acción.")
-    private fun mostrarMensaje(message: String) = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    private fun mostrarError(error: Throwable) =
+        mostrarMensaje(error.message ?: "No fue posible completar la acción.")
 
-    companion object { const val EXTRA_ID = "reporte_id" }
+    private fun mostrarMensaje(message: String) =
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+
+    companion object {
+        const val EXTRA_ID = "reporte_id"
+    }
 }

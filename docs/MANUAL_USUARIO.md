@@ -23,17 +23,18 @@ La app no solicita nombre, correo, identidad ni teléfono.
 Al enviar el reporte se muestran:
 
 - Código de seguimiento.
-- Token privado.
 - Estado inicial.
 
-El código y token se guardan también en la base local de la aplicación. No comparta el token con personas desconocidas.
+La aplicación guarda localmente el último código para facilitar consultas posteriores. No se muestra ni se solicita un token privado.
 
-### Consultar seguimiento
+### Consultar el estado
 
 1. Desde el inicio presione **Consultar seguimiento**.
-2. Revise el código y token precargados o escríbalos manualmente.
-3. Presione **Consultar**.
-4. La app mostrará el tipo, estado, prioridad, dirección y observaciones.
+2. Revise el código precargado o escríbalo manualmente.
+3. Presione **Consultar estado**.
+4. La app mostrará únicamente el código, el estado actual, la fecha de actualización y un mensaje general.
+
+El ciudadano no puede ver la dirección, la fotografía, el técnico asignado ni el historial interno desde esta consulta pública.
 
 ## 2. Administrador municipal
 

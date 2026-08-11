@@ -23,9 +23,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/public/**", "/api/auth/**", "/uploads/**", "/h2-console/**").permitAll()
+                .requestMatchers("/api/public/**", "/api/auth/login", "/uploads/**", "/h2-console/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/api/tecnico/**").hasRole("TECNICO")
+                .requestMatchers("/api/account/**", "/api/notificaciones/**").authenticated()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))

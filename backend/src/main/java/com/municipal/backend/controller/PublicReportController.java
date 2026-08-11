@@ -27,7 +27,7 @@ public class PublicReportController {
     }
 
     @GetMapping("/{codigo}")
-    public TrackingResponse track(@PathVariable String codigo, @RequestParam String token) {
-        return reportService.track(codigo, token);
+    public TrackingResponse track(@PathVariable String codigo) {
+        return reportService.track(codigo);
     }
 }

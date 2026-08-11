@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.Locale
+import com.example.appmunicipal.util.applySafeSystemInsets
 
 class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMarkerDragListener {
@@ -30,6 +31,7 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
         super.onCreate(savedInstanceState)
         binding = ActivityMapaUbicacionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.applySafeSystemInsets()
 
         binding.buttonCancelarMapa.setOnClickListener { finish() }
         binding.buttonConfirmarUbicacion.setOnClickListener { confirmarUbicacion() }

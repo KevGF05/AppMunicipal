@@ -41,11 +41,20 @@ class AppRepository(context: Context) {
         ).requireBody()
     }
 
-    suspend fun consultar(codigo: String, token: String): TrackingResponse =
-        api.consultarReporte(codigo, token).requireBody()
+    suspend fun consultar(codigo: String): TrackingResponse =
+        api.consultarReporte(codigo).requireBody()
 
     suspend fun login(email: String, password: String): LoginResponse =
         api.login(LoginRequest(email, password)).requireBody()
+
+    suspend fun cambiarPassword(nueva: String, confirmacion: String): MessageResponse =
+        api.cambiarPassword(PasswordChangeRequest(nueva, confirmacion)).requireBody()
+
+    suspend fun notificacionesNoLeidas(): List<NotificationResponse> =
+        api.listarNotificaciones(soloNoLeidas = true).requireBody()
+
+    suspend fun marcarNotificacionLeida(id: Long): NotificationResponse =
+        api.marcarNotificacionLeida(id).requireBody()
 
     suspend fun listarAdmin(estado: String?): List<ReportResponse> =
         api.listarReportesAdmin(estado).requireBody()
@@ -55,7 +64,30 @@ class AppRepository(context: Context) {
     suspend fun rechazar(id: Long, motivo: String): ReportResponse =
         api.rechazarReporte(id, RejectRequest(motivo)).requireBody()
 
-    suspend fun tecnicos(): List<TechnicianResponse> = api.listarTecnicos().requireBody()
+    suspend fun tecnicosDisponibles(): List<TechnicianResponse> =
+        api.listarTecnicos(soloActivos = true).requireBody()
+
+    suspend fun tecnicosAdmin(): List<TechnicianResponse> =
+        api.listarTecnicos(soloActivos = false).requireBody()
+
+    suspend fun crearTecnico(nombre: String, apellido: String, telefono: String): TechnicianResponse =
+        api.crearTecnico(TechnicianCreateRequest(nombre, apellido, telefono)).requireBody()
+
+    suspend fun editarTecnico(
+        id: Long,
+        nombre: String,
+        apellido: String,
+        telefono: String
+    ): TechnicianResponse = api.editarTecnico(
+        id,
+        TechnicianUpdateRequest(nombre, apellido, telefono)
+    ).requireBody()
+
+    suspend fun cambiarEstadoTecnico(id: Long, activo: Boolean): TechnicianResponse =
+        api.cambiarEstadoTecnico(id, TechnicianStatusRequest(activo)).requireBody()
+
+    suspend fun resetPasswordTecnico(id: Long): TechnicianResponse =
+        api.resetPasswordTecnico(id).requireBody()
 
     suspend fun asignar(
         id: Long,
@@ -63,6 +95,16 @@ class AppRepository(context: Context) {
         prioridad: String,
         observacion: String?
     ): ReportResponse = api.asignarReporte(
+        id,
+        AssignRequest(tecnicoId, prioridad, observacion)
+    ).requireBody()
+
+    suspend fun reasignar(
+        id: Long,
+        tecnicoId: Long,
+        prioridad: String,
+        observacion: String?
+    ): ReportResponse = api.reasignarReporte(
         id,
         AssignRequest(tecnicoId, prioridad, observacion)
     ).requireBody()

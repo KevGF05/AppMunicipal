@@ -8,8 +8,11 @@ import androidx.lifecycle.lifecycleScope
 import com.example.appmunicipal.data.local.TokenStore
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivityLoginBinding
+import com.example.appmunicipal.notifications.NotificationScheduler
+import com.example.appmunicipal.ui.InicioActivity
 import com.example.appmunicipal.ui.admin.AdminDashboardActivity
 import com.example.appmunicipal.ui.tecnico.TecnicoDashboardActivity
+import com.example.appmunicipal.util.applySafeSystemInsets
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -22,8 +25,25 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.buttonVolver.setOnClickListener { finish() }
+        binding.root.applySafeSystemInsets()
+        binding.buttonVolver.setOnClickListener { volverAlInicio() }
         binding.buttonLogin.setOnClickListener { login() }
+
+        if (intent.getBooleanExtra(EXTRA_SESSION_EXPIRED, false)) {
+            Snackbar.make(
+                binding.root,
+                "La sesión expiró después de 30 minutos de inactividad. Inicie sesión nuevamente.",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun volverAlInicio() {
+        startActivity(
+            Intent(this, InicioActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
+        finish()
     }
 
     private fun login() {
@@ -38,10 +58,20 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             runCatching { repository.login(email, password) }
                 .onSuccess { response ->
-                    tokenStore.guardarSesion(response.token, response.name, response.role)
-                    val target = if (response.role == "ADMINISTRADOR") {
-                        AdminDashboardActivity::class.java
-                    } else TecnicoDashboardActivity::class.java
+                    tokenStore.guardarSesion(
+                        response.token,
+                        response.name,
+                        response.role,
+                        response.passwordChangeRequired
+                    )
+                    val target = when {
+                        response.role == "TECNICO" && response.passwordChangeRequired -> CambiarPasswordActivity::class.java
+                        response.role == "ADMINISTRADOR" -> AdminDashboardActivity::class.java
+                        else -> TecnicoDashboardActivity::class.java
+                    }
+                    if (!response.passwordChangeRequired) {
+                        NotificationScheduler.programar(this@LoginActivity)
+                    }
                     startActivity(Intent(this@LoginActivity, target).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     finish()
                 }
@@ -51,5 +81,9 @@ class LoginActivity : AppCompatActivity() {
             binding.progressLogin.visibility = View.GONE
             binding.buttonLogin.isEnabled = true
         }
+    }
+
+    companion object {
+        const val EXTRA_SESSION_EXPIRED = "session_expired"
     }
 }

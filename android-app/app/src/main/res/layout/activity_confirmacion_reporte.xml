@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Guarde el código y el token para consultar el avance."
+            android:text="Guarde este código para consultar el estado del reporte."
             android:textColor="@color/municipal_muted" />
 
         <com.google.android.material.card.MaterialCardView
@@ -43,12 +43,34 @@
                 android:orientation="vertical"
                 android:padding="22dp">
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Código" android:textStyle="bold" />
-                <TextView android:id="@+id/textCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/municipal_primary" android:textSize="23sp" android:textStyle="bold" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Token privado" android:textStyle="bold" />
-                <TextView android:id="@+id/textToken" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textIsSelectable="true" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Estado inicial" android:textStyle="bold" />
-                <TextView android:id="@+id/textEstado" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Código de seguimiento"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textCodigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/municipal_primary"
+                    android:textIsSelectable="true"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Estado inicial"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -57,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginTop="24dp"
-            android:text="Consultar seguimiento" />
+            android:text="Consultar estado" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonInicio"

@@ -164,7 +164,7 @@ Las contraseñas se almacenan con BCrypt.
 El ciudadano no crea una cuenta. El servidor genera:
 
 - Un código visible, por ejemplo `EP-2026-000001`.
-- Un token privado de seguimiento.
+- Un código público de seguimiento con una sección aleatoria.
 
 La combinación de ambos permite consultar el ticket sin revelar todos los reportes.
 
@@ -194,7 +194,7 @@ El backend valida que exista un archivo de imagen y lo guarda en `backend/upload
 
 ## 12. Base de datos local Android
 
-`SeguimientoDbHelper` crea la tabla `seguimientos` y conserva el último código y token. Esta base local no sustituye la base central, pero demuestra persistencia SQLite.
+`SeguimientoDbHelper` crea la tabla `seguimientos` y conserva el último código y estado consultado. Esta base local no sustituye la base central, pero demuestra persistencia SQLite.
 
 ## 13. Limitaciones académicas
 
@@ -206,3 +206,8 @@ El backend valida que exista un archivo de imagen y lo guarda en `backend/upload
 - No existen notificaciones push.
 
 Estas decisiones facilitan la demostración en clase. Para publicación deben endurecerse según `PENDIENTE_PARA_PUBLICAR.md`.
+
+
+## Consulta pública por código
+
+El backend conserva un identificador interno por compatibilidad con bases de datos anteriores, pero nunca lo incluye en las respuestas públicas. El endpoint público recibe únicamente el código. Los códigos nuevos se generan con el formato `EP-AÑO-XXXXXXXXXX`, donde la sección final es aleatoria. La respuesta pública se limita al estado, la última actualización y un mensaje general.

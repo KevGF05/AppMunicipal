@@ -15,7 +15,7 @@
 
 - [ ] Backend responde en `/api/public/health`.
 - [ ] Ciudadano crea reporte anónimo.
-- [ ] Se genera código y token.
+- [ ] Se genera un código de seguimiento aleatorio y no se muestra ningún token privado.
 - [ ] Administrador inicia sesión.
 - [ ] Administrador aprueba el reporte.
 - [ ] Administrador asigna técnico y prioridad.

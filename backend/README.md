@@ -62,7 +62,7 @@ backend\run-backend-mysql.bat
 ```text
 GET    /api/public/health
 POST   /api/public/reportes
-GET    /api/public/reportes/{codigo}?token=...
+GET    /api/public/reportes/{codigo}
 POST   /api/auth/login
 GET    /api/admin/reportes
 PATCH  /api/admin/reportes/{id}/aprobar
@@ -75,3 +75,8 @@ POST   /api/tecnico/reportes/{id}/cerrar
 ```
 
 Consulte `../docs/API_REST.md` para los cuerpos y respuestas.
+
+
+## Seguimiento público
+
+El ciudadano consulta únicamente con el código de seguimiento. La respuesta pública no expone la dirección, descripción, fotografías, técnico ni historial interno. Los códigos nuevos incluyen una sección aleatoria para evitar que sean fáciles de adivinar.

@@ -5,4 +5,6 @@
     <color name="municipal_surface">#FFFFFF</color>
     <color name="municipal_text">#1F2937</color>
     <color name="municipal_muted">#5F6B7A</color>
+    <color name="municipal_success">#147D4B</color>
+    <color name="municipal_danger">#B42318</color>
 </resources>

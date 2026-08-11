@@ -35,18 +35,30 @@ Respuesta:
 ```json
 {
   "id": 1,
-  "code": "EP-2026-000001",
-  "trackingToken": "uuid-privado",
+  "code": "EP-2026-A1B2C3D4E5",
   "status": "CREADO",
   "message": "Reporte registrado correctamente."
 }
 ```
 
-## Consultar seguimiento
+## Consultar estado público
 
 ```http
-GET /api/public/reportes/EP-2026-000001?token=uuid-privado
+GET /api/public/reportes/EP-2026-A1B2C3D4E5
 ```
+
+Respuesta pública:
+
+```json
+{
+  "code": "EP-2026-A1B2C3D4E5",
+  "status": "EN_PROCESO",
+  "updatedAt": "2026-08-06T16:30:00",
+  "message": "El trabajo se encuentra en proceso."
+}
+```
+
+La consulta pública no devuelve dirección, descripción, fotografías, técnico, prioridad ni historial interno.
 
 ## Login
 

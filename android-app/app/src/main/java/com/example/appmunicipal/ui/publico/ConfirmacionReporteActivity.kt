@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.appmunicipal.databinding.ActivityConfirmacionReporteBinding
 import com.example.appmunicipal.ui.InicioActivity
 import com.example.appmunicipal.util.UiFormat
+import com.example.appmunicipal.util.applySafeSystemInsets
 
 class ConfirmacionReporteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConfirmacionReporteBinding
@@ -14,18 +15,16 @@ class ConfirmacionReporteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityConfirmacionReporteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.applySafeSystemInsets()
 
         val code = intent.getStringExtra(EXTRA_CODIGO).orEmpty()
-        val token = intent.getStringExtra(EXTRA_TOKEN).orEmpty()
         val status = intent.getStringExtra(EXTRA_ESTADO).orEmpty()
         binding.textCodigo.text = code
-        binding.textToken.text = token
         binding.textEstado.text = UiFormat.estado(status)
 
         binding.buttonConsultar.setOnClickListener {
             startActivity(Intent(this, SeguimientoActivity::class.java).apply {
                 putExtra(SeguimientoActivity.EXTRA_CODIGO, code)
-                putExtra(SeguimientoActivity.EXTRA_TOKEN, token)
             })
         }
         binding.buttonInicio.setOnClickListener {
@@ -36,7 +35,6 @@ class ConfirmacionReporteActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_CODIGO = "codigo"
-        const val EXTRA_TOKEN = "token"
         const val EXTRA_ESTADO = "estado"
     }
 }

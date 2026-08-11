@@ -4,6 +4,7 @@ import com.municipal.backend.dto.*;
 import com.municipal.backend.model.AppUser;
 import com.municipal.backend.model.ReportStatus;
 import com.municipal.backend.service.ReportService;
+import com.municipal.backend.service.TechnicianManagementService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,15 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
     private final ReportService reportService;
+    private final TechnicianManagementService technicianService;
 
-    public AdminController(ReportService reportService) { this.reportService = reportService; }
+    public AdminController(
+        ReportService reportService,
+        TechnicianManagementService technicianService
+    ) {
+        this.reportService = reportService;
+        this.technicianService = technicianService;
+    }
 
     @GetMapping("/reportes")
     public List<ReportResponse> list(@RequestParam(required = false) ReportStatus estado) {
@@ -47,8 +55,49 @@ public class AdminController {
         return reportService.assign(id, request, user(authentication));
     }
 
+    @PatchMapping("/reportes/{id}/reasignar")
+    public ReportResponse reassign(
+        @PathVariable Long id,
+        @Valid @RequestBody AssignRequest request,
+        Authentication authentication
+    ) {
+        return reportService.reassign(id, request, user(authentication));
+    }
+
     @GetMapping("/tecnicos")
-    public List<TechnicianResponse> technicians() { return reportService.technicians(); }
+    public List<TechnicianResponse> technicians(
+        @RequestParam(defaultValue = "false") boolean soloActivos
+    ) {
+        return technicianService.list(soloActivos);
+    }
+
+    @PostMapping("/tecnicos")
+    public TechnicianResponse createTechnician(
+        @Valid @RequestBody TechnicianCreateRequest request
+    ) {
+        return technicianService.create(request);
+    }
+
+    @PutMapping("/tecnicos/{id}")
+    public TechnicianResponse updateTechnician(
+        @PathVariable Long id,
+        @Valid @RequestBody TechnicianUpdateRequest request
+    ) {
+        return technicianService.update(id, request);
+    }
+
+    @PatchMapping("/tecnicos/{id}/estado")
+    public TechnicianResponse changeTechnicianStatus(
+        @PathVariable Long id,
+        @Valid @RequestBody TechnicianStatusRequest request
+    ) {
+        return technicianService.setActive(id, request.active());
+    }
+
+    @PatchMapping("/tecnicos/{id}/reset-password")
+    public TechnicianResponse resetTechnicianPassword(@PathVariable Long id) {
+        return technicianService.resetPassword(id);
+    }
 
     private AppUser user(Authentication authentication) { return (AppUser) authentication.getPrincipal(); }
 }

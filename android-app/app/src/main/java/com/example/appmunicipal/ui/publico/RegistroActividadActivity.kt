@@ -25,6 +25,7 @@ import com.example.appmunicipal.validation.RegistroActividadValidator
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.io.File
+import com.example.appmunicipal.util.applySafeSystemInsets
 
 class RegistroActividadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroActividadBinding
@@ -79,6 +80,7 @@ class RegistroActividadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistroActividadBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.applySafeSystemInsets()
         configurarLista()
         configurarAcciones()
         actualizarEstadoBotonRegistrar()
@@ -86,8 +88,10 @@ class RegistroActividadActivity : AppCompatActivity() {
 
     private fun configurarLista() {
         val tipos = listOf(
-            "Señal de tránsito caída", "Señalización dañada", "Semáforo dañado",
-            "Vehículo mal estacionado", "Tope o túmulo", "Bache", "Alumbrado vial", "Otro"
+            "Señal de tránsito caída",
+            "Señal de tránsito dañada",
+            "Semáforo dañado",
+            "Automóvil mal estacionado"
         )
         binding.autoTipoTrabajo.setAdapter(
             ArrayAdapter(this, android.R.layout.simple_list_item_1, tipos)
@@ -186,10 +190,9 @@ class RegistroActividadActivity : AppCompatActivity() {
                     requireNotNull(input.latitud), requireNotNull(input.longitud), file
                 )
             }.onSuccess { response ->
-                database.guardar(response.code, response.trackingToken, response.status)
+                database.guardar(response.code, response.status)
                 startActivity(Intent(this@RegistroActividadActivity, ConfirmacionReporteActivity::class.java).apply {
                     putExtra(ConfirmacionReporteActivity.EXTRA_CODIGO, response.code)
-                    putExtra(ConfirmacionReporteActivity.EXTRA_TOKEN, response.trackingToken)
                     putExtra(ConfirmacionReporteActivity.EXTRA_ESTADO, response.status)
                 })
                 finish()

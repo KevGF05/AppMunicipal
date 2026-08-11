@@ -34,7 +34,7 @@ API_BASE_URL=http://10.0.2.2:8080/
 
 ## Base de datos local
 
-`SeguimientoDbHelper` utiliza SQLite para conservar el último código y token de seguimiento. La base de datos central se encuentra en el backend.
+`SeguimientoDbHelper` utiliza SQLite para conservar el último código y estado consultado. La base de datos central se encuentra en el backend.
 
 ## Seguridad de demostración
 
@@ -45,3 +45,8 @@ API_BASE_URL=http://10.0.2.2:8080/
 - Los módulos privados requieren un token de sesión emitido por el backend.
 
 Para producción, cambie el backend a HTTPS y desactive el tráfico HTTP sin cifrar.
+
+
+## Seguimiento ciudadano
+
+La pantalla pública solicita solamente el código de seguimiento. No se muestra ni se solicita un token privado. Por privacidad, la respuesta pública contiene únicamente el código, el estado, la fecha de actualización y un mensaje general.

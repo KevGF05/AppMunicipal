@@ -20,3 +20,19 @@ backend/.tools/
 
 # Variables locales
 .env
+.env.*
+config-supabase-local.ps1
+
+# Llaves y certificados
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# Android local
+**/local.properties
+# Configuración del IDE en la raíz
+.idea/
+
+# Archivo local de usuarios/credenciales
+/Usuarios app.txt

@@ -17,6 +17,13 @@
             <com.google.android.material.button.MaterialButton android:id="@+id/buttonActualizar" style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Actualizar" />
             <com.google.android.material.button.MaterialButton android:id="@+id/buttonCerrarSesion" style="@style/Widget.Material3.Button.TextButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cerrar sesión" />
         </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonGestionTecnicos"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Administrar técnicos" />
     </LinearLayout>
     <ProgressBar android:id="@+id/progressAdmin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:visibility="gone" />
     <TextView android:id="@+id/textVacio" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:padding="24dp" android:text="No hay reportes para este filtro." android:textColor="@color/municipal_muted" android:visibility="gone" />

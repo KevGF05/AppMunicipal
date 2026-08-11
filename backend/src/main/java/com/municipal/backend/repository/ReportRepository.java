@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    Optional<Report> findByCodeAndTrackingToken(String code, String trackingToken);
+    Optional<Report> findByCode(String code);
+    boolean existsByCode(String code);
     List<Report> findAllByOrderByCreatedAtDesc();
     List<Report> findByStatusOrderByCreatedAtDesc(ReportStatus status);
     List<Report> findByAssignedTechnicianIdOrderByCreatedAtDesc(Long technicianId);
+    boolean existsByAssignedTechnicianIdAndStatusIn(Long technicianId, List<ReportStatus> statuses);
 }

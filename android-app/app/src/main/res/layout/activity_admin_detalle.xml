@@ -23,11 +23,70 @@
         <ImageView android:id="@+id/imageInicial" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía inicial" android:scaleType="centerCrop" />
         <TextView android:id="@+id/labelFotoFinal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Fotografía final" android:textStyle="bold" android:visibility="gone" />
         <ImageView android:id="@+id/imageFinal" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía final" android:scaleType="centerCrop" android:visibility="gone" />
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:orientation="vertical">
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonAprobar" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Aprobar reporte" />
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonAsignar" style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="Asignar técnico" />
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonRechazar" style="@style/Widget.Material3.Button.TextButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Rechazar reporte" />
-        </LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAcciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:visibility="gone"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Acciones del ticket"
+                    android:textColor="@color/municipal_text"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Solo se muestran las acciones disponibles para el estado actual."
+                    android:textColor="@color/municipal_muted" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonAprobar"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="14dp"
+                    android:text="Aprobar reporte" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonAsignar"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Asignar técnico" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonReasignar"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Reasignar a otro técnico"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonRechazar"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:text="Rechazar reporte" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:text="Historial del ticket" android:textStyle="bold" />
         <TextView android:id="@+id/textHistorial" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:paddingBottom="24dp" />
     </LinearLayout>

@@ -20,12 +20,26 @@ interface ApiService {
 
     @GET("api/public/reportes/{codigo}")
     suspend fun consultarReporte(
-        @Path("codigo") codigo: String,
-        @Query("token") token: String
+        @Path("codigo") codigo: String
     ): Response<TrackingResponse>
 
     @POST("api/auth/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
+
+    @PATCH("api/account/password")
+    suspend fun cambiarPassword(
+        @Body request: PasswordChangeRequest
+    ): Response<MessageResponse>
+
+    @GET("api/notificaciones")
+    suspend fun listarNotificaciones(
+        @Query("soloNoLeidas") soloNoLeidas: Boolean = true
+    ): Response<List<NotificationResponse>>
+
+    @PATCH("api/notificaciones/{id}/leida")
+    suspend fun marcarNotificacionLeida(
+        @Path("id") id: Long
+    ): Response<NotificationResponse>
 
     @GET("api/admin/reportes")
     suspend fun listarReportesAdmin(
@@ -50,8 +64,38 @@ interface ApiService {
         @Body request: AssignRequest
     ): Response<ReportResponse>
 
+    @PATCH("api/admin/reportes/{id}/reasignar")
+    suspend fun reasignarReporte(
+        @Path("id") id: Long,
+        @Body request: AssignRequest
+    ): Response<ReportResponse>
+
     @GET("api/admin/tecnicos")
-    suspend fun listarTecnicos(): Response<List<TechnicianResponse>>
+    suspend fun listarTecnicos(
+        @Query("soloActivos") soloActivos: Boolean = false
+    ): Response<List<TechnicianResponse>>
+
+    @POST("api/admin/tecnicos")
+    suspend fun crearTecnico(
+        @Body request: TechnicianCreateRequest
+    ): Response<TechnicianResponse>
+
+    @PUT("api/admin/tecnicos/{id}")
+    suspend fun editarTecnico(
+        @Path("id") id: Long,
+        @Body request: TechnicianUpdateRequest
+    ): Response<TechnicianResponse>
+
+    @PATCH("api/admin/tecnicos/{id}/estado")
+    suspend fun cambiarEstadoTecnico(
+        @Path("id") id: Long,
+        @Body request: TechnicianStatusRequest
+    ): Response<TechnicianResponse>
+
+    @PATCH("api/admin/tecnicos/{id}/reset-password")
+    suspend fun resetPasswordTecnico(
+        @Path("id") id: Long
+    ): Response<TechnicianResponse>
 
     @GET("api/tecnico/reportes")
     suspend fun listarReportesTecnico(): Response<List<ReportResponse>>

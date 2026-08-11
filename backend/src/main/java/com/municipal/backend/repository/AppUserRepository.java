@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     Optional<AppUser> findByEmailIgnoreCase(String email);
     List<AppUser> findByRoleAndActiveTrueOrderByNameAsc(Role role);
+    List<AppUser> findByRoleOrderByNameAsc(Role role);
+    boolean existsByRole(Role role);
 }

@@ -15,7 +15,7 @@ Entrega académica completa para gestionar reportes viales como tickets.
 - Panel del administrador para aprobar, rechazar y asignar reportes.
 - Panel del técnico para iniciar y cerrar tickets.
 - Fotografía final y comentario obligatorios al cerrar.
-- Seguimiento ciudadano mediante código y token privado.
+- Seguimiento ciudadano únicamente mediante un código de seguimiento.
 - Historial de cambios del ticket.
 - Interfaz Material Design.
 - Validaciones en Android y en el servidor.
@@ -114,7 +114,7 @@ Estas cuentas se crean automáticamente la primera vez que inicia el backend.
 
 1. Abra la app y seleccione **Reportar un problema**.
 2. Seleccione el tipo, coloque el pin, escriba el detalle y tome la fotografía.
-3. Envíe el reporte y conserve el código y token.
+3. Envíe el reporte y conserve el código de seguimiento.
 4. Regrese al inicio, entre a **Acceso de personal municipal** e inicie sesión como administrador.
 5. Abra el reporte, apruébelo y asígnelo a `Técnico vial 1`.
 6. Cierre sesión e ingrese como `tecnico1@municipalidad.hn`.

@@ -6,13 +6,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.example.appmunicipal.R
 import com.example.appmunicipal.data.repository.AppRepository
+import com.example.appmunicipal.ui.auth.PersonalSessionActivity
 import com.example.appmunicipal.databinding.ActivityTecnicoDetalleBinding
 import com.example.appmunicipal.model.ReportResponse
 import com.example.appmunicipal.util.ImageLoader
@@ -20,8 +20,9 @@ import com.example.appmunicipal.util.UiFormat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.io.File
+import com.example.appmunicipal.util.applySafeSystemInsets
 
-class TecnicoDetalleActivity : AppCompatActivity() {
+class TecnicoDetalleActivity : PersonalSessionActivity() {
     private lateinit var binding: ActivityTecnicoDetalleBinding
     private val repository by lazy { AppRepository(this) }
     private val reportId by lazy { intent.getLongExtra(EXTRA_ID, -1L) }
@@ -47,6 +48,7 @@ class TecnicoDetalleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTecnicoDetalleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.applySafeSystemInsets()
         binding.buttonVolver.setOnClickListener { finish() }
         binding.buttonIniciar.setOnClickListener { iniciar() }
         binding.buttonFotoFinal.setOnClickListener { solicitarCamara() }

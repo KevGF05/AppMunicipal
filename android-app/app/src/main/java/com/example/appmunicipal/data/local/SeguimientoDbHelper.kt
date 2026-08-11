@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper
 
 data class SeguimientoLocal(
     val codigo: String,
-    val token: String,
     val estado: String,
     val fecha: Long
 )
@@ -20,7 +19,6 @@ class SeguimientoDbHelper(context: Context) :
             """
             CREATE TABLE seguimientos (
                 codigo TEXT PRIMARY KEY,
-                token TEXT NOT NULL,
                 estado TEXT NOT NULL,
                 fecha INTEGER NOT NULL
             )
@@ -33,10 +31,9 @@ class SeguimientoDbHelper(context: Context) :
         onCreate(db)
     }
 
-    fun guardar(codigo: String, token: String, estado: String) {
+    fun guardar(codigo: String, estado: String) {
         val values = ContentValues().apply {
             put("codigo", codigo)
-            put("token", token)
             put("estado", estado)
             put("fecha", System.currentTimeMillis())
         }
@@ -51,7 +48,7 @@ class SeguimientoDbHelper(context: Context) :
     fun ultimo(): SeguimientoLocal? {
         readableDatabase.query(
             "seguimientos",
-            arrayOf("codigo", "token", "estado", "fecha"),
+            arrayOf("codigo", "estado", "fecha"),
             null,
             null,
             null,
@@ -62,15 +59,14 @@ class SeguimientoDbHelper(context: Context) :
             if (!cursor.moveToFirst()) return null
             return SeguimientoLocal(
                 codigo = cursor.getString(0),
-                token = cursor.getString(1),
-                estado = cursor.getString(2),
-                fecha = cursor.getLong(3)
+                estado = cursor.getString(1),
+                fecha = cursor.getLong(2)
             )
         }
     }
 
     companion object {
         private const val DATABASE_NAME = "app_municipal_local.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
     }
 }
