@@ -23,6 +23,10 @@ interface ApiService {
         @Path("codigo") codigo: String
     ): Response<TrackingResponse>
 
+
+    @GET("api/public/tipos-reporte")
+    suspend fun listarTiposReportePublicos(): Response<List<ReportTypeResponse>>
+
     @POST("api/auth/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 
@@ -45,6 +49,15 @@ interface ApiService {
     suspend fun listarReportesAdmin(
         @Query("estado") estado: String? = null
     ): Response<List<ReportResponse>>
+
+
+    @GET("api/admin/tipos-reporte")
+    suspend fun listarTiposReporteAdmin(): Response<List<ReportTypeResponse>>
+
+    @POST("api/admin/tipos-reporte")
+    suspend fun crearTipoReporte(
+        @Body request: ReportTypeCreateRequest
+    ): Response<ReportTypeResponse>
 
     @GET("api/admin/reportes/{id}")
     suspend fun obtenerReporteAdmin(@Path("id") id: Long): Response<ReportResponse>

@@ -112,3 +112,14 @@ data class TechnicianUpdateRequest(
 data class TechnicianStatusRequest(
     val active: Boolean
 )
+
+
+data class ReportTypeResponse(
+    val id: Long,
+    val name: String,
+    val active: Boolean
+)
+
+data class ReportTypeCreateRequest(
+    val name: String
+)

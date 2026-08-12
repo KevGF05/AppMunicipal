@@ -10,36 +10,31 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.Year;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class ReportService {
-    private static final Set<String> ALLOWED_PUBLIC_TYPES = Set.of(
-        "Señal de tránsito caída",
-        "Señal de tránsito dañada",
-        "Semáforo dañado",
-        "Automóvil mal estacionado"
-    );
-
     private final ReportRepository reports;
     private final AppUserRepository users;
     private final ReportHistoryRepository history;
     private final StorageService storage;
     private final NotificationService notificationService;
+    private final ReportTypeService reportTypeService;
 
     public ReportService(
         ReportRepository reports,
         AppUserRepository users,
         ReportHistoryRepository history,
         StorageService storage,
-        NotificationService notificationService
+        NotificationService notificationService,
+        ReportTypeService reportTypeService
     ) {
         this.reports = reports;
         this.users = users;
         this.history = history;
         this.storage = storage;
         this.notificationService = notificationService;
+        this.reportTypeService = reportTypeService;
     }
 
     @Transactional
@@ -261,8 +256,8 @@ public class ReportService {
     }
 
     private void validatePublic(String type, String description, String address, double latitude, double longitude) {
-        if (type == null || !ALLOWED_PUBLIC_TYPES.contains(type.trim())) {
-            throw new BusinessException("Tipo de reporte inválido.");
+        if (type == null || !reportTypeService.isActiveType(type)) {
+            throw new BusinessException("Tipo de reporte inválido o no disponible.");
         }
         if (description == null || description.trim().length() < 10 || description.length() > 1000) throw new BusinessException("La descripción debe contener entre 10 y 1000 caracteres.");
         if (address == null || address.isBlank() || address.length() > 300) throw new BusinessException("Ubicación inválida.");

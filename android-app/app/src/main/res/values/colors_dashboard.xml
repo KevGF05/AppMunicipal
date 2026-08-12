@@ -1,0 +1,11 @@
+<resources>
+    <color name="dashboard_green">#26733A</color>
+    <color name="dashboard_green_soft">#E7F3EA</color>
+    <color name="dashboard_yellow">#E2B93B</color>
+    <color name="dashboard_yellow_soft">#FFF7D6</color>
+    <color name="dashboard_background">#F5F7FA</color>
+    <color name="dashboard_surface">#FFFFFFFF</color>
+    <color name="dashboard_text">#1F2937</color>
+    <color name="dashboard_muted">#5F6B7A</color>
+    <color name="dashboard_border">#D9E1E8</color>
+</resources>

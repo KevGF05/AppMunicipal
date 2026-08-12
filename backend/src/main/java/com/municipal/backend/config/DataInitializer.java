@@ -2,7 +2,9 @@ package com.municipal.backend.config;
 
 import com.municipal.backend.model.AppUser;
 import com.municipal.backend.model.Role;
+import com.municipal.backend.model.ReportType;
 import com.municipal.backend.repository.AppUserRepository;
+import com.municipal.backend.repository.ReportTypeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +34,26 @@ public class DataInitializer {
             createDefaultTechnicianIfNeeded(users, encoder);
             migrateExistingTechnicians(users);
         };
+    }
+
+
+
+    @Bean
+    CommandLineRunner seedReportTypes(ReportTypeRepository types) {
+        return args -> {
+            createReportTypeIfMissing(types, "Señal de tránsito caída");
+            createReportTypeIfMissing(types, "Señal de tránsito dañada");
+            createReportTypeIfMissing(types, "Semáforo dañado");
+            createReportTypeIfMissing(types, "Automóvil mal estacionado");
+        };
+    }
+
+    private void createReportTypeIfMissing(ReportTypeRepository types, String name) {
+        if (types.existsByNameIgnoreCase(name)) return;
+        ReportType type = new ReportType();
+        type.setName(name);
+        type.setActive(true);
+        types.save(type);
     }
 
     private void createAdminIfMissing(AppUserRepository users, PasswordEncoder encoder) {

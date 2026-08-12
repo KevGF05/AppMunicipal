@@ -36,6 +36,8 @@
         <activity android:name=".ui.tecnico.TecnicoDashboardActivity" android:exported="false" />
         <activity android:name=".ui.admin.AdminDetalleActivity" android:exported="false" />
         <activity android:name=".ui.admin.AdminTecnicosActivity" android:exported="false" />
+        <activity android:name=".ui.admin.AdminTicketsActivity" android:exported="false" />
+        <activity android:name=".ui.admin.AdminReportTypesActivity" android:exported="false" />
         <activity android:name=".ui.admin.AdminDashboardActivity" android:exported="false" />
         <activity android:name=".ui.auth.CambiarPasswordActivity" android:exported="false" />
         <activity android:name=".ui.auth.LoginActivity" android:exported="false" />

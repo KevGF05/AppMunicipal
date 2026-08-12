@@ -87,15 +87,38 @@ class RegistroActividadActivity : AppCompatActivity() {
     }
 
     private fun configurarLista() {
-        val tipos = listOf(
+        val respaldo = listOf(
             "Señal de tránsito caída",
             "Señal de tránsito dañada",
             "Semáforo dañado",
             "Automóvil mal estacionado"
         )
+        aplicarTiposReporte(respaldo)
+
+        lifecycleScope.launch {
+            runCatching { repository.tiposReportePublicos() }
+                .onSuccess { tipos ->
+                    val nombres = tipos.filter { it.active }.map { it.name }
+                    if (nombres.isNotEmpty()) aplicarTiposReporte(nombres)
+                }
+                .onFailure {
+                    Snackbar.make(
+                        binding.root,
+                        "No fue posible actualizar los tipos de reporte. Se muestran las opciones predeterminadas.",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+        }
+    }
+
+    private fun aplicarTiposReporte(tipos: List<String>) {
+        val actual = binding.autoTipoTrabajo.text?.toString().orEmpty()
         binding.autoTipoTrabajo.setAdapter(
             ArrayAdapter(this, android.R.layout.simple_list_item_1, tipos)
         )
+        if (actual.isNotBlank() && actual !in tipos) {
+            binding.autoTipoTrabajo.setText("", false)
+        }
     }
 
     private fun configurarAcciones() {

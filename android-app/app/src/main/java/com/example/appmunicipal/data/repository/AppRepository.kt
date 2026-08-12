@@ -44,6 +44,10 @@ class AppRepository(context: Context) {
     suspend fun consultar(codigo: String): TrackingResponse =
         api.consultarReporte(codigo).requireBody()
 
+
+    suspend fun tiposReportePublicos(): List<ReportTypeResponse> =
+        api.listarTiposReportePublicos().requireBody()
+
     suspend fun login(email: String, password: String): LoginResponse =
         api.login(LoginRequest(email, password)).requireBody()
 
@@ -58,6 +62,13 @@ class AppRepository(context: Context) {
 
     suspend fun listarAdmin(estado: String?): List<ReportResponse> =
         api.listarReportesAdmin(estado).requireBody()
+
+
+    suspend fun tiposReporteAdmin(): List<ReportTypeResponse> =
+        api.listarTiposReporteAdmin().requireBody()
+
+    suspend fun crearTipoReporte(nombre: String): ReportTypeResponse =
+        api.crearTipoReporte(ReportTypeCreateRequest(nombre)).requireBody()
 
     suspend fun obtenerAdmin(id: Long): ReportResponse = api.obtenerReporteAdmin(id).requireBody()
     suspend fun aprobar(id: Long): ReportResponse = api.aprobarReporte(id).requireBody()
