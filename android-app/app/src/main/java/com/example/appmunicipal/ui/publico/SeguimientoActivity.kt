@@ -48,6 +48,10 @@ class SeguimientoActivity : AppCompatActivity() {
                     binding.textResultadoEstado.text = UiFormat.estado(report.status)
                     binding.textResultadoMensaje.text = report.message
 
+                    val showPauseReason = report.status == "PAUSADO" && !report.pauseReason.isNullOrBlank()
+                    binding.cardMotivoPausa.visibility = if (showPauseReason) View.VISIBLE else View.GONE
+                    binding.textMotivoPausa.text = report.pauseReason.orEmpty()
+
                     val showClosureNotes = report.status == "CERRADO" && !report.closureComment.isNullOrBlank()
                     binding.cardTrabajoRealizado.visibility = if (showClosureNotes) View.VISIBLE else View.GONE
                     binding.textTrabajoRealizado.text = report.closureComment.orEmpty()
@@ -60,6 +64,7 @@ class SeguimientoActivity : AppCompatActivity() {
                 }
                 .onFailure { error ->
                     binding.cardResultado.visibility = View.GONE
+                    binding.cardMotivoPausa.visibility = View.GONE
                     binding.cardTrabajoRealizado.visibility = View.GONE
                     Snackbar.make(binding.root, error.message ?: "No fue posible consultar.", Snackbar.LENGTH_LONG).show()
                 }

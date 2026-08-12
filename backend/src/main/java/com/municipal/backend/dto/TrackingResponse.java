@@ -7,5 +7,6 @@ public record TrackingResponse(
     String status,
     LocalDateTime updatedAt,
     String message,
+    String pauseReason,
     String closureComment
 ) {}

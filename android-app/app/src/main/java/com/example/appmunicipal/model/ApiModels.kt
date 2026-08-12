@@ -31,6 +31,7 @@ data class TrackingResponse(
     val status: String,
     val updatedAt: String?,
     val message: String,
+    val pauseReason: String?,
     val closureComment: String?
 )
 

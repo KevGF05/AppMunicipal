@@ -83,6 +83,7 @@ public class ReportService {
             report.getStatus().name(),
             report.getUpdatedAt(),
             publicStatusMessage(report.getStatus()),
+            report.getStatus() == ReportStatus.PAUSADO ? report.getPauseReason() : null,
             report.getStatus() == ReportStatus.CERRADO ? report.getClosureComment() : null
         );
     }
