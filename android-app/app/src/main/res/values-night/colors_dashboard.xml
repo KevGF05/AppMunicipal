@@ -8,4 +8,5 @@
     <color name="dashboard_text">#F9FAFB</color>
     <color name="dashboard_muted">#CBD5E1</color>
     <color name="dashboard_border">#475569</color>
+    <color name="dashboard_button_dark_text">#1F2937</color>
 </resources>

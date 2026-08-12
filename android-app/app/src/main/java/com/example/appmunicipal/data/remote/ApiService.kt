@@ -59,6 +59,18 @@ interface ApiService {
         @Body request: ReportTypeCreateRequest
     ): Response<ReportTypeResponse>
 
+    @PUT("api/admin/tipos-reporte/{id}")
+    suspend fun editarTipoReporte(
+        @Path("id") id: Long,
+        @Body request: ReportTypeUpdateRequest
+    ): Response<ReportTypeResponse>
+
+    @PATCH("api/admin/tipos-reporte/{id}/estado")
+    suspend fun cambiarEstadoTipoReporte(
+        @Path("id") id: Long,
+        @Body request: ReportTypeStatusRequest
+    ): Response<ReportTypeResponse>
+
     @GET("api/admin/reportes/{id}")
     suspend fun obtenerReporteAdmin(@Path("id") id: Long): Response<ReportResponse>
 
@@ -118,6 +130,15 @@ interface ApiService {
 
     @PATCH("api/tecnico/reportes/{id}/iniciar")
     suspend fun iniciarReporte(@Path("id") id: Long): Response<ReportResponse>
+
+    @PATCH("api/tecnico/reportes/{id}/pausar")
+    suspend fun pausarReporte(
+        @Path("id") id: Long,
+        @Body request: PauseRequest
+    ): Response<ReportResponse>
+
+    @PATCH("api/tecnico/reportes/{id}/reanudar")
+    suspend fun reanudarReporte(@Path("id") id: Long): Response<ReportResponse>
 
     @Multipart
     @POST("api/tecnico/reportes/{id}/cerrar")

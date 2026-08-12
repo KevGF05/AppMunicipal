@@ -7,6 +7,7 @@ object UiFormat {
         "RECHAZADO" -> "Rechazado"
         "ASIGNADO" -> "Asignado"
         "EN_PROCESO" -> "En proceso"
+        "PAUSADO" -> "En pausa"
         "CERRADO" -> "Cerrado"
         else -> value.orEmpty()
     }

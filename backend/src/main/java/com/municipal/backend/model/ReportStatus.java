@@ -6,5 +6,6 @@ public enum ReportStatus {
     RECHAZADO,
     ASIGNADO,
     EN_PROCESO,
+    PAUSADO,
     CERRADO
 }

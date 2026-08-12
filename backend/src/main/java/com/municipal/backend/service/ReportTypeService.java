@@ -2,6 +2,7 @@ package com.municipal.backend.service;
 
 import com.municipal.backend.dto.ReportTypeCreateRequest;
 import com.municipal.backend.dto.ReportTypeResponse;
+import com.municipal.backend.dto.ReportTypeUpdateRequest;
 import com.municipal.backend.exception.BusinessException;
 import com.municipal.backend.model.ReportType;
 import com.municipal.backend.repository.ReportTypeRepository;
@@ -37,6 +38,30 @@ public class ReportTypeService {
         type.setName(name);
         type.setActive(true);
         return toResponse(types.save(type));
+    }
+
+
+    @Transactional
+    public ReportTypeResponse update(Long id, ReportTypeUpdateRequest request) {
+        ReportType type = find(id);
+        String name = normalize(request.name());
+        types.findByNameIgnoreCase(name)
+            .filter(existing -> !existing.getId().equals(id))
+            .ifPresent(existing -> { throw new BusinessException("Ese tipo de reporte ya existe."); });
+        type.setName(name);
+        return toResponse(types.save(type));
+    }
+
+    @Transactional
+    public ReportTypeResponse setActive(Long id, boolean active) {
+        ReportType type = find(id);
+        type.setActive(active);
+        return toResponse(types.save(type));
+    }
+
+    private ReportType find(Long id) {
+        return types.findById(id)
+            .orElseThrow(() -> new BusinessException("Tipo de reporte no encontrado."));
     }
 
     @Transactional(readOnly = true)

@@ -24,8 +24,8 @@ android {
         applicationId = "com.example.appmunicipal"
         minSdk = 24
         targetSdk = 36
-        versionCode = 15
-        versionName = "2.5"
+        versionCode = 16
+        versionName = "2.6"
 
         // Se puede sobrescribir en local.properties para un teléfono físico o servidor público.
         buildConfigField(

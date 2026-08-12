@@ -1,6 +1,7 @@
 package com.municipal.backend.controller;
 
 import com.municipal.backend.dto.ReportResponse;
+import com.municipal.backend.dto.PauseRequest;
 import com.municipal.backend.model.AppUser;
 import com.municipal.backend.service.ReportService;
 import org.springframework.http.MediaType;
@@ -29,6 +30,20 @@ public class TechnicianController {
     @PatchMapping("/reportes/{id}/iniciar")
     public ReportResponse start(@PathVariable Long id, Authentication authentication) {
         return reportService.start(id, user(authentication));
+    }
+
+    @PatchMapping("/reportes/{id}/pausar")
+    public ReportResponse pause(
+        @PathVariable Long id,
+        @jakarta.validation.Valid @RequestBody PauseRequest request,
+        Authentication authentication
+    ) {
+        return reportService.pause(id, request.reason(), user(authentication));
+    }
+
+    @PatchMapping("/reportes/{id}/reanudar")
+    public ReportResponse resume(@PathVariable Long id, Authentication authentication) {
+        return reportService.resume(id, user(authentication));
     }
 
     @PostMapping(value = "/reportes/{id}/cerrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

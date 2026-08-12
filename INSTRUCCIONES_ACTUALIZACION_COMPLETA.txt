@@ -1,0 +1,35 @@
+APP MUNICIPAL - ACTUALIZACION COMPLETA ADMIN + TECNICO v2.6
+
+Este paquete combina en una sola actualizacion:
+- Dashboard administrativo.
+- Gestion de tipos de reporte: crear, editar, activar y desactivar.
+- Dashboard tecnico.
+- Tickets asignados y historial del tecnico.
+- Pausar ticket con motivo obligatorio y reanudar.
+- Crear reporte desde patrullaje.
+- Comentario de cierre visible en seguimiento publico.
+- Colores del dashboard y botones actualizados.
+
+IMPORTANTE:
+Este ZIP esta preparado SIN carpeta contenedora extra. Al descomprimirlo dentro de la raiz del proyecto,
+las carpetas android-app y backend deben combinarse directamente con las existentes.
+
+INSTALACION RECOMENDADA:
+1. Cierre la app que esta ejecutandose en el emulador o telefono.
+2. Haga respaldo con Git desde la raiz AppMunicipalSistemaEntrega.
+3. Descomprima TODO el contenido de este ZIP directamente en AppMunicipalSistemaEntrega.
+4. Acepte Reemplazar archivos en el destino.
+5. En PowerShell, desde AppMunicipalSistemaEntrega, ejecute VERIFICAR_ACTUALIZACION.ps1.
+6. En Android Studio: File > Sync Project with Gradle Files, Build > Clean Project, Build > Rebuild Project.
+7. Desinstale la version vieja del emulador/telefono antes de probar si sigue mostrando UI antigua.
+8. Ejecute la app nuevamente desde Android Studio.
+9. Cuando todo compile, haga git add -A, commit y push para que Render reciba los cambios backend.
+
+PRUEBAS:
+- Admin > Tipos de reporte: deben existir Editar y Desactivar/Activar.
+- Tecnico: al iniciar sesion debe abrir Panel del tecnico, no directamente una lista.
+- Tecnico > Tickets asignados: ASIGNADO, EN_PROCESO y PAUSADO.
+- Ticket EN_PROCESO > Pausar: motivo obligatorio.
+- Ticket PAUSADO > Reanudar trabajo.
+- Tecnico > Historial: tickets CERRADO.
+- Tecnico > Crear ticket de patrullaje.

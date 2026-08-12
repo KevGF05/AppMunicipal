@@ -101,7 +101,7 @@ public class TechnicianManagementService {
         AppUser technician = findTechnician(id);
         if (!active && reports.existsByAssignedTechnicianIdAndStatusIn(
             id,
-            List.of(ReportStatus.ASIGNADO, ReportStatus.EN_PROCESO)
+            List.of(ReportStatus.ASIGNADO, ReportStatus.EN_PROCESO, ReportStatus.PAUSADO)
         )) {
             throw new BusinessException(
                 "No se puede desactivar al técnico mientras tenga tickets asignados o en proceso. Reasigne esos tickets primero."

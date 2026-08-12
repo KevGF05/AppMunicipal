@@ -17,11 +17,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonVolver"
-            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="← Dashboard"
-            android:textColor="@color/dashboard_green" />
+            android:textColor="@color/dashboard_green"
+            app:backgroundTint="@color/dashboard_green_soft" />
 
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Agregue nuevas categorías para que aparezcan automáticamente en el formulario de reporte anónimo."
+            android:text="Cree, edite, active o desactive las categorías disponibles para nuevos reportes."
             android:textColor="@color/dashboard_muted"
             android:textSize="14sp" />
 

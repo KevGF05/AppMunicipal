@@ -56,6 +56,7 @@ data class ReportResponse(
     val priority: String,
     val assignedTechnicianId: Long?,
     val assignedTechnicianName: String?,
+    val pauseReason: String?,
     val closureComment: String?,
     val rejectionReason: String?,
     val createdAt: String?,
@@ -122,4 +123,16 @@ data class ReportTypeResponse(
 
 data class ReportTypeCreateRequest(
     val name: String
+)
+
+data class ReportTypeUpdateRequest(
+    val name: String
+)
+
+data class ReportTypeStatusRequest(
+    val active: Boolean
+)
+
+data class PauseRequest(
+    val reason: String
 )

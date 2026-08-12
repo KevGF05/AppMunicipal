@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/municipal_background">
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/dashboard_background">
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
-        <com.google.android.material.button.MaterialButton android:id="@+id/buttonVolver" style="@style/Widget.Material3.Button.TextButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Volver" />
-        <TextView android:id="@+id/textCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/municipal_primary" android:textSize="24sp" android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/buttonVolver" android:layout_width="wrap_content" android:layout_height="44dp" android:text="← Tickets" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft" />
+        <TextView android:id="@+id/textCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/dashboard_green" android:textSize="24sp" android:textStyle="bold" />
         <TextView android:id="@+id/textTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:textSize="20sp" android:textStyle="bold" />
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
             <TextView android:id="@+id/textEstado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textStyle="bold" />
@@ -18,7 +18,7 @@
         <TextView android:id="@+id/textDetalle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Técnico asignado" android:textStyle="bold" />
         <TextView android:id="@+id/textTecnico" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
-        <TextView android:id="@+id/textObservacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:textColor="@color/municipal_primary" />
+        <TextView android:id="@+id/textObservacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:textColor="@color/dashboard_green" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Fotografía inicial" android:textStyle="bold" />
         <ImageView android:id="@+id/imageInicial" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía inicial" android:scaleType="centerCrop" />
         <TextView android:id="@+id/labelFotoFinal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Fotografía final" android:textStyle="bold" android:visibility="gone" />
@@ -59,32 +59,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginTop="14dp"
-                    android:text="Aprobar reporte" />
+                    android:text="Aprobar reporte" android:textColor="@android:color/white" app:backgroundTint="@color/dashboard_green" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonAsignar"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginTop="10dp"
-                    android:text="Asignar técnico" />
+                    android:text="Asignar técnico"
+                    android:textColor="@color/dashboard_green"
+                    app:backgroundTint="@color/dashboard_green_soft" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonReasignar"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginTop="10dp"
                     android:text="Reasignar a otro técnico"
+                    android:textColor="@color/dashboard_green"
+                    app:backgroundTint="@color/dashboard_green_soft"
                     android:visibility="gone" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonRechazar"
-                    style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:layout_marginTop="6dp"
-                    android:text="Rechazar reporte" />
+                    android:layout_marginTop="8dp"
+                    android:text="Rechazar reporte"
+                    android:textColor="@color/dashboard_button_dark_text"
+                    app:backgroundTint="@color/dashboard_yellow" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:text="Historial del ticket" android:textStyle="bold" />

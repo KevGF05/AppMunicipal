@@ -60,6 +60,7 @@ class AdminDetalleActivity : PersonalSessionActivity() {
         binding.textDetalle.text = report.description
         binding.textTecnico.text = report.assignedTechnicianName ?: "Sin asignar"
         binding.textObservacion.text = when {
+            report.status == "PAUSADO" && !report.pauseReason.isNullOrBlank() -> "Motivo de pausa: ${report.pauseReason}"
             !report.rejectionReason.isNullOrBlank() -> "Motivo de rechazo: ${report.rejectionReason}"
             !report.closureComment.isNullOrBlank() -> "Cierre: ${report.closureComment}"
             else -> "Sin observaciones adicionales."
@@ -84,7 +85,7 @@ class AdminDetalleActivity : PersonalSessionActivity() {
     private fun actualizarAcciones(report: ReportResponse) {
         val creado = report.status == "CREADO"
         val aprobado = report.status == "APROBADO"
-        val asignadoOEnProceso = report.status == "ASIGNADO" || report.status == "EN_PROCESO"
+        val asignadoOEnProceso = report.status == "ASIGNADO" || report.status == "EN_PROCESO" || report.status == "PAUSADO"
 
         binding.buttonAprobar.visibility = if (creado) View.VISIBLE else View.GONE
         binding.buttonRechazar.visibility = if (creado || aprobado) View.VISIBLE else View.GONE

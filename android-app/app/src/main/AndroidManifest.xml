@@ -33,6 +33,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ui.tecnico.TecnicoDetalleActivity" android:exported="false" />
+        <activity android:name=".ui.tecnico.TecnicoTicketsActivity" android:exported="false" />
+        <activity android:name=".ui.tecnico.TecnicoHistorialActivity" android:exported="false" />
         <activity android:name=".ui.tecnico.TecnicoDashboardActivity" android:exported="false" />
         <activity android:name=".ui.admin.AdminDetalleActivity" android:exported="false" />
         <activity android:name=".ui.admin.AdminTecnicosActivity" android:exported="false" />

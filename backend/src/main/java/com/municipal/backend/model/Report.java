@@ -49,6 +49,9 @@ public class Report {
     @JoinColumn(name = "tecnico_id")
     private AppUser assignedTechnician;
 
+    @Column(length = 500)
+    private String pauseReason;
+
     @Column(length = 1000)
     private String closureComment;
 
@@ -98,6 +101,8 @@ public class Report {
     public void setPriority(Priority priority) { this.priority = priority; }
     public AppUser getAssignedTechnician() { return assignedTechnician; }
     public void setAssignedTechnician(AppUser assignedTechnician) { this.assignedTechnician = assignedTechnician; }
+    public String getPauseReason() { return pauseReason; }
+    public void setPauseReason(String pauseReason) { this.pauseReason = pauseReason; }
     public String getClosureComment() { return closureComment; }
     public void setClosureComment(String closureComment) { this.closureComment = closureComment; }
     public String getRejectionReason() { return rejectionReason; }

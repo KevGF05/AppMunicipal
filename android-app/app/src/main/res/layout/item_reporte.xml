@@ -8,19 +8,22 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="1dp">
+    app:cardBackgroundColor="@color/dashboard_surface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/dashboard_border"
+    app:strokeWidth="1dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <TextView android:id="@+id/textCodigo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textColor="@color/municipal_primary" android:textStyle="bold" />
+            <TextView android:id="@+id/textCodigo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textColor="@color/dashboard_green" android:textStyle="bold" />
             <TextView android:id="@+id/textEstado" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" />
         </LinearLayout>
-        <TextView android:id="@+id/textTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:textColor="@color/municipal_text" android:textSize="17sp" android:textStyle="bold" />
-        <TextView android:id="@+id/textPrioridad" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:textColor="@color/municipal_muted" />
+        <TextView android:id="@+id/textTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:textColor="@color/dashboard_text" android:textSize="17sp" android:textStyle="bold" />
+        <TextView android:id="@+id/textPrioridad" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:textColor="@color/dashboard_muted" />
         <TextView android:id="@+id/textDireccion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:ellipsize="end" android:maxLines="2" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -68,7 +68,7 @@ class AdminDashboardActivity : PersonalSessionActivity() {
                 .onSuccess { reportes ->
                     val nuevos = reportes.count { it.status == "CREADO" }
                     val activos = reportes.count {
-                        it.status == "APROBADO" || it.status == "ASIGNADO" || it.status == "EN_PROCESO"
+                        it.status == "APROBADO" || it.status == "ASIGNADO" || it.status == "EN_PROCESO" || it.status == "PAUSADO"
                     }
                     binding.textTicketsNuevos.text = nuevos.toString()
                     binding.textTicketsNuevosEtiqueta.text = if (nuevos == 1) "ticket nuevo" else "tickets nuevos"

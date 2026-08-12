@@ -141,8 +141,8 @@ public class ReportService {
     @Transactional
     public ReportResponse reassign(Long id, AssignRequest request, AppUser admin) {
         Report report = find(id);
-        if (report.getStatus() != ReportStatus.ASIGNADO && report.getStatus() != ReportStatus.EN_PROCESO) {
-            throw new BusinessException("Solo se puede reasignar un ticket asignado o en proceso.");
+        if (report.getStatus() != ReportStatus.ASIGNADO && report.getStatus() != ReportStatus.EN_PROCESO && report.getStatus() != ReportStatus.PAUSADO) {
+            throw new BusinessException("Solo se puede reasignar un ticket asignado, en proceso o en pausa.");
         }
         AppUser currentTechnician = report.getAssignedTechnician();
         if (currentTechnician == null) {
@@ -156,6 +156,7 @@ public class ReportService {
         ReportStatus previous = report.getStatus();
         report.setAssignedTechnician(newTechnician);
         report.setPriority(request.priority());
+        report.setPauseReason(null);
         report.setStatus(ReportStatus.ASIGNADO);
         reports.save(report);
         addHistory(
@@ -215,6 +216,32 @@ public class ReportService {
     }
 
     @Transactional
+    public ReportResponse pause(Long id, String reason, AppUser technician) {
+        requirePasswordChanged(technician);
+        Report report = find(id);
+        requireAssigned(report, technician);
+        requireStatus(report, ReportStatus.EN_PROCESO);
+        String normalized = reason == null ? "" : reason.trim();
+        if (normalized.length() < 5 || normalized.length() > 500) {
+            throw new BusinessException("El motivo de la pausa debe contener entre 5 y 500 caracteres.");
+        }
+        report.setPauseReason(normalized);
+        transition(report, ReportStatus.PAUSADO, technician.getName(), "Trabajo pausado: " + normalized);
+        return toResponse(report);
+    }
+
+    @Transactional
+    public ReportResponse resume(Long id, AppUser technician) {
+        requirePasswordChanged(technician);
+        Report report = find(id);
+        requireAssigned(report, technician);
+        requireStatus(report, ReportStatus.PAUSADO);
+        report.setPauseReason(null);
+        transition(report, ReportStatus.EN_PROCESO, technician.getName(), "Trabajo reanudado.");
+        return toResponse(report);
+    }
+
+    @Transactional
     public ReportResponse close(Long id, String comment, MultipartFile finalPhoto, AppUser technician) {
         requirePasswordChanged(technician);
         Report report = find(id);
@@ -251,6 +278,7 @@ public class ReportService {
             case RECHAZADO -> "El reporte fue revisado y rechazado.";
             case ASIGNADO -> "El reporte fue asignado al personal técnico.";
             case EN_PROCESO -> "El trabajo se encuentra en proceso.";
+            case PAUSADO -> "El trabajo se encuentra temporalmente en pausa.";
             case CERRADO -> "El reporte fue atendido y cerrado.";
         };
     }
@@ -322,7 +350,7 @@ public class ReportService {
             report.getId(), report.getCode(), report.getType(), report.getDescription(), report.getAddress(),
             report.getLatitude(), report.getLongitude(), storage.resolveUrl(report.getInitialPhotoPath()), storage.resolveUrl(report.getFinalPhotoPath()),
             report.getStatus().name(), report.getPriority().name(), technician == null ? null : technician.getId(),
-            technician == null ? null : technician.getName(), report.getClosureComment(), report.getRejectionReason(),
+            technician == null ? null : technician.getName(), report.getPauseReason(), report.getClosureComment(), report.getRejectionReason(),
             report.getCreatedAt(), report.getUpdatedAt(), items
         );
     }

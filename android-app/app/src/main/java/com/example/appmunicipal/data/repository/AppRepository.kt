@@ -70,6 +70,12 @@ class AppRepository(context: Context) {
     suspend fun crearTipoReporte(nombre: String): ReportTypeResponse =
         api.crearTipoReporte(ReportTypeCreateRequest(nombre)).requireBody()
 
+    suspend fun editarTipoReporte(id: Long, nombre: String): ReportTypeResponse =
+        api.editarTipoReporte(id, ReportTypeUpdateRequest(nombre)).requireBody()
+
+    suspend fun cambiarEstadoTipoReporte(id: Long, activo: Boolean): ReportTypeResponse =
+        api.cambiarEstadoTipoReporte(id, ReportTypeStatusRequest(activo)).requireBody()
+
     suspend fun obtenerAdmin(id: Long): ReportResponse = api.obtenerReporteAdmin(id).requireBody()
     suspend fun aprobar(id: Long): ReportResponse = api.aprobarReporte(id).requireBody()
     suspend fun rechazar(id: Long, motivo: String): ReportResponse =
@@ -123,6 +129,9 @@ class AppRepository(context: Context) {
     suspend fun listarTecnico(): List<ReportResponse> = api.listarReportesTecnico().requireBody()
     suspend fun obtenerTecnico(id: Long): ReportResponse = api.obtenerReporteTecnico(id).requireBody()
     suspend fun iniciar(id: Long): ReportResponse = api.iniciarReporte(id).requireBody()
+    suspend fun pausar(id: Long, motivo: String): ReportResponse =
+        api.pausarReporte(id, PauseRequest(motivo)).requireBody()
+    suspend fun reanudar(id: Long): ReportResponse = api.reanudarReporte(id).requireBody()
 
     suspend fun cerrar(id: Long, comentario: String, foto: File): ReportResponse {
         val image = MultipartBody.Part.createFormData(

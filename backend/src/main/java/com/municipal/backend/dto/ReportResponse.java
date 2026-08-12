@@ -17,6 +17,7 @@ public record ReportResponse(
     String priority,
     Long assignedTechnicianId,
     String assignedTechnicianName,
+    String pauseReason,
     String closureComment,
     String rejectionReason,
     LocalDateTime createdAt,

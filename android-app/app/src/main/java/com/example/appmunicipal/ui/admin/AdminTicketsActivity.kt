@@ -23,7 +23,7 @@ class AdminTicketsActivity : PersonalSessionActivity() {
 
     private val filtros = listOf(
         "Creados",
-        "Asignados / en proceso",
+        "Asignados / en proceso / pausa",
         "Cerrados",
         "Rechazados"
     )
@@ -80,7 +80,7 @@ class AdminTicketsActivity : PersonalSessionActivity() {
 
     private fun filtrar(reports: List<ReportResponse>): List<ReportResponse> {
         return when (binding.autoFiltro.text.toString()) {
-            "Asignados / en proceso" -> reports.filter { it.status == "ASIGNADO" || it.status == "EN_PROCESO" }
+            "Asignados / en proceso / pausa" -> reports.filter { it.status == "ASIGNADO" || it.status == "EN_PROCESO" || it.status == "PAUSADO" }
             "Cerrados" -> reports.filter { it.status == "CERRADO" }
             "Rechazados" -> reports.filter { it.status == "RECHAZADO" }
             else -> reports.filter { it.status == "CREADO" || it.status == "APROBADO" }

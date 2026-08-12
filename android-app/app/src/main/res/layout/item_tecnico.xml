@@ -5,9 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="@color/municipal_surface"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="2dp">
+    app:cardBackgroundColor="@color/dashboard_surface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/dashboard_border"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/municipal_text"
+                android:textColor="@color/dashboard_text"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -47,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textColor="@color/municipal_muted"
+            android:textColor="@color/dashboard_muted"
             android:textSize="14sp" />
 
         <TextView
@@ -55,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:textColor="@color/municipal_muted"
+            android:textColor="@color/dashboard_muted"
             android:textSize="14sp" />
 
         <TextView
@@ -77,27 +79,30 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonEditarTecnico"
-                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:text="Editar" />
+                android:text="Editar"
+                android:textColor="@color/dashboard_green"
+                app:backgroundTint="@color/dashboard_green_soft" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonEstadoTecnico"
-                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/dashboard_button_dark_text"
+                app:backgroundTint="@color/dashboard_yellow" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonResetPassword"
-            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:text="Restablecer contraseña temporal" />
+            android:layout_marginTop="8dp"
+            android:text="Restablecer contraseña temporal"
+            android:textColor="@color/dashboard_green"
+            app:backgroundTint="@color/dashboard_green_soft" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

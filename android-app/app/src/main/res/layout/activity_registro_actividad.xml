@@ -17,12 +17,14 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonVolver"
-            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Volver" />
+            android:layout_height="44dp"
+            android:text="Volver"
+            android:textColor="@color/dashboard_green"
+            app:backgroundTint="@color/dashboard_green_soft" />
 
         <TextView
+            android:id="@+id/textTituloRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Crear reporte anónimo"
@@ -31,6 +33,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textSubtituloRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
@@ -75,11 +78,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSeleccionarMapa"
-            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:text="Seleccionar ubicación en el mapa" />
+            android:text="Seleccionar ubicación en el mapa"
+            android:textColor="@color/dashboard_green"
+            app:backgroundTint="@color/dashboard_green_soft" />
 
         <TextView
             android:id="@+id/textCoordenadas"
@@ -141,11 +145,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonTomarFoto"
-            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="12dp"
             android:text="Tomar fotografía"
+            android:textColor="@color/dashboard_green"
+            app:backgroundTint="@color/dashboard_green_soft"
             app:icon="@drawable/ic_camera_alt_24" />
 
         <CheckBox
@@ -179,6 +184,8 @@
             android:layout_marginTop="18dp"
             android:enabled="false"
             android:text="Enviar reporte anónimo"
-            android:textStyle="bold" />
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:backgroundTint="@color/dashboard_green" />
     </LinearLayout>
 </ScrollView>

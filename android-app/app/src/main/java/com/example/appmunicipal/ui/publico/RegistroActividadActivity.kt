@@ -38,6 +38,7 @@ class RegistroActividadActivity : AppCompatActivity() {
     private var enviando = false
     private var ubicacionLatitud: Double? = null
     private var ubicacionLongitud: Double? = null
+    private val modoTecnico by lazy { intent.getBooleanExtra(EXTRA_MODO_TECNICO, false) }
 
     private val tomarFotoLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { guardada ->
         if (guardada && fotoArchivo?.exists() == true) {
@@ -83,6 +84,11 @@ class RegistroActividadActivity : AppCompatActivity() {
         binding.root.applySafeSystemInsets()
         configurarLista()
         configurarAcciones()
+        if (modoTecnico) {
+            binding.textTituloRegistro.text = "Crear ticket de patrullaje"
+            binding.textSubtituloRegistro.text = "Registre una incidencia detectada durante su recorrido. El ticket será enviado al panel administrativo para su revisión."
+            binding.buttonRegistrar.text = "Crear ticket"
+        }
         actualizarEstadoBotonRegistrar()
     }
 
@@ -214,11 +220,21 @@ class RegistroActividadActivity : AppCompatActivity() {
                 )
             }.onSuccess { response ->
                 database.guardar(response.code, response.status)
-                startActivity(Intent(this@RegistroActividadActivity, ConfirmacionReporteActivity::class.java).apply {
-                    putExtra(ConfirmacionReporteActivity.EXTRA_CODIGO, response.code)
-                    putExtra(ConfirmacionReporteActivity.EXTRA_ESTADO, response.status)
-                })
-                finish()
+                if (modoTecnico) {
+                    eliminarFotoTemporal()
+                    AlertDialog.Builder(this@RegistroActividadActivity)
+                        .setTitle("Ticket creado")
+                        .setMessage("El reporte ${response.code} fue enviado al panel administrativo para revisión y asignación.")
+                        .setPositiveButton("Volver al dashboard") { _, _ -> finish() }
+                        .setCancelable(false)
+                        .show()
+                } else {
+                    startActivity(Intent(this@RegistroActividadActivity, ConfirmacionReporteActivity::class.java).apply {
+                        putExtra(ConfirmacionReporteActivity.EXTRA_CODIGO, response.code)
+                        putExtra(ConfirmacionReporteActivity.EXTRA_ESTADO, response.status)
+                    })
+                    finish()
+                }
             }.onFailure { error ->
                 Snackbar.make(binding.root, error.message ?: "No fue posible enviar el reporte.", Snackbar.LENGTH_LONG).show()
             }
@@ -281,5 +297,9 @@ class RegistroActividadActivity : AppCompatActivity() {
         fotoArchivo = null
         fotoUri = null
         fotoConfirmada = false
+    }
+
+    companion object {
+        const val EXTRA_MODO_TECNICO = "modo_tecnico"
     }
 }

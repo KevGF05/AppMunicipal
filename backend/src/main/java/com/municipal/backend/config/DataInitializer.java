@@ -41,6 +41,7 @@ public class DataInitializer {
     @Bean
     CommandLineRunner seedReportTypes(ReportTypeRepository types) {
         return args -> {
+            if (types.count() > 0) return;
             createReportTypeIfMissing(types, "Señal de tránsito caída");
             createReportTypeIfMissing(types, "Señal de tránsito dañada");
             createReportTypeIfMissing(types, "Semáforo dañado");
