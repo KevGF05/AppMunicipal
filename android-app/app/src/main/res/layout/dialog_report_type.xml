@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="6dp">
+
+    <TextView
+        android:id="@+id/textAyudaTipo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ingrese un nombre claro para la categoría. Se mostrará en el formulario de nuevos reportes."
+        android:textColor="@color/dashboard_muted"
+        android:textSize="14sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutNombreTipo"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:hint="Nombre del tipo de reporte"
+        app:boxStrokeColor="@color/dashboard_green"
+        app:hintTextColor="@color/dashboard_muted">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editNombreTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences"
+            android:maxLength="80"
+            android:maxLines="2"
+            android:textColor="@color/dashboard_text"
+            android:textColorHint="@color/dashboard_muted" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

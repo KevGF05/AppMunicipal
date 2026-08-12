@@ -152,7 +152,7 @@ class AdminDetalleActivity : PersonalSessionActivity() {
             ArrayAdapter(this, android.R.layout.simple_list_item_1, listOf("BAJA", "MEDIA", "ALTA", "URGENTE"))
         )
         dialogBinding.autoPrioridad.setText(current?.priority ?: "MEDIA", false)
-        dialogBinding.editObservacion.hint = if (reasignar) {
+        dialogBinding.layoutObservacion.hint = if (reasignar) {
             "Motivo u observación de la reasignación"
         } else {
             "Observación para el técnico (opcional)"

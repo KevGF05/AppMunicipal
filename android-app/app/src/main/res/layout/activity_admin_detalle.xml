@@ -1,96 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/dashboard_background">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
-        <com.google.android.material.button.MaterialButton android:id="@+id/buttonVolver" android:layout_width="wrap_content" android:layout_height="44dp" android:text="← Tickets" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft" />
-        <TextView android:id="@+id/textCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/dashboard_green" android:textSize="24sp" android:textStyle="bold" />
-        <TextView android:id="@+id/textTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:textSize="20sp" android:textStyle="bold" />
+<?xml version='1.0' encoding='UTF-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/dashboard_background" android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="18dp" android:paddingTop="10dp" android:paddingEnd="18dp" android:paddingBottom="10dp" android:background="@color/dashboard_background">
+        <com.google.android.material.button.MaterialButton android:id="@+id/buttonVolver" android:layout_width="wrap_content" android:layout_height="44dp" android:text="← Tickets" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft"/>
+        <TextView android:id="@+id/textCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/dashboard_green" android:textSize="24sp" android:textStyle="bold" android:layout_marginTop="2dp"/>
+        <TextView android:id="@+id/textTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textSize="20sp" android:textStyle="bold"/>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
-            <TextView android:id="@+id/textEstado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textStyle="bold" />
-            <TextView android:id="@+id/textPrioridad" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:id="@+id/textEstado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textStyle="bold"/>
+            <TextView android:id="@+id/textPrioridad" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         </LinearLayout>
-        <ProgressBar android:id="@+id/progressDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:visibility="gone" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Ubicación" android:textStyle="bold" />
-        <TextView android:id="@+id/textDireccion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
-        <TextView android:id="@+id/textCoordenadas" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/municipal_muted" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Descripción" android:textStyle="bold" />
-        <TextView android:id="@+id/textDetalle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Técnico asignado" android:textStyle="bold" />
-        <TextView android:id="@+id/textTecnico" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
-        <TextView android:id="@+id/textObservacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:textColor="@color/dashboard_green" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Fotografía inicial" android:textStyle="bold" />
-        <ImageView android:id="@+id/imageInicial" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía inicial" android:scaleType="centerCrop" />
-        <TextView android:id="@+id/labelFotoFinal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Fotografía final" android:textStyle="bold" android:visibility="gone" />
-        <ImageView android:id="@+id/imageFinal" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía final" android:scaleType="centerCrop" android:visibility="gone" />
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardAcciones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:visibility="gone"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Acciones del ticket"
-                    android:textColor="@color/municipal_text"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Solo se muestran las acciones disponibles para el estado actual."
-                    android:textColor="@color/municipal_muted" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonAprobar"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="14dp"
-                    android:text="Aprobar reporte" android:textColor="@android:color/white" app:backgroundTint="@color/dashboard_green" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonAsignar"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Asignar técnico"
-                    android:textColor="@color/dashboard_green"
-                    app:backgroundTint="@color/dashboard_green_soft" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonReasignar"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Reasignar a otro técnico"
-                    android:textColor="@color/dashboard_green"
-                    app:backgroundTint="@color/dashboard_green_soft"
-                    android:visibility="gone" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonRechazar"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Rechazar reporte"
-                    android:textColor="@color/dashboard_button_dark_text"
-                    app:backgroundTint="@color/dashboard_yellow" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:text="Historial del ticket" android:textStyle="bold" />
-        <TextView android:id="@+id/textHistorial" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:paddingBottom="24dp" />
+        <View android:layout_width="58dp" android:layout_height="4dp" android:layout_marginTop="10dp" android:background="@color/dashboard_yellow"/>
     </LinearLayout>
-</ScrollView>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="18dp" android:paddingTop="8dp" android:paddingEnd="18dp" android:paddingBottom="24dp">
+            <ProgressBar android:id="@+id/progressDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:visibility="gone"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Ubicación" android:textStyle="bold"/>
+            <TextView android:id="@+id/textDireccion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/textCoordenadas" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/municipal_muted"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Descripción" android:textStyle="bold"/>
+            <TextView android:id="@+id/textDetalle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="Técnico asignado" android:textStyle="bold"/>
+            <TextView android:id="@+id/textTecnico" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/textObservacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:textColor="@color/dashboard_green"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Fotografía inicial" android:textStyle="bold"/>
+            <ImageView android:id="@+id/imageInicial" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía inicial" android:scaleType="centerCrop"/>
+            <TextView android:id="@+id/labelFotoFinal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Fotografía final" android:textStyle="bold" android:visibility="gone"/>
+            <ImageView android:id="@+id/imageFinal" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía final" android:scaleType="centerCrop" android:visibility="gone"/>
+            <com.google.android.material.card.MaterialCardView android:id="@+id/cardAcciones" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:visibility="gone" app:cardCornerRadius="16dp" app:cardElevation="0dp" app:strokeWidth="1dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Acciones del ticket" android:textColor="@color/municipal_text" android:textSize="18sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Solo se muestran las acciones disponibles para el estado actual." android:textColor="@color/municipal_muted"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/buttonAprobar" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="14dp" android:text="Aprobar reporte" android:textColor="@android:color/white" app:backgroundTint="@color/dashboard_green"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/buttonAsignar" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:text="Asignar técnico" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/buttonReasignar" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:text="Reasignar a otro técnico" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft" android:visibility="gone"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/buttonRechazar" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="8dp" android:text="Rechazar reporte" android:textColor="@color/dashboard_button_dark_text" app:backgroundTint="@color/dashboard_yellow"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:text="Historial del ticket" android:textStyle="bold"/>
+            <TextView android:id="@+id/textHistorial" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:paddingBottom="24dp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
