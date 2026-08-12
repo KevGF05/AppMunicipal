@@ -1,13 +1,20 @@
 package com.example.appmunicipal.ui.publico
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.appmunicipal.R
 import com.example.appmunicipal.databinding.ActivityMapaUbicacionBinding
+import com.example.appmunicipal.util.applySafeSystemInsets
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -15,8 +22,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
-import com.example.appmunicipal.util.applySafeSystemInsets
 
 class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMarkerDragListener {
@@ -26,6 +33,22 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
     private var marcador: Marker? = null
     private var ubicacionSeleccionada: LatLng? = null
     private var direccionSeleccionada: String = ""
+
+    private val permisoUbicacionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permisos ->
+            val concedido = permisos[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                permisos[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+
+            if (concedido) {
+                habilitarUbicacionDelDispositivo()
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    "Sin permiso de ubicación puede seleccionar el punto manualmente en el mapa.",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +83,64 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
         } else {
             mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(CENTRO_EL_PROGRESO, 13f))
         }
+
+        solicitarUbicacionDelDispositivo()
+    }
+
+    private fun solicitarUbicacionDelDispositivo() {
+        if (tienePermisoUbicacion()) {
+            habilitarUbicacionDelDispositivo()
+            return
+        }
+
+        val debeExplicar =
+            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (debeExplicar) {
+            AlertDialog.Builder(this)
+                .setTitle("Permiso de ubicación")
+                .setMessage(
+                    "Permita el acceso a la ubicación para mostrar su posición en el mapa y facilitar la selección del lugar del reporte."
+                )
+                .setPositiveButton("Continuar") { _, _ -> pedirPermisoUbicacion() }
+                .setNegativeButton("Ahora no") { _, _ ->
+                    Snackbar.make(
+                        binding.root,
+                        "Puede seleccionar la ubicación manualmente en el mapa.",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                .show()
+        } else {
+            pedirPermisoUbicacion()
+        }
+    }
+
+    private fun pedirPermisoUbicacion() {
+        permisoUbicacionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+
+    private fun tienePermisoUbicacion(): Boolean =
+        ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+
+    @SuppressLint("MissingPermission")
+    private fun habilitarUbicacionDelDispositivo() {
+        if (!::mapa.isInitialized || !tienePermisoUbicacion()) return
+        mapa.isMyLocationEnabled = true
+        mapa.uiSettings.isMyLocationButtonEnabled = true
     }
 
     private fun seleccionarPunto(punto: LatLng, moverCamara: Boolean, buscarDireccion: Boolean = true) {
