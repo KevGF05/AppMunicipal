@@ -1,14 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Theme.AppMunicipal" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/municipal_primary</item>
-        <item name="colorSecondary">@color/municipal_secondary</item>
-        <item name="android:colorBackground">@color/municipal_background</item>
-        <item name="android:statusBarColor">@color/municipal_primary</item>
-        <item name="android:navigationBarColor">@color/municipal_surface</item>
+
+        <!-- Colores principales de la Municipalidad -->
+        <item name="colorPrimary">@color/municipal_green</item>
+        <item name="colorSecondary">@color/municipal_yellow</item>
+
+        <!-- Fondo y superficies -->
+        <item name="android:colorBackground">@color/surface_translucent</item>
+
+        <!-- Barras del sistema -->
+        <item name="android:statusBarColor">@color/municipal_green</item>
+        <item name="android:navigationBarColor">@color/surface_translucent</item>
+
+        <!-- Texto / apariencia -->
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">false</item>
+
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:windowNoTitle">true</item>
+
+        <!-- Permitir Dark Mode -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">true</item>
+
     </style>
+
 </resources>

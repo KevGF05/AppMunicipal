@@ -7,4 +7,8 @@
     <color name="municipal_muted">#5F6B7A</color>
     <color name="municipal_success">#147D4B</color>
     <color name="municipal_danger">#B42318</color>
+    <color name="municipal_green">#26733A</color>
+    <color name="municipal_yellow">#E2B93B</color>
+    <color name="surface_translucent">#DDFFFFFF</color>
+    <color name="text_primary">#20242A</color>
 </resources>

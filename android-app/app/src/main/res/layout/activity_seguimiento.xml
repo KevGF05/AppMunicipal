@@ -100,6 +100,43 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp" />
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTrabajoRealizado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/surface_translucent"
+                    app:cardCornerRadius="14dp"
+                    app:strokeColor="@color/municipal_yellow"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Trabajo realizado"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textTrabajoRealizado"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="@color/text_primary"
+                            android:textIsSelectable="true"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
                 <TextView
                     android:id="@+id/textResultadoActualizado"
                     android:layout_width="match_parent"

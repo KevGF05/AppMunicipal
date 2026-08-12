@@ -47,6 +47,11 @@ class SeguimientoActivity : AppCompatActivity() {
                     binding.textResultadoCodigo.text = report.code
                     binding.textResultadoEstado.text = UiFormat.estado(report.status)
                     binding.textResultadoMensaje.text = report.message
+
+                    val showClosureNotes = report.status == "CERRADO" && !report.closureComment.isNullOrBlank()
+                    binding.cardTrabajoRealizado.visibility = if (showClosureNotes) View.VISIBLE else View.GONE
+                    binding.textTrabajoRealizado.text = report.closureComment.orEmpty()
+
                     binding.textResultadoActualizado.text = report.updatedAt
                         ?.replace("T", " ")
                         ?.substringBefore('.')
@@ -55,6 +60,7 @@ class SeguimientoActivity : AppCompatActivity() {
                 }
                 .onFailure { error ->
                     binding.cardResultado.visibility = View.GONE
+                    binding.cardTrabajoRealizado.visibility = View.GONE
                     Snackbar.make(binding.root, error.message ?: "No fue posible consultar.", Snackbar.LENGTH_LONG).show()
                 }
             binding.progressSeguimiento.visibility = View.GONE

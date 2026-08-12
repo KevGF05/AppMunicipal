@@ -1,8 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.AppMunicipal" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/municipal_secondary</item>
-        <item name="colorSecondary">@color/municipal_primary</item>
+
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/municipal_green</item>
+        <item name="colorOnPrimary">#102114</item>
+        <item name="colorSecondary">@color/municipal_yellow</item>
+        <item name="colorOnSecondary">#2A2100</item>
+
+        <!-- Superficies Material: fondo oscuro + texto claro -->
+        <item name="colorSurface">@color/municipal_surface</item>
+        <item name="colorOnSurface">@color/dark_input_text</item>
+        <item name="colorOnSurfaceVariant">@color/dark_input_hint</item>
+        <item name="android:colorBackground">@color/municipal_background</item>
+
+        <!-- Hace legibles EditText, TextInput y listas desplegables -->
+        <item name="android:textColor">@color/municipal_text</item>
+        <item name="android:textColorHint">@color/dark_input_hint</item>
+
+        <!-- Barras del sistema -->
+        <item name="android:statusBarColor">#0B0D0E</item>
+        <item name="android:navigationBarColor">#0B0D0E</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
         <item name="android:fontFamily">sans</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
 </resources>

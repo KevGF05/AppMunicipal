@@ -6,5 +6,6 @@ public record TrackingResponse(
     String code,
     String status,
     LocalDateTime updatedAt,
-    String message
+    String message,
+    String closureComment
 ) {}

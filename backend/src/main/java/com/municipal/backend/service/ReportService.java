@@ -87,7 +87,8 @@ public class ReportService {
             report.getCode(),
             report.getStatus().name(),
             report.getUpdatedAt(),
-            publicStatusMessage(report.getStatus())
+            publicStatusMessage(report.getStatus()),
+            report.getStatus() == ReportStatus.CERRADO ? report.getClosureComment() : null
         );
     }
 

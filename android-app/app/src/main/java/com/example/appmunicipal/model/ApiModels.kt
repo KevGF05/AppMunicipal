@@ -30,7 +30,8 @@ data class TrackingResponse(
     val code: String,
     val status: String,
     val updatedAt: String?,
-    val message: String
+    val message: String,
+    val closureComment: String?
 )
 
 data class HistoryResponse(
