@@ -1,32 +1,186 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/municipal_background" android:orientation="vertical">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="20dp" android:paddingTop="10dp" android:paddingEnd="20dp" android:paddingBottom="10dp" android:background="@color/municipal_background">
-        <com.google.android.material.button.MaterialButton android:id="@+id/buttonVolver" android:layout_width="wrap_content" android:layout_height="44dp" android:text="Volver" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft"/>
-        <TextView android:id="@+id/textTituloRegistro" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Crear reporte anónimo" android:textColor="@color/municipal_text" android:textSize="26sp" android:textStyle="bold" android:layout_marginTop="2dp"/>
-        <TextView android:id="@+id/textSubtituloRegistro" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:layout_marginBottom="0dp" android:text="Seleccione la ubicación exacta y adjunte una fotografía. No solicitamos nombre, correo ni teléfono." android:textColor="@color/municipal_muted" android:textSize="15sp"/>
-        <View android:layout_width="58dp" android:layout_height="4dp" android:layout_marginTop="10dp" android:background="@color/dashboard_yellow"/>
-    </LinearLayout>
-    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="20dp" android:paddingTop="14dp" android:paddingEnd="20dp" android:paddingBottom="32dp">
-            <com.google.android.material.textfield.TextInputLayout android:id="@+id/layoutTipoTrabajo" style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Tipo de reporte">
-                <AutoCompleteTextView android:id="@+id/autoTipoTrabajo" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="none" android:maxLines="1"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/municipal_background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:title="@string/registro_titulo" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/espacio_pantalla"
+            android:paddingTop="@dimen/espacio_medio"
+            android:paddingEnd="@dimen/espacio_pantalla"
+            android:paddingBottom="32dp">
+
+            <TextView
+                android:id="@+id/textSubtituloRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/registro_subtitulo"
+                android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo"
+                android:textSize="14sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutTipoTrabajo"
+                style="@style/Widget.AppMunicipal.Campo.Lista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espacio_medio"
+                android:hint="@string/registro_tipo">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoTipoTrabajo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:textColor="@color/municipal_text" />
             </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout android:id="@+id/layoutUbicacion" style="@style/Widget.Material3.TextInputLayout.OutlinedBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="14dp" android:hint="Ubicación seleccionada">
-                <com.google.android.material.textfield.TextInputEditText android:id="@+id/editUbicacion" android:layout_width="match_parent" android:layout_height="wrap_content" android:cursorVisible="false" android:focusable="false" android:inputType="none" android:maxLength="300" android:maxLines="4"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutUbicacion"
+                style="@style/Widget.AppMunicipal.Campo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:hint="@string/registro_ubicacion">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:inputType="none"
+                    android:maxLength="300"
+                    android:maxLines="4"
+                    android:textColor="@color/municipal_text" />
             </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonSeleccionarMapa" android:layout_width="match_parent" android:layout_height="50dp" android:layout_marginTop="10dp" android:text="Seleccionar ubicación en el mapa" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft"/>
-            <TextView android:id="@+id/textCoordenadas" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Coordenadas: pendientes" android:textColor="@color/municipal_muted" android:textSize="13sp"/>
-            <com.google.android.material.textfield.TextInputLayout android:id="@+id/layoutDetalle" style="@style/Widget.Material3.TextInputLayout.OutlinedBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="14dp" android:hint="Detalle del reporte" app:counterEnabled="true" app:counterMaxLength="500">
-                <com.google.android.material.textfield.TextInputEditText android:id="@+id/editDetalle" android:layout_width="match_parent" android:layout_height="120dp" android:gravity="top|start" android:inputType="textCapSentences|textMultiLine" android:maxLength="500" android:minLines="4"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSeleccionarMapa"
+                style="@style/Widget.AppMunicipal.Boton.Secundario"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/registro_seleccionar_mapa" />
+
+            <TextView
+                android:id="@+id/textCoordenadas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/registro_coordenadas_pendientes"
+                android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutDetalle"
+                style="@style/Widget.AppMunicipal.Campo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:hint="@string/registro_detalle"
+                app:counterEnabled="true"
+                app:counterMaxLength="500">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editDetalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:gravity="top|start"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLength="500"
+                    android:minLines="4"
+                    android:textColor="@color/municipal_text" />
             </com.google.android.material.textfield.TextInputLayout>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="22dp" android:text="Evidencia fotográfica obligatoria" android:textColor="@color/municipal_text" android:textSize="16sp" android:textStyle="bold"/>
-            <ImageView android:id="@+id/imageEvidencia" android:layout_width="match_parent" android:layout_height="220dp" android:layout_marginTop="10dp" android:background="@drawable/evidence_background" android:contentDescription="Vista previa de la evidencia" android:padding="@dimen/evidence_placeholder_padding" android:scaleType="centerCrop" android:src="@drawable/ic_camera_alt_24"/>
-            <TextView android:id="@+id/textErrorFoto" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@android:color/holo_red_dark" android:textSize="12sp" android:visibility="gone"/>
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonTomarFoto" android:layout_width="match_parent" android:layout_height="50dp" android:layout_marginTop="12dp" android:text="Tomar fotografía" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft" app:icon="@drawable/ic_camera_alt_24"/>
-            <CheckBox android:id="@+id/checkConsentimiento" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="14dp" android:text="Confirmo que la fotografía no muestra información personal innecesaria." android:textColor="@color/municipal_text"/>
-            <TextView android:id="@+id/textErrorConsentimiento" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@android:color/holo_red_dark" android:textSize="12sp" android:visibility="gone"/>
-            <ProgressBar android:id="@+id/progressEnvio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="16dp" android:visibility="gone"/>
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonRegistrar" android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginTop="18dp" android:enabled="false" android:text="Enviar reporte anónimo" android:textColor="@android:color/white" android:textStyle="bold" app:backgroundTint="@color/dashboard_green"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="@string/registro_evidencia"
+                android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion" />
+
+            <ImageView
+                android:id="@+id/imageEvidencia"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/alto_evidencia"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/evidence_background"
+                android:contentDescription="@string/registro_evidencia_descripcion"
+                android:padding="@dimen/evidence_placeholder_padding"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_camera_alt_24" />
+
+            <TextView
+                android:id="@+id/textErrorFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/municipal_danger"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonTomarFoto"
+                style="@style/Widget.AppMunicipal.Boton.Secundario"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/registro_tomar_foto"
+                app:icon="@drawable/ic_camera_alt_24" />
+
+            <CheckBox
+                android:id="@+id/checkConsentimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:minHeight="@dimen/alto_boton"
+                android:text="@string/registro_consentimiento"
+                android:textColor="@color/municipal_text" />
+
+            <TextView
+                android:id="@+id/textErrorConsentimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/municipal_danger"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progressEnvio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/espacio_medio"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonRegistrar"
+                style="@style/Widget.AppMunicipal.Boton.Primario"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="18dp"
+                android:enabled="false"
+                android:text="@string/registro_enviar" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

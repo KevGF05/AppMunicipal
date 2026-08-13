@@ -1,29 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Todos los textos visibles de la aplicacion viven aqui.
+  Antes habia 133 textos escritos directamente en los layouts y solo 7 en este archivo.
+  Tenerlos centralizados permite corregir la redaccion en un solo lugar y traducir
+  la app despues sin tocar ni un layout.
+-->
 <resources>
-    <string name="app_name">App Municipal</string>
-    <string name="registro_actividad_vial">Registro de Actividad Vial</string>
-    <string name="descripcion_pantalla">Registre el problema vial, seleccione su ubicación exacta y adjunte una evidencia fotográfica.</string>
-    <string name="tipo_trabajo">Tipo de reporte</string>
-    <string name="ubicacion">Ubicación seleccionada</string>
-    <string name="seleccionar_en_mapa">Seleccionar ubicación en el mapa</string>
-    <string name="ubicacion_requerida_nota">La ubicación debe confirmarse mediante un pin en el mapa.</string>
-    <string name="coordenadas_pendientes">Coordenadas: pendientes</string>
-    <string name="detalle">Detalle del reporte</string>
-    <string name="evidencia_fotografica">Evidencia fotográfica *</string>
-    <string name="foto_obligatoria_nota">La fotografía es obligatoria. El botón de registro se habilita después de tomarla.</string>
-    <string name="tomar_foto">Tomar fotografía</string>
-    <string name="registrar_actividad">Registrar actividad</string>
-    <string name="privacidad_nota">La fotografía se guarda en el almacenamiento privado de la aplicación.</string>
-    <string name="consentimiento">Confirmo que la evidencia no muestra información personal innecesaria.</string>
-    <string name="foto_no_disponible">Vista previa de la evidencia</string>
 
-    <string name="seleccionar_ubicacion">Seleccionar ubicación</string>
-    <string name="cancelar">Cancelar</string>
-    <string name="instruccion_mapa">Toque el punto exacto del mapa. Después puede mantener presionado y arrastrar el pin para ajustar la ubicación.</string>
-    <string name="ubicacion_reporte">Ubicación del reporte</string>
-    <string name="direccion_seleccionada">Dirección seleccionada</string>
-    <string name="sin_ubicacion_seleccionada">Aún no ha colocado el pin.</string>
-    <string name="buscando_direccion">Buscando la dirección…</string>
-    <string name="confirmar_ubicacion">Usar esta ubicación</string>
-    <string name="formato_coordenadas">Latitud: %.6f · Longitud: %.6f</string>
-    <string name="direccion_coordenadas">Ubicación en latitud %.6f, longitud %.6f</string>
+    <string name="app_name">App Municipal</string>
+
+    <!-- ===================== Acciones comunes ===================== -->
+    <string name="accion_volver">Volver</string>
+    <string name="accion_cancelar">Cancelar</string>
+    <string name="accion_continuar">Continuar</string>
+    <string name="accion_guardar">Guardar</string>
+    <string name="accion_crear">Crear</string>
+    <string name="accion_agregar">Agregar</string>
+    <string name="accion_editar">Editar</string>
+    <string name="accion_activar">Activar</string>
+    <string name="accion_desactivar">Desactivar</string>
+    <string name="accion_actualizar">Actualizar</string>
+    <string name="accion_copiar">Copiar</string>
+    <string name="accion_compartir">Compartir</string>
+    <string name="accion_quitar">Quitar</string>
+    <string name="accion_ahora_no">Ahora no</string>
+    <string name="accion_abrir_configuracion">Abrir configuracion</string>
+    <string name="accion_cerrar_sesion">Cerrar sesion</string>
+
+    <!-- ===================== Pantalla de inicio ===================== -->
+    <string name="inicio_titulo">App Municipal</string>
+    <string name="inicio_subtitulo">Reportes viales anonimos y gestion de tickets</string>
+    <string name="inicio_seccion_ciudadania">Ciudadania</string>
+    <string name="inicio_ciudadania_detalle">No necesita crear una cuenta. El reporte se registra de forma anonima.</string>
+    <string name="inicio_reportar">Reportar un problema</string>
+    <string name="inicio_mis_reportes">Mis reportes</string>
+    <string name="inicio_consultar">Consultar con un codigo</string>
+    <string name="inicio_seccion_personal">Personal municipal</string>
+    <string name="inicio_personal_detalle">Acceso para administradores y tecnicos autorizados.</string>
+    <string name="inicio_acceso_personal">Acceso del personal</string>
+    <string name="rol_administrador">Administrador</string>
+    <string name="rol_tecnico">Tecnico</string>
+    <string name="inicio_sesion_activa">Sesion activa</string>
+    <string name="inicio_otra_cuenta">Iniciar con otra cuenta</string>
+
+    <!-- ===================== Crear reporte ===================== -->
+    <string name="registro_titulo">Crear reporte anonimo</string>
+    <string name="registro_subtitulo">Seleccione la ubicacion exacta y adjunte una fotografia. No solicitamos nombre, correo ni telefono.</string>
+    <string name="registro_titulo_tecnico">Crear ticket de patrullaje</string>
+    <string name="registro_subtitulo_tecnico">Registre una incidencia detectada durante su recorrido. El ticket se enviara al panel administrativo para su revision.</string>
+    <string name="registro_tipo">Tipo de reporte</string>
+    <string name="registro_ubicacion">Ubicacion seleccionada</string>
+    <string name="registro_seleccionar_mapa">Seleccionar ubicacion en el mapa</string>
+    <string name="registro_coordenadas_pendientes">Coordenadas: pendientes</string>
+    <string name="registro_detalle">Detalle del reporte</string>
+    <string name="registro_evidencia">Evidencia fotografica obligatoria</string>
+    <string name="registro_evidencia_descripcion">Vista previa de la fotografia del reporte</string>
+    <string name="registro_tomar_foto">Tomar fotografia</string>
+    <string name="registro_consentimiento">Confirmo que la fotografia no muestra informacion personal innecesaria.</string>
+    <string name="registro_enviar">Enviar reporte anonimo</string>
+    <string name="registro_enviar_tecnico">Crear ticket</string>
+    <string name="registro_revise_campos">Revise los campos marcados.</string>
+    <string name="registro_foto_no_guardada">No se guardo la fotografia.</string>
+    <string name="registro_sin_camara">Este dispositivo no tiene una camara disponible.</string>
+    <string name="registro_camara_error">No fue posible preparar la camara.</string>
+    <string name="registro_envio_error">No fue posible enviar el reporte.</string>
+    <string name="registro_tipos_error">No fue posible actualizar los tipos de reporte. Se muestran las opciones predeterminadas.</string>
+    <string name="registro_ticket_creado_titulo">Ticket creado</string>
+    <string name="registro_ticket_creado_mensaje">El reporte %1$s se envio al panel administrativo para revision y asignacion.</string>
+    <string name="registro_volver_dashboard">Volver al dashboard</string>
+
+    <!-- Permiso de camara -->
+    <string name="permiso_camara_titulo">Permiso de camara</string>
+    <string name="permiso_camara_mensaje">La fotografia es obligatoria para enviar el reporte anonimo.</string>
+    <string name="permiso_camara_denegado_titulo">Camara deshabilitada</string>
+    <string name="permiso_camara_denegado_mensaje">Active el permiso de camara en la configuracion. Sin foto no se puede enviar el reporte.</string>
+    <string name="permiso_camara_sin_foto">Sin camara no se puede enviar el reporte.</string>
+    <string name="permiso_camara_cierre">Se necesita permiso de camara para cerrar el ticket.</string>
+
+    <!-- ===================== Mapa ===================== -->
+    <string name="mapa_titulo">Seleccionar ubicacion</string>
+    <string name="mapa_instruccion">Toque el punto exacto del mapa. Despues puede mantener presionado y arrastrar el pin para ajustarlo.</string>
+    <string name="mapa_confirmar">Usar esta ubicacion</string>
+    <string name="ubicacion_reporte">Ubicacion del reporte</string>
+    <string name="buscando_direccion">Buscando la direccion…</string>
+    <string name="sin_ubicacion_seleccionada">Aun no ha colocado el pin.</string>
+    <string name="formato_coordenadas">Latitud: %1$.6f · Longitud: %2$.6f</string>
+    <string name="direccion_coordenadas">Ubicacion en latitud %1$.6f, longitud %2$.6f</string>
+    <string name="permiso_ubicacion_titulo">Permiso de ubicacion</string>
+    <string name="permiso_ubicacion_mensaje">Permita el acceso a la ubicacion para mostrar su posicion en el mapa y facilitar la seleccion del lugar del reporte.</string>
+    <string name="permiso_ubicacion_manual">Puede seleccionar la ubicacion manualmente en el mapa.</string>
+    <string name="permiso_ubicacion_denegado">Sin permiso de ubicacion puede seleccionar el punto manualmente en el mapa.</string>
+
+    <!-- ===================== Confirmacion del reporte ===================== -->
+    <string name="confirmacion_titulo">Reporte enviado</string>
+    <string name="confirmacion_subtitulo">Este codigo es la unica forma de consultar su reporte. Copielo o compartalo antes de salir.</string>
+    <string name="confirmacion_label_codigo">Codigo de seguimiento</string>
+    <string name="confirmacion_label_estado">Estado inicial</string>
+    <string name="confirmacion_guardado">Guardamos el codigo en este telefono, dentro de Mis reportes.</string>
+    <string name="confirmacion_consultar">Consultar estado</string>
+    <string name="confirmacion_inicio">Volver al inicio</string>
+    <string name="confirmacion_copiado">Codigo copiado al portapapeles.</string>
+    <string name="confirmacion_compartir_titulo">Compartir codigo de seguimiento</string>
+    <string name="confirmacion_compartir_texto">Reporte municipal %1$s. Consulte el estado en la App Municipal con este codigo de seguimiento.</string>
+
+    <!-- ===================== Consulta por codigo ===================== -->
+    <string name="seguimiento_titulo">Consultar estado</string>
+    <string name="seguimiento_subtitulo">Ingrese unicamente el codigo entregado al enviar el reporte.</string>
+    <string name="seguimiento_codigo">Codigo de seguimiento</string>
+    <string name="seguimiento_consultar">Consultar estado</string>
+    <string name="seguimiento_ingrese_codigo">Ingrese el codigo de seguimiento.</string>
+    <string name="seguimiento_error">No fue posible consultar el reporte.</string>
+    <string name="seguimiento_motivo_pausa">Motivo de la pausa</string>
+    <string name="seguimiento_trabajo_realizado">Trabajo realizado</string>
+    <string name="seguimiento_actualizado">Ultima actualizacion: %1$s</string>
+    <string name="seguimiento_sin_actualizacion">Ultima actualizacion no disponible</string>
+
+    <!-- ===================== Mis reportes ===================== -->
+    <string name="mis_reportes_titulo">Mis reportes</string>
+    <string name="mis_reportes_subtitulo">Codigos enviados desde este telefono</string>
+    <string name="mis_reportes_vacio_titulo">Todavia no ha enviado reportes</string>
+    <string name="mis_reportes_vacio_detalle">Cuando envie uno, el codigo de seguimiento quedara guardado aqui.</string>
+    <string name="mis_reportes_crear">Crear un reporte</string>
+    <string name="mis_reportes_consultado">Consultado el %1$s</string>
+    <string name="mis_reportes_actualizando">Actualizando estados…</string>
+    <string name="mis_reportes_sin_conexion">No fue posible actualizar los estados. Se muestra la ultima informacion guardada.</string>
+    <string name="mis_reportes_quitar_titulo">Quitar de la lista</string>
+    <string name="mis_reportes_quitar_mensaje">Se quitara %1$s de este telefono. El reporte sigue registrado en la municipalidad y podra consultarlo si conserva el codigo.</string>
+    <string name="mis_reportes_quitado">Codigo quitado de la lista.</string>
+    <string name="mis_reportes_copiar_descripcion">Copiar codigo</string>
+
+    <!-- ===================== Acceso del personal ===================== -->
+    <string name="login_titulo">Acceso del personal</string>
+    <string name="login_subtitulo">Solo administradores y tecnicos autorizados.</string>
+    <string name="login_correo">Correo</string>
+    <string name="login_password">Contrasena</string>
+    <string name="login_entrar">Iniciar sesion</string>
+    <string name="login_nota_demo">Usuarios de demostracion incluidos en el manual.</string>
+    <string name="login_falta_correo">Ingrese el correo.</string>
+    <string name="login_falta_password">Ingrese la contrasena.</string>
+    <string name="login_error">No fue posible iniciar sesion.</string>
+    <string name="login_sesion_expirada">La sesion expiro despues de 30 minutos de inactividad. Inicie sesion nuevamente.</string>
+
+    <string name="password_titulo">Cambiar contrasena temporal</string>
+    <string name="password_subtitulo">Antes de continuar debe crear una contrasena personal. Use al menos 8 caracteres, una letra y un numero.</string>
+    <string name="password_nueva">Nueva contrasena</string>
+    <string name="password_confirmar">Confirmar contrasena</string>
+    <string name="password_guardar">Guardar nueva contrasena</string>
+    <string name="password_min_caracteres">Use al menos 8 caracteres.</string>
+    <string name="password_letra_numero">Incluya al menos una letra y un numero.</string>
+    <string name="password_no_coincide">Las contrasenas no coinciden.</string>
+    <string name="password_error">No fue posible cambiar la contrasena.</string>
+
+    <!-- ===================== Dashboards ===================== -->
+    <string name="dashboard_admin_titulo">Dashboard administrativo</string>
+    <string name="dashboard_tecnico_titulo">Dashboard tecnico</string>
+    <string name="dashboard_sesion">Sesion: %1$s</string>
+    <string name="dashboard_resumen">Resumen</string>
+    <string name="dashboard_mi_jornada">Mi jornada</string>
+    <string name="dashboard_error">No fue posible actualizar el dashboard.</string>
+
+    <string name="dashboard_tickets">Tickets</string>
+    <string name="dashboard_tickets_cargando">Cargando resumen de trabajos…</string>
+    <string name="dashboard_tecnicos">Administrar tecnicos</string>
+    <string name="dashboard_tecnicos_detalle">Crear, editar, activar o desactivar personal tecnico.</string>
+    <string name="dashboard_tipos">Tipos de reporte</string>
+    <string name="dashboard_tipos_detalle">Crear, editar, activar o desactivar tipos de reporte.</string>
+    <string name="dashboard_sin_activos">No hay trabajos activos en este momento.</string>
+
+    <string name="dashboard_tickets_asignados">Tickets asignados</string>
+    <string name="dashboard_activos">activos</string>
+    <string name="dashboard_historial">Historial de tickets</string>
+    <string name="dashboard_crear_patrullaje">Crear ticket de patrullaje</string>
+    <string name="dashboard_crear_patrullaje_detalle">Reporte una incidencia detectada durante su recorrido.</string>
+    <string name="dashboard_sin_pendientes">No tiene trabajos pendientes en este momento.</string>
+    <string name="dashboard_activos_en_pausa">%1$d activos · %2$d en pausa</string>
+    <string name="dashboard_listos">%1$d trabajos listos para atender o en proceso.</string>
+
+    <!-- ===================== Lista de tickets ===================== -->
+    <string name="tickets_titulo">Tickets municipales</string>
+    <string name="tickets_subtitulo">Filtre por estado y abra un ticket para gestionarlo.</string>
+    <string name="tickets_filtro">Filtrar por estado</string>
+    <string name="tickets_filtro_pendientes">Pendientes</string>
+    <string name="tickets_filtro_en_curso">En curso</string>
+    <string name="tickets_filtro_cerrados">Cerrados</string>
+    <string name="tickets_filtro_rechazados">Rechazados</string>
+    <string name="tickets_vacio_titulo">Nada por aqui</string>
+    <string name="tickets_vacio_detalle">No hay tickets con este filtro. Pruebe con otro estado o deslice para actualizar.</string>
+    <string name="tickets_error">No fue posible cargar los reportes.</string>
+
+    <string name="tecnico_tickets_titulo">Tickets asignados</string>
+    <string name="tecnico_tickets_vacio_titulo">Sin trabajos pendientes</string>
+    <string name="tecnico_tickets_vacio_detalle">Cuando el administrador le asigne un ticket aparecera aqui.</string>
+    <string name="tecnico_tickets_error">No fue posible cargar los tickets.</string>
+
+    <string name="tecnico_historial_titulo">Historial de tickets</string>
+    <string name="tecnico_historial_vacio_titulo">Aun no hay trabajos completados</string>
+    <string name="tecnico_historial_vacio_detalle">Los tickets que cierre quedaran registrados en esta pantalla.</string>
+    <string name="tecnico_historial_error">No fue posible cargar el historial.</string>
+
+    <!-- ===================== Detalle del ticket ===================== -->
+    <string name="detalle_titulo">Detalle del ticket</string>
+    <string name="detalle_ubicacion">Ubicacion</string>
+    <string name="detalle_descripcion">Descripcion</string>
+    <string name="detalle_tecnico">Tecnico asignado</string>
+    <string name="detalle_sin_asignar">Sin asignar</string>
+    <string name="detalle_foto_inicial">Fotografia inicial</string>
+    <string name="detalle_foto_final">Fotografia final</string>
+    <string name="detalle_historial">Historial del ticket</string>
+    <string name="detalle_sin_historial">Sin historial.</string>
+    <string name="detalle_sin_observaciones">Sin observaciones adicionales.</string>
+    <string name="detalle_motivo_pausa">Motivo de pausa: %1$s</string>
+    <string name="detalle_motivo_rechazo">Motivo de rechazo: %1$s</string>
+    <string name="detalle_cierre">Cierre: %1$s</string>
+    <string name="detalle_acciones">Acciones del ticket</string>
+    <string name="detalle_acciones_nota">Solo se muestran las acciones disponibles para el estado actual.</string>
+    <string name="detalle_accion_ok">Accion realizada correctamente.</string>
+    <string name="detalle_accion_error">No fue posible completar la accion.</string>
+    <string name="detalle_prioridad">Prioridad: %1$s</string>
+
+    <string name="admin_aprobar">Aprobar reporte</string>
+    <string name="admin_rechazar">Rechazar reporte</string>
+    <string name="admin_asignar">Asignar tecnico</string>
+    <string name="admin_reasignar">Reasignar a otro tecnico</string>
+    <string name="admin_aprobar_titulo">Aprobar reporte</string>
+    <string name="admin_aprobar_mensaje">El reporte pasara a estado Aprobado y quedara listo para asignarse a un tecnico.</string>
+    <string name="admin_rechazar_titulo">Rechazar reporte</string>
+    <string name="admin_rechazar_mensaje">Indique por que el reporte no sera atendido. El motivo se muestra al ciudadano.</string>
+    <string name="admin_rechazar_hint">Motivo del rechazo</string>
+    <string name="admin_rechazar_min">Escriba un motivo de al menos 5 caracteres.</string>
+    <string name="admin_asignar_titulo">Asignar tecnico</string>
+    <string name="admin_asignar_mensaje">Seleccione el tecnico responsable y la prioridad.</string>
+    <string name="admin_reasignar_titulo">Reasignar tecnico</string>
+    <string name="admin_reasignar_mensaje">Seleccione un tecnico diferente. El ticket volvera al estado Asignado.</string>
+    <string name="admin_asignar_falta">Seleccione tecnico y prioridad.</string>
+    <string name="admin_sin_tecnicos">No hay tecnicos activos disponibles.</string>
+    <string name="admin_sin_otro_tecnico">No hay otro tecnico activo disponible para reasignar.</string>
+    <string name="admin_dialog_tecnico">Tecnico</string>
+    <string name="admin_dialog_prioridad">Prioridad</string>
+    <string name="admin_dialog_observacion">Observacion para el tecnico (opcional)</string>
+    <string name="admin_dialog_observacion_reasignar">Motivo u observacion de la reasignacion</string>
+
+    <string name="tecnico_iniciar">Iniciar trabajo</string>
+    <string name="tecnico_pausar">Pausar trabajo</string>
+    <string name="tecnico_reanudar">Reanudar trabajo</string>
+    <string name="tecnico_en_pausa">Trabajo en pausa</string>
+    <string name="tecnico_cerrar_seccion">Cerrar ticket</string>
+    <string name="tecnico_cerrar_nota">Adjunte una fotografia de la reparacion terminada y describa el trabajo.</string>
+    <string name="tecnico_foto_final">Tomar fotografia final</string>
+    <string name="tecnico_comentario_cierre">Comentario de cierre</string>
+    <string name="tecnico_cerrar_boton">Cerrar ticket</string>
+    <string name="tecnico_iniciado">Trabajo iniciado.</string>
+    <string name="tecnico_pausado">Ticket pausado.</string>
+    <string name="tecnico_reanudado">Trabajo reanudado.</string>
+    <string name="tecnico_cerrado">Ticket cerrado correctamente.</string>
+    <string name="tecnico_pausa_titulo">Pausar trabajo</string>
+    <string name="tecnico_pausa_mensaje">Indique el motivo. Quedara registrado en el historial del ticket.</string>
+    <string name="tecnico_pausa_hint">Por ejemplo: falta repuesto o se requiere apoyo adicional</string>
+    <string name="tecnico_pausa_min">Escriba un motivo de al menos 5 caracteres.</string>
+    <string name="tecnico_reanudar_titulo">Reanudar trabajo</string>
+    <string name="tecnico_reanudar_mensaje">El ticket volvera al estado En proceso.</string>
+    <string name="tecnico_cierre_incompleto">Agregue una fotografia final y un comentario de al menos 10 caracteres.</string>
+
+    <!-- ===================== Administrar tecnicos ===================== -->
+    <string name="tecnicos_titulo">Administrar tecnicos</string>
+    <string name="tecnicos_subtitulo">Cree cuentas, edite datos y controle quien puede recibir tickets.</string>
+    <string name="tecnicos_filtro">Mostrar tecnicos</string>
+    <string name="tecnicos_filtro_activos">Activos</string>
+    <string name="tecnicos_filtro_inactivos">Inactivos</string>
+    <string name="tecnicos_crear">Crear tecnico</string>
+    <string name="tecnicos_editar">Editar tecnico</string>
+    <string name="tecnicos_vacio_titulo">Sin tecnicos en este filtro</string>
+    <string name="tecnicos_vacio_detalle">Cambie el filtro o cree una cuenta nueva.</string>
+    <string name="tecnicos_activo">Activo</string>
+    <string name="tecnicos_inactivo">Inactivo</string>
+    <string name="tecnicos_telefono_pendiente">Telefono pendiente</string>
+    <string name="tecnicos_password_pendiente">Contrasena temporal pendiente de cambio</string>
+    <string name="tecnicos_reset">Restablecer contrasena temporal</string>
+    <string name="tecnicos_nombre">Nombre</string>
+    <string name="tecnicos_apellido">Apellido</string>
+    <string name="tecnicos_telefono">Numero de telefono</string>
+    <string name="tecnicos_correo_pendiente">Correo generado: pendiente</string>
+    <string name="tecnicos_correo_generado">Correo generado: %1$s</string>
+    <string name="tecnicos_correo_nota">El correo se genera con el nombre y la primera letra del apellido usando pmunicipalidad.hn.</string>
+    <string name="tecnicos_password_nota">Contrasena temporal para cuentas nuevas o restablecidas: Tecnico123*</string>
+    <string name="tecnicos_falta_nombre">Ingrese el nombre del tecnico.</string>
+    <string name="tecnicos_falta_apellido">Ingrese el apellido del tecnico.</string>
+    <string name="tecnicos_falta_telefono">Ingrese un telefono valido.</string>
+    <string name="tecnicos_creado">Tecnico creado. Correo: %1$s. Contrasena temporal: Tecnico123*</string>
+    <string name="tecnicos_actualizado">Tecnico actualizado. Correo: %1$s</string>
+    <string name="tecnicos_activar_titulo">Activar tecnico</string>
+    <string name="tecnicos_desactivar_titulo">Desactivar tecnico</string>
+    <string name="tecnicos_activar_mensaje">%1$s podra volver a iniciar sesion y recibir asignaciones.</string>
+    <string name="tecnicos_desactivar_mensaje">%1$s no podra iniciar sesion ni recibir nuevas asignaciones.</string>
+    <string name="tecnicos_activado">Tecnico activado.</string>
+    <string name="tecnicos_desactivado">Tecnico desactivado.</string>
+    <string name="tecnicos_reset_titulo">Restablecer contrasena</string>
+    <string name="tecnicos_reset_mensaje">La contrasena de %1$s volvera a ser Tecnico123*. Se cerrara su sesion y debera crear una contrasena nueva al ingresar.</string>
+    <string name="tecnicos_reset_ok">Contrasena restablecida a Tecnico123*.</string>
+
+    <!-- ===================== Tipos de reporte ===================== -->
+    <string name="tipos_titulo">Tipos de reporte</string>
+    <string name="tipos_subtitulo">Administre las categorias disponibles para los reportes ciudadanos y de patrullaje.</string>
+    <string name="tipos_agregar">Agregar tipo de reporte</string>
+    <string name="tipos_editar">Editar tipo de reporte</string>
+    <string name="tipos_ver_desactivados">Ver desactivados (%1$d)</string>
+    <string name="tipos_ver_activos">Ver activos (%1$d)</string>
+    <string name="tipos_seccion_activos">Reportes disponibles</string>
+    <string name="tipos_seccion_inactivos">Reportes desactivados</string>
+    <string name="tipos_cargando">Cargando tipos…</string>
+    <string name="tipos_activos_cantidad">%1$d tipos activos</string>
+    <string name="tipos_inactivos_cantidad">%1$d tipos desactivados</string>
+    <string name="tipos_vacio_titulo">Sin tipos de reporte</string>
+    <string name="tipos_vacio_activos">Todavia no hay tipos activos. Agregue el primero.</string>
+    <string name="tipos_vacio_inactivos">No hay tipos de reporte desactivados.</string>
+    <string name="tipos_disponible">Disponible para reportes</string>
+    <string name="tipos_inactivo">Inactivo</string>
+    <string name="tipos_nombre">Nombre del tipo de reporte</string>
+    <string name="tipos_ayuda">Ingrese un nombre claro para la categoria. Se mostrara en el formulario de nuevos reportes.</string>
+    <string name="tipos_ayuda_editar">El cambio se aplicara a reportes futuros. Los tickets historicos conservan el nombre original.</string>
+    <string name="tipos_min">Ingrese un nombre de al menos 3 caracteres.</string>
+    <string name="tipos_max">Use un maximo de 80 caracteres.</string>
+    <string name="tipos_agregado">Tipo de reporte agregado y disponible para nuevos reportes.</string>
+    <string name="tipos_actualizado">Tipo de reporte actualizado.</string>
+    <string name="tipos_activar_titulo">Activar tipo</string>
+    <string name="tipos_desactivar_titulo">Desactivar tipo</string>
+    <string name="tipos_activar_mensaje">%1$s volvera a aparecer en el formulario de reportes.</string>
+    <string name="tipos_desactivar_mensaje">%1$s dejara de aparecer para nuevos reportes. Los tickets existentes no se eliminaran.</string>
+    <string name="tipos_activado">Tipo activado.</string>
+    <string name="tipos_desactivado">Tipo desactivado.</string>
+
+    <!-- ===================== Estados y prioridades ===================== -->
+    <string name="estado_creado">Creado</string>
+    <string name="estado_aprobado">Aprobado</string>
+    <string name="estado_rechazado">Rechazado</string>
+    <string name="estado_asignado">Asignado</string>
+    <string name="estado_en_proceso">En proceso</string>
+    <string name="estado_pausado">En pausa</string>
+    <string name="estado_cerrado">Cerrado</string>
+
+    <string name="prioridad_baja">Baja</string>
+    <string name="prioridad_media">Media</string>
+    <string name="prioridad_alta">Alta</string>
+    <string name="prioridad_urgente">Urgente</string>
+
+    <!-- ===================== Plurales ===================== -->
+    <!-- Antes se resolvian a mano con un if en Kotlin. -->
+    <plurals name="tickets_nuevos">
+        <item quantity="one">ticket nuevo</item>
+        <item quantity="other">tickets nuevos</item>
+    </plurals>
+
+    <plurals name="tickets_activos_contador">
+        <item quantity="one">%1$d ticket activo</item>
+        <item quantity="other">%1$d tickets activos</item>
+    </plurals>
+
+    <plurals name="trabajos_pendientes">
+        <item quantity="one">%1$d trabajo pendiente o en ejecucion.</item>
+        <item quantity="other">%1$d trabajos pendientes o en ejecucion.</item>
+    </plurals>
+
+    <plurals name="trabajos_completados">
+        <item quantity="one">%1$d trabajo completado</item>
+        <item quantity="other">%1$d trabajos completados</item>
+    </plurals>
+
+    <plurals name="reportes_guardados">
+        <item quantity="one">%1$d reporte guardado en este telefono</item>
+        <item quantity="other">%1$d reportes guardados en este telefono</item>
+    </plurals>
+
+    <!-- ===================== Descripciones para accesibilidad ===================== -->
+    <string name="cd_icono_tickets">Icono de tickets</string>
+    <string name="cd_icono_tecnicos">Icono de tecnicos</string>
+    <string name="cd_icono_tipos">Icono de tipos de reporte</string>
+    <string name="cd_icono_historial">Icono de historial</string>
+    <string name="cd_icono_crear">Icono de crear reporte</string>
+    <string name="cd_foto_inicial">Fotografia inicial del reporte</string>
+    <string name="cd_foto_final">Fotografia final del trabajo</string>
+    <string name="cd_estado_vacio">Lista sin elementos</string>
+
 </resources>

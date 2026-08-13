@@ -1,12 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Antes existian dos paletas paralelas con los mismos valores (municipal_* y dashboard_*).
+  Ahora dashboard_* son alias de la paleta unica: se conservan los nombres para no tener
+  que tocar cada layout, pero el color real vive en colors.xml.
+-->
 <resources>
-    <color name="dashboard_green">#26733A</color>
-    <color name="dashboard_green_soft">#E7F3EA</color>
-    <color name="dashboard_yellow">#E2B93B</color>
-    <color name="dashboard_yellow_soft">#FFF7D6</color>
-    <color name="dashboard_background">#F5F7FA</color>
-    <color name="dashboard_surface">#FFFFFFFF</color>
-    <color name="dashboard_text">#1F2937</color>
-    <color name="dashboard_muted">#5F6B7A</color>
-    <color name="dashboard_border">#D9E1E8</color>
+    <color name="dashboard_green">@color/municipal_green</color>
+    <color name="dashboard_green_soft">@color/municipal_green_soft</color>
+    <color name="dashboard_yellow">@color/municipal_yellow</color>
+    <color name="dashboard_yellow_soft">@color/municipal_yellow_soft</color>
+    <color name="dashboard_background">@color/municipal_background</color>
+    <color name="dashboard_surface">@color/municipal_surface</color>
+    <color name="dashboard_text">@color/municipal_text</color>
+    <color name="dashboard_muted">@color/municipal_muted</color>
+    <color name="dashboard_border">@color/municipal_border</color>
     <color name="dashboard_button_dark_text">#1F2937</color>
 </resources>

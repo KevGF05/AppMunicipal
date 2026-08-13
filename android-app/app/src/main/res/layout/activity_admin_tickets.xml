@@ -1,102 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  El filtro pasa de lista desplegable a chips. Antes se comparaba el texto en
+  espanol del desplegable ("Asignados / en proceso / pausa"), de modo que corregir
+  una tilde rompia el filtro. Ahora cada chip tiene un id propio.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dashboard_background"
+    android:background="@color/municipal_background"
     android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="18dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="18dp"
-        android:paddingBottom="12dp">
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:subtitle="@string/tickets_subtitulo"
+        app:title="@string/tickets_titulo" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonVolver"
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/espacio_medio"
+        android:paddingTop="12dp"
+        android:paddingEnd="@dimen/espacio_medio"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupFiltro"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="← Dashboard"
-            android:textColor="@color/dashboard_green"
-            app:backgroundTint="@color/dashboard_green_soft" />
-
-        <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Tickets municipales"
-            android:textColor="@color/dashboard_text"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Revise los reportes, filtre por estado y abra un ticket para gestionarlo."
-            android:textColor="@color/dashboard_muted"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="58dp"
-            android:layout_height="4dp"
-            android:layout_marginTop="12dp"
-            android:background="@color/dashboard_yellow" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Filtrar por estado"
-            app:boxStrokeColor="@color/dashboard_green"
-            app:hintTextColor="@color/dashboard_muted">
-
-            <AutoCompleteTextView
-                android:id="@+id/autoFiltro"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPendientes"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                android:textColor="@color/dashboard_text" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:checked="true"
+                android:text="@string/tickets_filtro_pendientes" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonActualizar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:text="Actualizar tickets"
-            android:textColor="@android:color/white"
-            app:backgroundTint="@color/dashboard_green" />
-    </LinearLayout>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEnCurso"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tickets_filtro_en_curso" />
 
-    <ProgressBar
-        android:id="@+id/progressAdmin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCerrados"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tickets_filtro_cerrados" />
 
-    <TextView
-        android:id="@+id/textVacio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="24dp"
-        android:text="No hay reportes para este filtro."
-        android:textColor="@color/dashboard_muted"
-        android:visibility="gone" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipRechazados"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tickets_filtro_rechazados" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerReportes"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="18dp" />
+        android:layout_weight="1">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerReportes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/espacio_medio"
+                android:paddingTop="@dimen/espacio_chico"
+                android:paddingEnd="@dimen/espacio_medio"
+                android:paddingBottom="@dimen/espacio_pantalla" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutVacio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:contentDescription="@string/cd_estado_vacio"
+                android:src="@drawable/ic_estado_vacio_48" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espacio_medio"
+                android:gravity="center"
+                android:text="@string/tickets_vacio_titulo"
+                android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="@string/tickets_vacio_detalle"
+                android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo" />
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

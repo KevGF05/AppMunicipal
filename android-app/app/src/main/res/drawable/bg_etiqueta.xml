@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fondo de las etiquetas de estado y prioridad.
+  Se deja en blanco a proposito: el color real lo aplica UiFormat con un tinte,
+  asi un solo drawable sirve para los siete estados y las cuatro prioridades.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFFFFF" />
+    <corners android:radius="8dp" />
+</shape>

@@ -1,12 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Los alias resuelven solos al valor nocturno; solo el texto sobre amarillo se fija. -->
 <resources>
-    <color name="dashboard_green">#66BB6A</color>
-    <color name="dashboard_green_soft">#243B2A</color>
-    <color name="dashboard_yellow">#FFD54F</color>
-    <color name="dashboard_yellow_soft">#403819</color>
-    <color name="dashboard_background">#111827</color>
-    <color name="dashboard_surface">#1F2937</color>
-    <color name="dashboard_text">#F9FAFB</color>
-    <color name="dashboard_muted">#CBD5E1</color>
-    <color name="dashboard_border">#475569</color>
     <color name="dashboard_button_dark_text">#1F2937</color>
 </resources>

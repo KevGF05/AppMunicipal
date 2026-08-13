@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.AppMunicipal.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="@color/dashboard_surface"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeColor="@color/dashboard_border"
-    app:strokeWidth="1dp">
+    android:layout_marginTop="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/espacio_medio">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,44 +23,38 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/dashboard_text"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textEstadoTecnico"
+                style="@style/Widget.AppMunicipal.Etiqueta"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textCorreoTecnico"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/dashboard_muted"
+            android:layout_marginTop="6dp"
+            android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textTelefonoTecnico"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/dashboard_muted"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textPasswordPendiente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Contraseña temporal pendiente de cambio"
+            android:layout_marginTop="6dp"
+            android:text="@string/tecnicos_password_pendiente"
             android:textColor="@color/municipal_danger"
             android:textSize="13sp"
             android:textStyle="bold"
@@ -79,30 +68,27 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonEditarTecnico"
+                style="@style/Widget.AppMunicipal.Boton.Secundario"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/alto_boton"
                 android:layout_weight="1"
-                android:text="Editar"
-                android:textColor="@color/dashboard_green"
-                app:backgroundTint="@color/dashboard_green_soft" />
+                android:text="@string/accion_editar" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonEstadoTecnico"
+                style="@style/Widget.AppMunicipal.Boton.Atencion"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:textColor="@color/dashboard_button_dark_text"
-                app:backgroundTint="@color/dashboard_yellow" />
+                android:layout_height="@dimen/alto_boton"
+                android:layout_marginStart="@dimen/espacio_chico"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonResetPassword"
+            style="@style/Widget.AppMunicipal.Boton.Texto"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:text="Restablecer contraseña temporal"
-            android:textColor="@color/dashboard_green"
-            app:backgroundTint="@color/dashboard_green_soft" />
+            android:layout_height="@dimen/alto_boton"
+            android:layout_marginTop="4dp"
+            android:text="@string/tecnicos_reset" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

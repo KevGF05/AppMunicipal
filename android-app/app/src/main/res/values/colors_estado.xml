@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Colores de las etiquetas de estado y prioridad del ticket.
+  Cada estado del backend tiene un par fondo/texto con contraste suficiente.
+-->
+<resources>
+
+    <color name="estado_creado_bg">#E3F0FB</color>
+    <color name="estado_creado_fg">#14538A</color>
+
+    <color name="estado_aprobado_bg">#E7F3EA</color>
+    <color name="estado_aprobado_fg">#1B5429</color>
+
+    <color name="estado_rechazado_bg">#FDE8E6</color>
+    <color name="estado_rechazado_fg">#96190F</color>
+
+    <color name="estado_asignado_bg">#EAE7FB</color>
+    <color name="estado_asignado_fg">#3B2E9B</color>
+
+    <color name="estado_proceso_bg">#FDEEDC</color>
+    <color name="estado_proceso_fg">#8A4B0B</color>
+
+    <color name="estado_pausado_bg">#FFF3CC</color>
+    <color name="estado_pausado_fg">#7A5B00</color>
+
+    <color name="estado_cerrado_bg">#E8ECEF</color>
+    <color name="estado_cerrado_fg">#3A4550</color>
+
+    <color name="prioridad_baja_bg">#EDF1F4</color>
+    <color name="prioridad_baja_fg">#4A5766</color>
+
+    <color name="prioridad_media_bg">#E3F0FB</color>
+    <color name="prioridad_media_fg">#14538A</color>
+
+    <color name="prioridad_alta_bg">#FDEEDC</color>
+    <color name="prioridad_alta_fg">#8A4B0B</color>
+
+    <color name="prioridad_urgente_bg">#FDE8E6</color>
+    <color name="prioridad_urgente_fg">#96190F</color>
+
+</resources>

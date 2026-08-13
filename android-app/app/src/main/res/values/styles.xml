@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Estilos reutilizables. La idea es que los layouts declaren "que es" cada elemento
+  (style="...Toolbar", "...Boton.Primario") en lugar de repetir color, alto y tinte
+  en cada archivo.
+-->
+<resources>
+
+    <!-- Barra superior -->
+    <style name="Widget.AppMunicipal.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/toolbar_background</item>
+        <item name="titleTextColor">@color/toolbar_on_background</item>
+        <item name="subtitleTextColor">@color/toolbar_subtitle</item>
+        <item name="navigationIconTint">@color/toolbar_on_background</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:elevation">0dp</item>
+        <item name="titleTextAppearance">@style/TextAppearance.AppMunicipal.ToolbarTitle</item>
+        <item name="subtitleTextAppearance">@style/TextAppearance.AppMunicipal.ToolbarSubtitle</item>
+    </style>
+
+    <style name="TextAppearance.AppMunicipal.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.AppMunicipal.ToolbarSubtitle" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Tarjetas -->
+    <style name="Widget.AppMunicipal.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/municipal_surface</item>
+        <item name="cardCornerRadius">@dimen/radio_tarjeta</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/municipal_border</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.AppMunicipal.Card.Clickable">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- Botones. Todos con alto minimo de 48dp, que es el area tactil recomendada. -->
+    <style name="Widget.AppMunicipal.Boton.Primario" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/alto_boton</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/municipal_green</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">@dimen/radio_boton</item>
+    </style>
+
+    <style name="Widget.AppMunicipal.Boton.Secundario" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">@dimen/alto_boton</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/municipal_green_soft</item>
+        <item name="android:textColor">@color/municipal_green</item>
+        <item name="iconTint">@color/municipal_green</item>
+        <item name="cornerRadius">@dimen/radio_boton</item>
+    </style>
+
+    <style name="Widget.AppMunicipal.Boton.Contorno" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/alto_boton</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/municipal_green</item>
+        <item name="strokeColor">@color/municipal_green</item>
+        <item name="iconTint">@color/municipal_green</item>
+        <item name="cornerRadius">@dimen/radio_boton</item>
+    </style>
+
+    <style name="Widget.AppMunicipal.Boton.Atencion" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/alto_boton</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="backgroundTint">@color/municipal_yellow</item>
+        <item name="android:textColor">@color/dashboard_button_dark_text</item>
+        <item name="cornerRadius">@dimen/radio_boton</item>
+    </style>
+
+    <style name="Widget.AppMunicipal.Boton.Texto" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/alto_boton</item>
+        <item name="android:textColor">@color/municipal_green</item>
+    </style>
+
+    <!--
+      Etiqueta de estado o prioridad. El color se aplica desde UiFormat.
+      parent="" es obligatorio: sin el, Android interpreta el punto del nombre como
+      herencia e intenta buscar un estilo padre "Widget.AppMunicipal" que no existe.
+    -->
+    <style name="Widget.AppMunicipal.Etiqueta" parent="">
+        <item name="android:background">@drawable/bg_etiqueta</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Textos -->
+    <style name="TextAppearance.AppMunicipal.Titulo" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">@color/municipal_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.AppMunicipal.Seccion" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/municipal_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.AppMunicipal.Etiqueta" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">@color/municipal_muted</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TextAppearance.AppMunicipal.Cuerpo" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/municipal_text</item>
+    </style>
+
+    <style name="TextAppearance.AppMunicipal.Apoyo" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/municipal_muted</item>
+    </style>
+
+    <!-- Campos de texto -->
+    <style name="Widget.AppMunicipal.Campo" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/municipal_green</item>
+        <item name="hintTextColor">@color/municipal_muted</item>
+    </style>
+
+    <style name="Widget.AppMunicipal.Campo.Lista" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/municipal_green</item>
+        <item name="hintTextColor">@color/municipal_muted</item>
+    </style>
+
+</resources>

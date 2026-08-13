@@ -7,48 +7,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="18dp">
+        android:paddingStart="@dimen/espacio_pantalla"
+        android:paddingTop="@dimen/espacio_chico"
+        android:paddingEnd="@dimen/espacio_pantalla"
+        android:paddingBottom="4dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutNombreTecnico"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/Widget.AppMunicipal.Campo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre">
+            android:hint="@string/tecnicos_nombre">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editNombreTecnico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textCapWords"
                 android:maxLength="60"
-                android:singleLine="true" />
+                android:maxLines="1"
+                android:textColor="@color/municipal_text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutApellidoTecnico"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/Widget.AppMunicipal.Campo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Apellido">
+            android:hint="@string/tecnicos_apellido">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editApellidoTecnico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textCapWords"
                 android:maxLength="80"
-                android:singleLine="true" />
+                android:maxLines="1"
+                android:textColor="@color/municipal_text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutTelefonoTecnico"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            style="@style/Widget.AppMunicipal.Campo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Número de teléfono">
+            android:hint="@string/tecnicos_telefono">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTelefonoTecnico"
@@ -56,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:maxLength="30"
-                android:singleLine="true" />
+                android:maxLines="1"
+                android:textColor="@color/municipal_text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -64,8 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:text="Correo generado: pendiente"
-            android:textColor="@color/municipal_primary"
+            android:text="@string/tecnicos_correo_pendiente"
+            android:textColor="@color/municipal_green"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -73,17 +79,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="El correo se genera con el nombre y la primera letra del apellido usando @pmunicipalidad.hn."
-            android:textColor="@color/municipal_muted"
-            android:textSize="13sp" />
+            android:text="@string/tecnicos_correo_nota"
+            android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo" />
 
         <TextView
             android:id="@+id/textPasswordTecnico"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Contraseña temporal para cuentas nuevas o restablecidas: Tecnico123*"
-            android:textColor="@color/municipal_muted"
-            android:textSize="13sp" />
+            android:text="@string/tecnicos_password_nota"
+            android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo" />
     </LinearLayout>
 </ScrollView>

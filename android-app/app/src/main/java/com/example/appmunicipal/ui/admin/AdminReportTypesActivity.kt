@@ -5,12 +5,15 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivityAdminReportTypesBinding
 import com.example.appmunicipal.databinding.DialogReportTypeBinding
 import com.example.appmunicipal.model.ReportTypeResponse
 import com.example.appmunicipal.ui.auth.PersonalSessionActivity
 import com.example.appmunicipal.util.applySafeSystemInsets
+import com.example.appmunicipal.util.configurarToolbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -25,7 +28,8 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminReportTypesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+        configurarToolbar(binding.toolbar)
 
         adapter = ReportTypeAdapter(
             onEdit = { showTypeForm(it) },
@@ -34,12 +38,19 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
         binding.recyclerTiposReporte.layoutManager = LinearLayoutManager(this)
         binding.recyclerTiposReporte.adapter = adapter
 
-        binding.buttonVolver.setOnClickListener { finish() }
         binding.buttonAgregarTipo.setOnClickListener { showTypeForm(null) }
         binding.buttonVerDesactivados.setOnClickListener {
             showingInactive = !showingInactive
             renderCurrentList()
         }
+        binding.swipeRefresh.setOnRefreshListener { loadTypes() }
+
+        binding.recyclerTiposReporte.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 8) binding.buttonAgregarTipo.shrink()
+                else if (dy < -8) binding.buttonAgregarTipo.extend()
+            }
+        })
     }
 
     override fun onPersonalSessionResume() {
@@ -47,8 +58,8 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
     }
 
     private fun loadTypes() {
-        binding.progressTipos.visibility = View.VISIBLE
-        binding.textTiposVacio.visibility = View.GONE
+        binding.swipeRefresh.isRefreshing = true
+        binding.layoutVacio.visibility = View.GONE
         lifecycleScope.launch {
             runCatching { repository.tiposReporteAdmin() }
                 .onSuccess {
@@ -56,7 +67,7 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
                     renderCurrentList()
                 }
                 .onFailure { showError(it) }
-            binding.progressTipos.visibility = View.GONE
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 
@@ -66,23 +77,23 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
         val visible = allTypes.filter { if (showingInactive) !it.active else it.active }
 
         adapter.submitList(visible)
-        binding.textSeccionTipos.text = if (showingInactive) "Reportes desactivados" else "Reportes disponibles"
+        binding.textSeccionTipos.setText(
+            if (showingInactive) R.string.tipos_seccion_inactivos else R.string.tipos_seccion_activos
+        )
         binding.textCantidadTipos.text = if (showingInactive) {
-            "$inactiveCount tipos desactivados"
+            getString(R.string.tipos_inactivos_cantidad, inactiveCount)
         } else {
-            "$activeCount tipos activos"
+            getString(R.string.tipos_activos_cantidad, activeCount)
         }
         binding.buttonVerDesactivados.text = if (showingInactive) {
-            "← Ver reportes activos ($activeCount)"
+            getString(R.string.tipos_ver_activos, activeCount)
         } else {
-            "Ver reportes desactivados ($inactiveCount)"
+            getString(R.string.tipos_ver_desactivados, inactiveCount)
         }
-        binding.textTiposVacio.text = if (showingInactive) {
-            "No hay tipos de reporte desactivados."
-        } else {
-            "Todavía no hay tipos de reporte activos."
-        }
-        binding.textTiposVacio.visibility = if (visible.isEmpty()) View.VISIBLE else View.GONE
+        binding.textVacioDetalle.setText(
+            if (showingInactive) R.string.tipos_vacio_inactivos else R.string.tipos_vacio_activos
+        )
+        binding.layoutVacio.visibility = if (visible.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun showTypeForm(type: ReportTypeResponse?) {
@@ -92,14 +103,14 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
         if (editing) {
             dialogBinding.editNombreTipo.setText(type?.name.orEmpty())
             dialogBinding.editNombreTipo.selectAll()
-            dialogBinding.textAyudaTipo.text = "El cambio se aplicará a reportes futuros. Los tickets históricos conservan el nombre original."
+            dialogBinding.textAyudaTipo.setText(R.string.tipos_ayuda_editar)
         }
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle(if (editing) "Editar tipo de reporte" else "Agregar tipo de reporte")
+            .setTitle(if (editing) R.string.tipos_editar else R.string.tipos_agregar)
             .setView(dialogBinding.root)
-            .setPositiveButton(if (editing) "Guardar" else "Agregar", null)
-            .setNegativeButton("Cancelar", null)
+            .setPositiveButton(if (editing) R.string.accion_guardar else R.string.accion_agregar, null)
+            .setNegativeButton(R.string.accion_cancelar, null)
             .create()
 
         dialog.setOnShowListener {
@@ -118,62 +129,67 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
     }
 
     private fun createType(name: String) {
-        binding.progressTipos.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = true
         binding.buttonAgregarTipo.isEnabled = false
         lifecycleScope.launch {
             runCatching { repository.crearTipoReporte(name) }
                 .onSuccess {
                     showingInactive = false
-                    showMessage("Tipo de reporte agregado y disponible para nuevos reportes.")
+                    showMessage(getString(R.string.tipos_agregado))
                     loadTypes()
                 }
-                .onFailure { showError(it) }
-            binding.progressTipos.visibility = View.GONE
+                .onFailure {
+                    showError(it)
+                    binding.swipeRefresh.isRefreshing = false
+                }
             binding.buttonAgregarTipo.isEnabled = true
         }
     }
 
     private fun updateType(id: Long, name: String) {
-        binding.progressTipos.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
             runCatching { repository.editarTipoReporte(id, name) }
                 .onSuccess {
-                    showMessage("Tipo de reporte actualizado.")
+                    showMessage(getString(R.string.tipos_actualizado))
                     loadTypes()
                 }
-                .onFailure { showError(it) }
-            binding.progressTipos.visibility = View.GONE
+                .onFailure {
+                    showError(it)
+                    binding.swipeRefresh.isRefreshing = false
+                }
         }
     }
 
     private fun confirmStatusChange(type: ReportTypeResponse) {
         val activate = !type.active
         AlertDialog.Builder(this)
-            .setTitle(if (activate) "Activar tipo" else "Desactivar tipo")
+            .setTitle(if (activate) R.string.tipos_activar_titulo else R.string.tipos_desactivar_titulo)
             .setMessage(
-                if (activate) {
-                    "${type.name} volverá a aparecer en el formulario de reportes."
-                } else {
-                    "${type.name} dejará de aparecer para nuevos reportes. Los tickets existentes no se eliminarán."
-                }
+                getString(
+                    if (activate) R.string.tipos_activar_mensaje else R.string.tipos_desactivar_mensaje,
+                    type.name
+                )
             )
-            .setPositiveButton(if (activate) "Activar" else "Desactivar") { _, _ ->
+            .setPositiveButton(if (activate) R.string.accion_activar else R.string.accion_desactivar) { _, _ ->
                 changeStatus(type.id, activate)
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(R.string.accion_cancelar, null)
             .show()
     }
 
     private fun changeStatus(id: Long, active: Boolean) {
-        binding.progressTipos.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
             runCatching { repository.cambiarEstadoTipoReporte(id, active) }
                 .onSuccess {
-                    showMessage(if (active) "Tipo activado." else "Tipo desactivado.")
+                    showMessage(getString(if (active) R.string.tipos_activado else R.string.tipos_desactivado))
                     loadTypes()
                 }
-                .onFailure { showError(it) }
-            binding.progressTipos.visibility = View.GONE
+                .onFailure {
+                    showError(it)
+                    binding.swipeRefresh.isRefreshing = false
+                }
         }
     }
 
@@ -181,12 +197,15 @@ class AdminReportTypesActivity : PersonalSessionActivity() {
 
     private fun validateName(name: String, setError: (CharSequence?) -> Unit): Boolean {
         return when {
-            name.length < 3 -> { setError("Ingrese un nombre de al menos 3 caracteres."); false }
-            name.length > 80 -> { setError("Use un máximo de 80 caracteres."); false }
+            name.length < 3 -> { setError(getString(R.string.tipos_min)); false }
+            name.length > 80 -> { setError(getString(R.string.tipos_max)); false }
             else -> true
         }
     }
 
-    private fun showError(error: Throwable) = showMessage(error.message ?: "No fue posible completar la acción.")
-    private fun showMessage(message: String) = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    private fun showError(error: Throwable) =
+        showMessage(error.message ?: getString(R.string.detalle_accion_error))
+
+    private fun showMessage(message: String) =
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
 }

@@ -1,14 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Paleta unica de la aplicacion (modo claro).
+  Cada nombre tiene su equivalente en values-night/colors.xml, asi que basta con
+  usar estos nombres en los layouts para que el modo oscuro funcione solo.
+-->
 <resources>
-    <color name="municipal_primary">#0B4F6C</color>
-    <color name="municipal_secondary">#1985A1</color>
-    <color name="municipal_background">#F5F7FA</color>
+
+    <!-- Identidad municipal -->
+    <color name="municipal_green">#26733A</color>
+    <color name="municipal_green_dark">#1B5429</color>
+    <color name="municipal_green_soft">#E7F3EA</color>
+    <color name="municipal_yellow">#E2B93B</color>
+    <color name="municipal_yellow_soft">#FFF7D6</color>
+
+    <!-- Superficies y texto -->
+    <color name="municipal_background">#F4F6F8</color>
     <color name="municipal_surface">#FFFFFF</color>
+    <color name="municipal_surface_alt">#EEF2F5</color>
     <color name="municipal_text">#1F2937</color>
     <color name="municipal_muted">#5F6B7A</color>
+    <color name="municipal_border">#D9E1E8</color>
+
+    <!-- Semanticos -->
     <color name="municipal_success">#147D4B</color>
     <color name="municipal_danger">#B42318</color>
-    <color name="municipal_green">#26733A</color>
-    <color name="municipal_yellow">#E2B93B</color>
-    <color name="surface_translucent">#DDFFFFFF</color>
-    <color name="text_primary">#20242A</color>
+
+    <!-- Barra superior: oscura en ambos modos para que el texto blanco siempre contraste -->
+    <color name="toolbar_background">#26733A</color>
+    <color name="toolbar_on_background">#FFFFFF</color>
+    <color name="toolbar_subtitle">#CFE4D6</color>
+
+    <!-- Alias conservados para no romper referencias antiguas -->
+    <color name="municipal_primary">@color/municipal_green</color>
+    <color name="municipal_secondary">@color/municipal_yellow</color>
+    <color name="text_primary">@color/municipal_text</color>
+    <color name="surface_translucent">#E6FFFFFF</color>
+
 </resources>

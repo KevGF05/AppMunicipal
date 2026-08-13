@@ -1,186 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/municipal_background">
+    android:background="@color/municipal_background"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:title="@string/seguimiento_titulo" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonVolver"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Volver" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Consultar estado"
-            android:textColor="@color/municipal_text"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="@dimen/espacio_pantalla">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Ingrese únicamente el código entregado al enviar el reporte."
-            android:textColor="@color/municipal_muted" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:hint="Código de seguimiento">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editCodigo"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapCharacters"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/seguimiento_subtitulo"
+                android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo" />
 
-        <ProgressBar
-            android:id="@+id/progressSeguimiento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="14dp"
-            android:visibility="gone" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonConsultar"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginTop="16dp"
-            android:text="Consultar estado" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardResultado"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:visibility="gone"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.AppMunicipal.Campo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
+                android:layout_marginTop="22dp"
+                android:hint="@string/seguimiento_codigo">
 
-                <TextView
-                    android:id="@+id/textResultadoCodigo"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editCodigo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/municipal_primary"
-                    android:textIsSelectable="true"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:maxLines="1"
+                    android:textColor="@color/municipal_text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/textResultadoEstado"
+            <ProgressBar
+                android:id="@+id/progressSeguimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="14dp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonConsultar"
+                style="@style/Widget.AppMunicipal.Boton.Primario"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="@dimen/espacio_medio"
+                android:text="@string/seguimiento_consultar" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardResultado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:visibility="gone">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:padding="18dp">
 
-                <TextView
-                    android:id="@+id/textResultadoMensaje"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardMotivoPausa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:visibility="gone"
-                    app:cardBackgroundColor="@color/surface_translucent"
-                    app:cardCornerRadius="14dp"
-                    app:strokeColor="@color/municipal_yellow"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/textResultadoCodigo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:letterSpacing="0.06"
+                        android:textColor="@color/municipal_green"
+                        android:textIsSelectable="true"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Motivo de la pausa"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textResultadoEstado"
+                        style="@style/Widget.AppMunicipal.Etiqueta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/textMotivoPausa"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/text_primary"
-                            android:textIsSelectable="true"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTrabajoRealizado"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:visibility="gone"
-                    app:cardBackgroundColor="@color/surface_translucent"
-                    app:cardCornerRadius="14dp"
-                    app:strokeColor="@color/municipal_yellow"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/textResultadoMensaje"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_marginTop="12dp"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo" />
 
-                        <TextView
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardMotivoPausa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espacio_medio"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/estado_pausado_bg"
+                        app:strokeColor="@color/municipal_yellow">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Trabajo realizado"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical"
+                            android:padding="@dimen/espacio_medio">
 
-                        <TextView
-                            android:id="@+id/textTrabajoRealizado"
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/seguimiento_motivo_pausa"
+                                android:textColor="@color/estado_pausado_fg"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/textMotivoPausa"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:textColor="@color/estado_pausado_fg"
+                                android:textIsSelectable="true"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardTrabajoRealizado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/espacio_medio"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/estado_aprobado_bg"
+                        app:strokeColor="@color/municipal_green">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:textColor="@color/text_primary"
-                            android:textIsSelectable="true"
-                            android:textSize="15sp" />
-                    </LinearLayout>
+                            android:orientation="vertical"
+                            android:padding="@dimen/espacio_medio">
 
-                </com.google.android.material.card.MaterialCardView>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/seguimiento_trabajo_realizado"
+                                android:textColor="@color/estado_aprobado_fg"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/textResultadoActualizado"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:textColor="@color/municipal_muted" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
-</ScrollView>
+                            <TextView
+                                android:id="@+id/textTrabajoRealizado"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:textColor="@color/estado_aprobado_fg"
+                                android:textIsSelectable="true"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/textResultadoActualizado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

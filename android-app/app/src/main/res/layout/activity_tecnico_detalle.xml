@@ -1,49 +1,300 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/dashboard_background" android:orientation="vertical">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="18dp" android:paddingTop="10dp" android:paddingEnd="18dp" android:paddingBottom="10dp" android:background="@color/dashboard_background">
-        <com.google.android.material.button.MaterialButton android:id="@+id/buttonVolver" android:layout_width="wrap_content" android:layout_height="44dp" android:text="← Mis tickets" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft"/>
-        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" app:cardBackgroundColor="@color/dashboard_surface" app:cardCornerRadius="20dp" app:strokeColor="@color/dashboard_border" app:strokeWidth="1dp" android:layout_marginBottom="0dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
-                <TextView android:id="@+id/textCodigo" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/dashboard_green" android:textSize="23sp" android:textStyle="bold"/>
-                <TextView android:id="@+id/textTipo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:textColor="@color/dashboard_text" android:textSize="19sp" android:textStyle="bold"/>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
-                    <TextView android:id="@+id/textEstado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textColor="@color/dashboard_text" android:textStyle="bold"/>
-                    <TextView android:id="@+id/textPrioridad" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/dashboard_muted"/>
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-        <View android:layout_width="58dp" android:layout_height="4dp" android:layout_marginTop="10dp" android:background="@color/dashboard_yellow"/>
-    </LinearLayout>
-    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="18dp" android:paddingTop="8dp" android:paddingEnd="18dp" android:paddingBottom="24dp">
-            <ProgressBar android:id="@+id/progressDetalle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="10dp" android:visibility="gone"/>
-            <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" app:cardBackgroundColor="@color/dashboard_surface" app:cardCornerRadius="18dp" app:strokeColor="@color/dashboard_border" app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Ubicación" android:textColor="@color/dashboard_muted" android:textSize="13sp"/>
-                    <TextView android:id="@+id/textDireccion" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/dashboard_text" android:textStyle="bold"/>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="Descripción" android:textColor="@color/dashboard_muted" android:textSize="13sp"/>
-                    <TextView android:id="@+id/textDetalle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/dashboard_text"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/municipal_background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_arrow_back_24" />
+
+    <ProgressBar
+        android:id="@+id/progressDetalle"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/espacio_medio"
+            android:paddingTop="@dimen/espacio_medio"
+            android:paddingEnd="@dimen/espacio_medio"
+            android:paddingBottom="@dimen/espacio_grande">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <TextView
+                        android:id="@+id/textCodigo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.05"
+                        android:textColor="@color/municipal_green"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textTipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion"
+                        android:textSize="19sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textEstado"
+                            style="@style/Widget.AppMunicipal.Etiqueta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/textPrioridad"
+                            style="@style/Widget.AppMunicipal.Etiqueta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/espacio_chico" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            <ImageView android:id="@+id/imageInicial" android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="16dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía del reporte" android:scaleType="centerCrop"/>
-            <LinearLayout android:id="@+id/layoutPausaActual" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="14dp" android:background="@color/dashboard_yellow_soft" android:orientation="vertical" android:padding="16dp" android:visibility="gone">
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Trabajo en pausa" android:textColor="@color/dashboard_text" android:textStyle="bold"/>
-                <TextView android:id="@+id/textMotivoPausa" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/dashboard_text"/>
-            </LinearLayout>
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonIniciar" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="18dp" android:text="Iniciar trabajo" android:textColor="@android:color/white" app:backgroundTint="@color/dashboard_green"/>
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonPausar" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:text="Pausar trabajo" android:textColor="@color/dashboard_button_dark_text" android:visibility="gone" app:backgroundTint="@color/dashboard_yellow"/>
-            <com.google.android.material.button.MaterialButton android:id="@+id/buttonReanudar" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:text="Reanudar trabajo" android:textColor="@android:color/white" android:visibility="gone" app:backgroundTint="@color/dashboard_green"/>
-            <LinearLayout android:id="@+id/layoutCierre" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:orientation="vertical" android:visibility="gone">
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Cerrar ticket" android:textColor="@color/dashboard_text" android:textSize="19sp" android:textStyle="bold"/>
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Adjunte una fotografía de la reparación terminada." android:textColor="@color/dashboard_muted"/>
-                <ImageView android:id="@+id/imageFinal" android:layout_width="match_parent" android:layout_height="220dp" android:layout_marginTop="10dp" android:background="@drawable/evidence_background" android:contentDescription="Fotografía final" android:scaleType="centerCrop" android:visibility="gone"/>
-                <com.google.android.material.button.MaterialButton android:id="@+id/buttonFotoFinal" android:layout_width="match_parent" android:layout_height="50dp" android:layout_marginTop="10dp" android:text="Tomar fotografía final" android:textColor="@color/dashboard_green" app:backgroundTint="@color/dashboard_green_soft" app:icon="@drawable/ic_camera_alt_24"/>
-                <com.google.android.material.textfield.TextInputLayout android:id="@+id/layoutComentarioCierre" style="@style/Widget.Material3.TextInputLayout.OutlinedBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:hint="Comentario de cierre">
-                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/editComentario" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLength="1000" android:minLines="3" android:textColor="@color/dashboard_text"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/espacio_medio">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/detalle_ubicacion"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Etiqueta" />
+
+                    <TextView
+                        android:id="@+id/textDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/detalle_descripcion"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Etiqueta" />
+
+                    <TextView
+                        android:id="@+id/textDetalle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <ImageView
+                android:id="@+id/imageInicial"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_marginTop="@dimen/espacio_medio"
+                android:background="@drawable/evidence_background"
+                android:contentDescription="@string/cd_foto_inicial"
+                android:scaleType="centerCrop" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/layoutPausaActual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/estado_pausado_bg"
+                app:strokeColor="@color/municipal_yellow">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/espacio_medio">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tecnico_en_pausa"
+                        android:textColor="@color/estado_pausado_fg"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textMotivoPausa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/estado_pausado_fg" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonIniciar"
+                style="@style/Widget.AppMunicipal.Boton.Primario"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="18dp"
+                android:text="@string/tecnico_iniciar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonPausar"
+                style="@style/Widget.AppMunicipal.Boton.Atencion"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/tecnico_pausar"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonReanudar"
+                style="@style/Widget.AppMunicipal.Boton.Primario"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/tecnico_reanudar"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/layoutCierre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tecnico_cerrar_seccion"
+                    android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/tecnico_cerrar_nota"
+                    android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo" />
+
+                <ImageView
+                    android:id="@+id/imageFinal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/alto_evidencia"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/evidence_background"
+                    android:contentDescription="@string/cd_foto_final"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonFotoFinal"
+                    style="@style/Widget.AppMunicipal.Boton.Secundario"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tecnico_foto_final"
+                    app:icon="@drawable/ic_camera_alt_24" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutComentarioCierre"
+                    style="@style/Widget.AppMunicipal.Campo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/tecnico_comentario_cierre"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="1000">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editComentario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLength="1000"
+                        android:minLines="3"
+                        android:textColor="@color/municipal_text" />
                 </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.button.MaterialButton android:id="@+id/buttonCerrarTicket" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="14dp" android:enabled="false" android:text="Cerrar ticket" android:textColor="@android:color/white" app:backgroundTint="@color/dashboard_green"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonCerrarTicket"
+                    style="@style/Widget.AppMunicipal.Boton.Primario"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="14dp"
+                    android:enabled="false"
+                    android:text="@string/tecnico_cerrar_boton" />
             </LinearLayout>
-            <TextView android:id="@+id/textCierreExistente" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:background="@color/dashboard_green_soft" android:padding="14dp" android:textColor="@color/dashboard_text" android:visibility="gone"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCierreExistente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/espacio_medio"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/estado_aprobado_bg"
+                app:strokeColor="@color/municipal_green">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/espacio_medio">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/seguimiento_trabajo_realizado"
+                        android:textColor="@color/estado_aprobado_fg"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textCierreExistente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/estado_aprobado_fg" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -24,8 +24,8 @@ android {
         applicationId = "com.example.appmunicipal"
         minSdk = 24
         targetSdk = 36
-        versionCode = 16
-        versionName = "2.6"
+        versionCode = 17
+        versionName = "3.0"
 
         // Se puede sobrescribir en local.properties para un teléfono físico o servidor público.
         buildConfigField(
@@ -61,6 +61,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    // Unica dependencia nueva: habilita "deslizar para actualizar" en las listas,
+    // que reemplaza a los botones "Actualizar".
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
     implementation("androidx.work:work-runtime-ktx:2.9.1")
     implementation("com.google.android.material:material:1.12.0")

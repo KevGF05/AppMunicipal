@@ -5,10 +5,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.TokenStore
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivityTecnicoDashboardBinding
@@ -39,8 +39,17 @@ class TecnicoDashboardActivity : PersonalSessionActivity() {
 
         binding = ActivityTecnicoDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
-        binding.textBienvenida.text = "Sesión: ${tokenStore.nombre()}"
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+
+        binding.toolbar.subtitle = getString(R.string.dashboard_sesion, tokenStore.nombre().orEmpty())
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.accionCerrarSesion) {
+                cerrarSesion()
+                true
+            } else {
+                false
+            }
+        }
 
         binding.cardTicketsAsignados.setOnClickListener {
             startActivity(Intent(this, TecnicoTicketsActivity::class.java))
@@ -53,11 +62,11 @@ class TecnicoDashboardActivity : PersonalSessionActivity() {
                 putExtra(RegistroActividadActivity.EXTRA_MODO_TECNICO, true)
             })
         }
-        binding.buttonActualizarDashboard.setOnClickListener {
+
+        binding.swipeRefresh.setOnRefreshListener {
             cargarResumen()
             NotificationScheduler.sincronizarAhora(this)
         }
-        binding.buttonCerrarSesion.setOnClickListener { cerrarSesion() }
 
         solicitarPermisoNotificaciones()
         NotificationScheduler.programar(this)
@@ -69,8 +78,7 @@ class TecnicoDashboardActivity : PersonalSessionActivity() {
     }
 
     private fun cargarResumen() {
-        binding.progressDashboard.visibility = View.VISIBLE
-        binding.buttonActualizarDashboard.isEnabled = false
+        binding.swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
             runCatching { repository.listarTecnico() }
                 .onSuccess { reportes ->
@@ -79,19 +87,22 @@ class TecnicoDashboardActivity : PersonalSessionActivity() {
                     val pausados = activos.count { it.status == "PAUSADO" }
                     binding.textTicketsAsignados.text = activos.size.toString()
                     binding.textTicketsResumen.text = when {
-                        activos.isEmpty() -> "No tiene trabajos pendientes en este momento."
-                        pausados == 1 -> "${activos.size} activos · 1 en pausa"
-                        pausados > 1 -> "${activos.size} activos · $pausados en pausa"
-                        else -> "${activos.size} trabajos listos para atender o en proceso."
+                        activos.isEmpty() -> getString(R.string.dashboard_sin_pendientes)
+                        pausados > 0 -> getString(R.string.dashboard_activos_en_pausa, activos.size, pausados)
+                        else -> getString(R.string.dashboard_listos, activos.size)
                     }
                     binding.textHistorialCantidad.text = cerrados.toString()
-                    binding.textHistorialResumen.text = if (cerrados == 1) "1 trabajo completado." else "$cerrados trabajos completados."
+                    binding.textHistorialResumen.text =
+                        resources.getQuantityString(R.plurals.trabajos_completados, cerrados, cerrados)
                 }
                 .onFailure { error ->
-                    Snackbar.make(binding.root, error.message ?: "No fue posible actualizar el dashboard.", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.root,
+                        error.message ?: getString(R.string.dashboard_error),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
-            binding.progressDashboard.visibility = View.GONE
-            binding.buttonActualizarDashboard.isEnabled = true
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 

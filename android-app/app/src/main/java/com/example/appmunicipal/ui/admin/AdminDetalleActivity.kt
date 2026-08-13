@@ -5,17 +5,20 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.repository.AppRepository
-import com.example.appmunicipal.ui.auth.PersonalSessionActivity
 import com.example.appmunicipal.databinding.ActivityAdminDetalleBinding
 import com.example.appmunicipal.databinding.DialogAsignarBinding
+import com.example.appmunicipal.databinding.DialogMotivoBinding
 import com.example.appmunicipal.model.ReportResponse
 import com.example.appmunicipal.model.TechnicianResponse
+import com.example.appmunicipal.ui.auth.PersonalSessionActivity
+import com.example.appmunicipal.util.FechaFormat
 import com.example.appmunicipal.util.ImageLoader
 import com.example.appmunicipal.util.UiFormat
 import com.example.appmunicipal.util.applySafeSystemInsets
+import com.example.appmunicipal.util.configurarToolbar
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
 class AdminDetalleActivity : PersonalSessionActivity() {
@@ -28,10 +31,10 @@ class AdminDetalleActivity : PersonalSessionActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminDetalleBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+        configurarToolbar(binding.toolbar, titulo = getString(R.string.detalle_titulo))
 
-        binding.buttonVolver.setOnClickListener { finish() }
-        binding.buttonAprobar.setOnClickListener { aprobar() }
+        binding.buttonAprobar.setOnClickListener { confirmarAprobacion() }
         binding.buttonRechazar.setOnClickListener { mostrarRechazo() }
         binding.buttonAsignar.setOnClickListener { mostrarAsignacion(reasignar = false) }
         binding.buttonReasignar.setOnClickListener { mostrarAsignacion(reasignar = true) }
@@ -51,23 +54,45 @@ class AdminDetalleActivity : PersonalSessionActivity() {
 
     private fun mostrar(report: ReportResponse) {
         current = report
+        // El codigo pasa al subtitulo de la barra para que siga visible al desplazar.
+        binding.toolbar.subtitle = report.code
         binding.textCodigo.text = report.code
         binding.textTipo.text = report.type
-        binding.textEstado.text = UiFormat.estado(report.status)
-        binding.textPrioridad.text = "Prioridad: ${UiFormat.prioridad(report.priority)}"
+
+        // Estado y prioridad dejan de ser texto gris y pasan a ser etiquetas de color.
+        UiFormat.aplicarEstado(binding.textEstado, report.status)
+        UiFormat.aplicarPrioridad(binding.textPrioridad, report.priority)
+
         binding.textDireccion.text = report.address
-        binding.textCoordenadas.text = "${report.latitude}, ${report.longitude}"
+        binding.textCoordenadas.text =
+            getString(R.string.formato_coordenadas, report.latitude, report.longitude)
         binding.textDetalle.text = report.description
-        binding.textTecnico.text = report.assignedTechnicianName ?: "Sin asignar"
+        binding.textTecnico.text =
+            report.assignedTechnicianName ?: getString(R.string.detalle_sin_asignar)
         binding.textObservacion.text = when {
-            report.status == "PAUSADO" && !report.pauseReason.isNullOrBlank() -> "Motivo de pausa: ${report.pauseReason}"
-            !report.rejectionReason.isNullOrBlank() -> "Motivo de rechazo: ${report.rejectionReason}"
-            !report.closureComment.isNullOrBlank() -> "Cierre: ${report.closureComment}"
-            else -> "Sin observaciones adicionales."
+            report.status == "PAUSADO" && !report.pauseReason.isNullOrBlank() ->
+                getString(R.string.detalle_motivo_pausa, report.pauseReason)
+            !report.rejectionReason.isNullOrBlank() ->
+                getString(R.string.detalle_motivo_rechazo, report.rejectionReason)
+            !report.closureComment.isNullOrBlank() ->
+                getString(R.string.detalle_cierre, report.closureComment)
+            else -> getString(R.string.detalle_sin_observaciones)
         }
+
         binding.textHistorial.text = report.history.joinToString("\n\n") { item ->
-            "${UiFormat.estado(item.newStatus)} · ${item.actor}\n${item.comment.orEmpty()}"
-        }.ifBlank { "Sin historial." }
+            val fecha = FechaFormat.desdeIso(item.createdAt)
+            val encabezado = buildString {
+                append(UiFormat.estado(this@AdminDetalleActivity, item.newStatus))
+                append(" · ")
+                append(item.actor)
+                if (fecha != null) {
+                    append("\n")
+                    append(fecha)
+                }
+            }
+            val comentario = item.comment?.takeIf { it.isNotBlank() }
+            if (comentario == null) encabezado else "$encabezado\n$comentario"
+        }.ifBlank { getString(R.string.detalle_sin_historial) }
 
         actualizarAcciones(report)
 
@@ -85,36 +110,59 @@ class AdminDetalleActivity : PersonalSessionActivity() {
     private fun actualizarAcciones(report: ReportResponse) {
         val creado = report.status == "CREADO"
         val aprobado = report.status == "APROBADO"
-        val asignadoOEnProceso = report.status == "ASIGNADO" || report.status == "EN_PROCESO" || report.status == "PAUSADO"
+        val asignadoOEnProceso =
+            report.status == "ASIGNADO" || report.status == "EN_PROCESO" || report.status == "PAUSADO"
 
         binding.buttonAprobar.visibility = if (creado) View.VISIBLE else View.GONE
         binding.buttonRechazar.visibility = if (creado || aprobado) View.VISIBLE else View.GONE
-        binding.buttonAsignar.visibility = if (aprobado && report.assignedTechnicianId == null) View.VISIBLE else View.GONE
-        binding.buttonReasignar.visibility = if (asignadoOEnProceso && report.assignedTechnicianId != null) View.VISIBLE else View.GONE
+        binding.buttonAsignar.visibility =
+            if (aprobado && report.assignedTechnicianId == null) View.VISIBLE else View.GONE
+        binding.buttonReasignar.visibility =
+            if (asignadoOEnProceso && report.assignedTechnicianId != null) View.VISIBLE else View.GONE
 
         val hayAcciones = creado || aprobado || asignadoOEnProceso
         binding.cardAcciones.visibility = if (hayAcciones) View.VISIBLE else View.GONE
     }
 
-    private fun aprobar() = ejecutar { repository.aprobar(reportId) }
+    /** Aprobar cambia el estado del ticket, asi que se confirma antes. */
+    private fun confirmarAprobacion() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.admin_aprobar_titulo)
+            .setMessage(R.string.admin_aprobar_mensaje)
+            .setPositiveButton(R.string.admin_aprobar) { _, _ ->
+                ejecutar { repository.aprobar(reportId) }
+            }
+            .setNegativeButton(R.string.accion_cancelar, null)
+            .show()
+    }
 
     private fun mostrarRechazo() {
-        val input = TextInputEditText(this).apply {
-            hint = "Motivo del rechazo"
-            minLines = 3
-            setPadding(48, 16, 48, 16)
-        }
-        AlertDialog.Builder(this)
-            .setTitle("Rechazar reporte")
-            .setMessage("Indique por qué el reporte no será atendido.")
-            .setView(input)
-            .setPositiveButton("Rechazar") { _, _ ->
-                val reason = input.text?.toString()?.trim().orEmpty()
-                if (reason.isBlank()) mostrarMensaje("El motivo es obligatorio.")
-                else ejecutar { repository.rechazar(reportId, reason) }
+        val dialogBinding = DialogMotivoBinding.inflate(layoutInflater)
+        dialogBinding.layoutMotivo.hint = getString(R.string.admin_rechazar_hint)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.admin_rechazar_titulo)
+            .setMessage(R.string.admin_rechazar_mensaje)
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.admin_rechazar, null)
+            .setNegativeButton(R.string.accion_cancelar, null)
+            .create()
+
+        // El boton no cierra el dialogo hasta que el motivo sea valido: antes el
+        // dialogo se cerraba y el error aparecia despues en un Snackbar.
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val motivo = dialogBinding.editMotivo.text?.toString()?.trim().orEmpty()
+                if (motivo.length < 5) {
+                    dialogBinding.layoutMotivo.error = getString(R.string.admin_rechazar_min)
+                    return@setOnClickListener
+                }
+                dialogBinding.layoutMotivo.error = null
+                dialog.dismiss()
+                ejecutar { repository.rechazar(reportId, motivo) }
             }
-            .setNegativeButton("Cancelar", null)
-            .show()
+        }
+        dialog.show()
     }
 
     private fun mostrarAsignacion(reasignar: Boolean) {
@@ -137,58 +185,58 @@ class AdminDetalleActivity : PersonalSessionActivity() {
 
         if (disponibles.isEmpty()) {
             mostrarMensaje(
-                if (reasignar) "No hay otro técnico activo disponible para reasignar."
-                else "No hay técnicos activos disponibles."
+                getString(
+                    if (reasignar) R.string.admin_sin_otro_tecnico else R.string.admin_sin_tecnicos
+                )
             )
             return
         }
 
         val dialogBinding = DialogAsignarBinding.inflate(layoutInflater)
         val labels = disponibles.map { "${it.name} · ${it.email}" }
+        val prioridades = listOf("BAJA", "MEDIA", "ALTA", "URGENTE")
+        val etiquetasPrioridad = prioridades.map { UiFormat.prioridad(this, it) }
+
         dialogBinding.autoTecnico.setAdapter(
             ArrayAdapter(this, android.R.layout.simple_list_item_1, labels)
         )
         dialogBinding.autoPrioridad.setAdapter(
-            ArrayAdapter(this, android.R.layout.simple_list_item_1, listOf("BAJA", "MEDIA", "ALTA", "URGENTE"))
+            ArrayAdapter(this, android.R.layout.simple_list_item_1, etiquetasPrioridad)
         )
-        dialogBinding.autoPrioridad.setText(current?.priority ?: "MEDIA", false)
-        dialogBinding.layoutObservacion.hint = if (reasignar) {
-            "Motivo u observación de la reasignación"
-        } else {
-            "Observación para el técnico (opcional)"
-        }
+        val prioridadActual = current?.priority ?: "MEDIA"
+        dialogBinding.autoPrioridad.setText(UiFormat.prioridad(this, prioridadActual), false)
+        dialogBinding.layoutObservacion.hint = getString(
+            if (reasignar) R.string.admin_dialog_observacion_reasignar
+            else R.string.admin_dialog_observacion
+        )
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle(if (reasignar) "Reasignar técnico" else "Asignar técnico")
-            .setMessage(
-                if (reasignar) "Seleccione un técnico diferente. El ticket volverá al estado Asignado."
-                else "Seleccione el técnico responsable y la prioridad."
-            )
+            .setTitle(if (reasignar) R.string.admin_reasignar_titulo else R.string.admin_asignar_titulo)
+            .setMessage(if (reasignar) R.string.admin_reasignar_mensaje else R.string.admin_asignar_mensaje)
             .setView(dialogBinding.root)
-            .setPositiveButton(if (reasignar) "Reasignar" else "Asignar", null)
-            .setNegativeButton("Cancelar", null)
+            .setPositiveButton(if (reasignar) R.string.accion_continuar else R.string.admin_asignar, null)
+            .setNegativeButton(R.string.accion_cancelar, null)
             .create()
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val index = labels.indexOf(dialogBinding.autoTecnico.text.toString())
-                val priority = dialogBinding.autoPrioridad.text.toString()
-                if (index < 0 || priority.isBlank()) {
-                    mostrarMensaje("Seleccione técnico y prioridad.")
+                // La lista muestra la prioridad traducida, pero el backend espera el
+                // valor original (BAJA, MEDIA, ALTA, URGENTE).
+                val indicePrioridad = etiquetasPrioridad.indexOf(dialogBinding.autoPrioridad.text.toString())
+                if (index < 0 || indicePrioridad < 0) {
+                    mostrarMensaje(getString(R.string.admin_asignar_falta))
                     return@setOnClickListener
                 }
 
                 dialog.dismiss()
                 val tecnico = disponibles[index]
+                val priority = prioridades[indicePrioridad]
                 val observacion = dialogBinding.editObservacion.text?.toString()?.trim()
                 if (reasignar) {
-                    ejecutar {
-                        repository.reasignar(reportId, tecnico.id, priority, observacion)
-                    }
+                    ejecutar { repository.reasignar(reportId, tecnico.id, priority, observacion) }
                 } else {
-                    ejecutar {
-                        repository.asignar(reportId, tecnico.id, priority, observacion)
-                    }
+                    ejecutar { repository.asignar(reportId, tecnico.id, priority, observacion) }
                 }
             }
         }
@@ -201,7 +249,7 @@ class AdminDetalleActivity : PersonalSessionActivity() {
             runCatching { action() }
                 .onSuccess {
                     mostrar(it)
-                    mostrarMensaje("Acción realizada correctamente.")
+                    mostrarMensaje(getString(R.string.detalle_accion_ok))
                 }
                 .onFailure { mostrarError(it) }
             binding.progressDetalle.visibility = View.GONE
@@ -209,7 +257,7 @@ class AdminDetalleActivity : PersonalSessionActivity() {
     }
 
     private fun mostrarError(error: Throwable) =
-        mostrarMensaje(error.message ?: "No fue posible completar la acción.")
+        mostrarMensaje(error.message ?: getString(R.string.detalle_accion_error))
 
     private fun mostrarMensaje(message: String) =
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()

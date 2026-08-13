@@ -5,10 +5,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.TokenStore
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivityAdminDashboardBinding
@@ -31,9 +31,19 @@ class AdminDashboardActivity : PersonalSessionActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
 
-        binding.textBienvenida.text = "Sesión: ${tokenStore.nombre()}"
+        // El nombre de la sesion pasa al subtitulo de la barra: antes era un TextView
+        // suelto que empujaba las tarjetas hacia abajo.
+        binding.toolbar.subtitle = getString(R.string.dashboard_sesion, tokenStore.nombre().orEmpty())
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.accionCerrarSesion) {
+                cerrarSesion()
+                true
+            } else {
+                false
+            }
+        }
 
         binding.cardTickets.setOnClickListener {
             startActivity(Intent(this, AdminTicketsActivity::class.java))
@@ -44,11 +54,12 @@ class AdminDashboardActivity : PersonalSessionActivity() {
         binding.cardTiposReporte.setOnClickListener {
             startActivity(Intent(this, AdminReportTypesActivity::class.java))
         }
-        binding.buttonActualizarDashboard.setOnClickListener {
+
+        // Reemplaza al boton "Actualizar dashboard".
+        binding.swipeRefresh.setOnRefreshListener {
             cargarResumen()
             NotificationScheduler.sincronizarAhora(this)
         }
-        binding.buttonCerrarSesion.setOnClickListener { cerrarSesion() }
 
         solicitarPermisoNotificaciones()
         NotificationScheduler.programar(this)
@@ -60,33 +71,33 @@ class AdminDashboardActivity : PersonalSessionActivity() {
     }
 
     private fun cargarResumen() {
-        binding.progressDashboard.visibility = View.VISIBLE
-        binding.buttonActualizarDashboard.isEnabled = false
+        binding.swipeRefresh.isRefreshing = true
 
         lifecycleScope.launch {
             runCatching { repository.listarAdmin(null) }
                 .onSuccess { reportes ->
                     val nuevos = reportes.count { it.status == "CREADO" }
                     val activos = reportes.count {
-                        it.status == "APROBADO" || it.status == "ASIGNADO" || it.status == "EN_PROCESO" || it.status == "PAUSADO"
+                        it.status == "APROBADO" || it.status == "ASIGNADO" ||
+                            it.status == "EN_PROCESO" || it.status == "PAUSADO"
                     }
                     binding.textTicketsNuevos.text = nuevos.toString()
-                    binding.textTicketsNuevosEtiqueta.text = if (nuevos == 1) "ticket nuevo" else "tickets nuevos"
-                    binding.textTicketsResumen.text = when {
-                        activos == 0 -> "No hay trabajos activos en este momento."
-                        activos == 1 -> "1 trabajo está pendiente o en ejecución."
-                        else -> "$activos trabajos están pendientes o en ejecución."
+                    binding.textTicketsNuevosEtiqueta.text =
+                        resources.getQuantityString(R.plurals.tickets_nuevos, nuevos)
+                    binding.textTicketsResumen.text = if (activos == 0) {
+                        getString(R.string.dashboard_sin_activos)
+                    } else {
+                        resources.getQuantityString(R.plurals.trabajos_pendientes, activos, activos)
                     }
                 }
                 .onFailure { error ->
                     Snackbar.make(
                         binding.root,
-                        error.message ?: "No fue posible actualizar el dashboard.",
+                        error.message ?: getString(R.string.dashboard_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-            binding.progressDashboard.visibility = View.GONE
-            binding.buttonActualizarDashboard.isEnabled = true
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 

@@ -3,8 +3,10 @@ package com.example.appmunicipal.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.TokenStore
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivityLoginBinding
@@ -13,6 +15,7 @@ import com.example.appmunicipal.ui.InicioActivity
 import com.example.appmunicipal.ui.admin.AdminDashboardActivity
 import com.example.appmunicipal.ui.tecnico.TecnicoDashboardActivity
 import com.example.appmunicipal.util.applySafeSystemInsets
+import com.example.appmunicipal.util.configurarToolbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -25,16 +28,19 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
-        binding.buttonVolver.setOnClickListener { volverAlInicio() }
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+        configurarToolbar(binding.toolbar)
+
+        // La flecha de la barra y el gesto de retroceso hacen lo mismo: regresar al inicio
+        // publico, no dejar la pantalla de login a medias en la pila.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = volverAlInicio()
+        })
+
         binding.buttonLogin.setOnClickListener { login() }
 
         if (intent.getBooleanExtra(EXTRA_SESSION_EXPIRED, false)) {
-            Snackbar.make(
-                binding.root,
-                "La sesión expiró después de 30 minutos de inactividad. Inicie sesión nuevamente.",
-                Snackbar.LENGTH_LONG
-            ).show()
+            Snackbar.make(binding.root, R.string.login_sesion_expirada, Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -49,8 +55,8 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         val email = binding.editEmail.text?.toString()?.trim().orEmpty()
         val password = binding.editPassword.text?.toString().orEmpty()
-        binding.layoutEmail.error = if (email.isBlank()) "Ingrese el correo." else null
-        binding.layoutPassword.error = if (password.isBlank()) "Ingrese la contraseña." else null
+        binding.layoutEmail.error = if (email.isBlank()) getString(R.string.login_falta_correo) else null
+        binding.layoutPassword.error = if (password.isBlank()) getString(R.string.login_falta_password) else null
         if (email.isBlank() || password.isBlank()) return
 
         binding.progressLogin.visibility = View.VISIBLE
@@ -76,7 +82,11 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }
                 .onFailure { error ->
-                    Snackbar.make(binding.root, error.message ?: "No fue posible iniciar sesión.", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.root,
+                        error.message ?: getString(R.string.login_error),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             binding.progressLogin.visibility = View.GONE
             binding.buttonLogin.isEnabled = true

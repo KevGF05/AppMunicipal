@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cerrar sesion se movio a la barra superior; antes ocupaba un boton en el encabezado. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/accionCerrarSesion"
+        android:title="@string/accion_cerrar_sesion"
+        app:showAsAction="never" />
+</menu>

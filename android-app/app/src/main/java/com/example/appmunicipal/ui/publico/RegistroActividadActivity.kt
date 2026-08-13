@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -20,12 +19,14 @@ import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.SeguimientoDbHelper
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivityRegistroActividadBinding
+import com.example.appmunicipal.util.applySafeSystemInsets
+import com.example.appmunicipal.util.configurarToolbar
 import com.example.appmunicipal.validation.RegistroActividadInput
 import com.example.appmunicipal.validation.RegistroActividadValidator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.io.File
-import com.example.appmunicipal.util.applySafeSystemInsets
 
 class RegistroActividadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroActividadBinding
@@ -44,14 +45,13 @@ class RegistroActividadActivity : AppCompatActivity() {
         if (guardada && fotoArchivo?.exists() == true) {
             fotoConfirmada = true
             eliminarMetadatosSensibles(fotoArchivo)
-            binding.imageEvidencia.setPadding(0, 0, 0, 0)
-            binding.imageEvidencia.setImageURI(fotoUri)
+            mostrarFoto()
             binding.textErrorFoto.visibility = View.GONE
         } else {
             fotoConfirmada = false
             eliminarFotoTemporal()
             restablecerVistaFoto()
-            Snackbar.make(binding.root, "No se guardó la fotografía.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, R.string.registro_foto_no_guardada, Snackbar.LENGTH_LONG).show()
         }
         actualizarEstadoBotonRegistrar()
     }
@@ -81,23 +81,64 @@ class RegistroActividadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistroActividadBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+        configurarToolbar(binding.toolbar)
+
+        // Se restaura el estado antes de configurar la vista, para que al girar el
+        // telefono no se pierdan la fotografia ni la ubicacion ya seleccionadas.
+        restaurarEstado(savedInstanceState)
+
         configurarLista()
         configurarAcciones()
+
         if (modoTecnico) {
-            binding.textTituloRegistro.text = "Crear ticket de patrullaje"
-            binding.textSubtituloRegistro.text = "Registre una incidencia detectada durante su recorrido. El ticket será enviado al panel administrativo para su revisión."
-            binding.buttonRegistrar.text = "Crear ticket"
+            binding.toolbar.title = getString(R.string.registro_titulo_tecnico)
+            binding.textSubtituloRegistro.text = getString(R.string.registro_subtitulo_tecnico)
+            binding.buttonRegistrar.text = getString(R.string.registro_enviar_tecnico)
         }
         actualizarEstadoBotonRegistrar()
     }
 
+    /**
+     * Girar la pantalla destruye y recrea la Activity. Sin esto, la foto tomada y el
+     * punto elegido en el mapa desaparecian y habia que empezar el reporte de nuevo.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_FOTO_URI, fotoUri?.toString())
+        outState.putString(STATE_FOTO_RUTA, fotoArchivo?.absolutePath)
+        outState.putBoolean(STATE_FOTO_CONFIRMADA, fotoConfirmada)
+        ubicacionLatitud?.let { outState.putDouble(STATE_LATITUD, it) }
+        ubicacionLongitud?.let { outState.putDouble(STATE_LONGITUD, it) }
+    }
+
+    private fun restaurarEstado(savedInstanceState: Bundle?) {
+        val estado = savedInstanceState ?: return
+        fotoUri = estado.getString(STATE_FOTO_URI)?.let(Uri::parse)
+        fotoArchivo = estado.getString(STATE_FOTO_RUTA)?.let(::File)
+        fotoConfirmada = estado.getBoolean(STATE_FOTO_CONFIRMADA, false) && fotoArchivo?.exists() == true
+        if (estado.containsKey(STATE_LATITUD)) ubicacionLatitud = estado.getDouble(STATE_LATITUD)
+        if (estado.containsKey(STATE_LONGITUD)) ubicacionLongitud = estado.getDouble(STATE_LONGITUD)
+
+        if (fotoConfirmada) mostrarFoto()
+        val lat = ubicacionLatitud
+        val lon = ubicacionLongitud
+        if (lat != null && lon != null) {
+            binding.textCoordenadas.text = getString(R.string.formato_coordenadas, lat, lon)
+        }
+    }
+
+    private fun mostrarFoto() {
+        binding.imageEvidencia.setPadding(0, 0, 0, 0)
+        binding.imageEvidencia.setImageURI(fotoUri)
+    }
+
     private fun configurarLista() {
         val respaldo = listOf(
-            "Señal de tránsito caída",
-            "Señal de tránsito dañada",
-            "Semáforo dañado",
-            "Automóvil mal estacionado"
+            "Senal de transito caida",
+            "Senal de transito danada",
+            "Semaforo danado",
+            "Automovil mal estacionado"
         )
         aplicarTiposReporte(respaldo)
 
@@ -108,11 +149,7 @@ class RegistroActividadActivity : AppCompatActivity() {
                     if (nombres.isNotEmpty()) aplicarTiposReporte(nombres)
                 }
                 .onFailure {
-                    Snackbar.make(
-                        binding.root,
-                        "No fue posible actualizar los tipos de reporte. Se muestran las opciones predeterminadas.",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                    Snackbar.make(binding.root, R.string.registro_tipos_error, Snackbar.LENGTH_LONG).show()
                 }
         }
     }
@@ -128,7 +165,6 @@ class RegistroActividadActivity : AppCompatActivity() {
     }
 
     private fun configurarAcciones() {
-        binding.buttonVolver.setOnClickListener { finish() }
         binding.buttonSeleccionarMapa.setOnClickListener { abrirSelectorUbicacion() }
         binding.buttonTomarFoto.setOnClickListener { solicitarCamara() }
         binding.buttonRegistrar.setOnClickListener { registrarActividad() }
@@ -148,20 +184,26 @@ class RegistroActividadActivity : AppCompatActivity() {
 
     private fun solicitarCamara() {
         when {
-            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> abrirCamara()
-            shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> AlertDialog.Builder(this)
-                .setTitle("Permiso de cámara")
-                .setMessage("La fotografía es obligatoria para enviar el reporte anónimo.")
-                .setPositiveButton("Continuar") { _, _ -> permisoCamaraLauncher.launch(Manifest.permission.CAMERA) }
-                .setNegativeButton("Cancelar", null)
-                .show()
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED ->
+                abrirCamara()
+
+            shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) ->
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.permiso_camara_titulo)
+                    .setMessage(R.string.permiso_camara_mensaje)
+                    .setPositiveButton(R.string.accion_continuar) { _, _ ->
+                        permisoCamaraLauncher.launch(Manifest.permission.CAMERA)
+                    }
+                    .setNegativeButton(R.string.accion_cancelar, null)
+                    .show()
+
             else -> permisoCamaraLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
     private fun abrirCamara() {
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            Snackbar.make(binding.root, "Este dispositivo no tiene una cámara disponible.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, R.string.registro_sin_camara, Snackbar.LENGTH_LONG).show()
             return
         }
         runCatching {
@@ -175,21 +217,25 @@ class RegistroActividadActivity : AppCompatActivity() {
             actualizarEstadoBotonRegistrar()
             tomarFotoLauncher.launch(uri)
         }.onFailure {
-            Snackbar.make(binding.root, "No fue posible preparar la cámara.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, R.string.registro_camara_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     private fun mostrarPermisoDenegado() {
         if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-            AlertDialog.Builder(this)
-                .setTitle("Cámara deshabilitada")
-                .setMessage("Active el permiso de cámara en la configuración. Sin foto no se puede enviar.")
-                .setPositiveButton("Abrir configuración") { _, _ ->
-                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName")))
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.permiso_camara_denegado_titulo)
+                .setMessage(R.string.permiso_camara_denegado_mensaje)
+                .setPositiveButton(R.string.accion_abrir_configuracion) { _, _ ->
+                    startActivity(
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName"))
+                    )
                 }
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(R.string.accion_cancelar, null)
                 .show()
-        } else Snackbar.make(binding.root, "Sin cámara no se puede enviar el reporte.", Snackbar.LENGTH_LONG).show()
+        } else {
+            Snackbar.make(binding.root, R.string.permiso_camara_sin_foto, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private fun registrarActividad() {
@@ -206,7 +252,7 @@ class RegistroActividadActivity : AppCompatActivity() {
         val errores = RegistroActividadValidator.validar(input)
         mostrarErrores(errores)
         if (!errores.esValido) {
-            Snackbar.make(binding.root, "Revise los campos marcados.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, R.string.registro_revise_campos, Snackbar.LENGTH_LONG).show()
             return
         }
         val file = fotoArchivo ?: return
@@ -219,24 +265,31 @@ class RegistroActividadActivity : AppCompatActivity() {
                     requireNotNull(input.latitud), requireNotNull(input.longitud), file
                 )
             }.onSuccess { response ->
-                database.guardar(response.code, response.status)
+                // Se guarda tambien el tipo, para que Mis reportes pueda mostrarlo.
+                database.guardar(response.code, response.status, input.tipoTrabajo)
                 if (modoTecnico) {
                     eliminarFotoTemporal()
-                    AlertDialog.Builder(this@RegistroActividadActivity)
-                        .setTitle("Ticket creado")
-                        .setMessage("El reporte ${response.code} fue enviado al panel administrativo para revisión y asignación.")
-                        .setPositiveButton("Volver al dashboard") { _, _ -> finish() }
+                    MaterialAlertDialogBuilder(this@RegistroActividadActivity)
+                        .setTitle(R.string.registro_ticket_creado_titulo)
+                        .setMessage(getString(R.string.registro_ticket_creado_mensaje, response.code))
+                        .setPositiveButton(R.string.registro_volver_dashboard) { _, _ -> finish() }
                         .setCancelable(false)
                         .show()
                 } else {
-                    startActivity(Intent(this@RegistroActividadActivity, ConfirmacionReporteActivity::class.java).apply {
-                        putExtra(ConfirmacionReporteActivity.EXTRA_CODIGO, response.code)
-                        putExtra(ConfirmacionReporteActivity.EXTRA_ESTADO, response.status)
-                    })
+                    startActivity(
+                        Intent(this@RegistroActividadActivity, ConfirmacionReporteActivity::class.java).apply {
+                            putExtra(ConfirmacionReporteActivity.EXTRA_CODIGO, response.code)
+                            putExtra(ConfirmacionReporteActivity.EXTRA_ESTADO, response.status)
+                        }
+                    )
                     finish()
                 }
             }.onFailure { error ->
-                Snackbar.make(binding.root, error.message ?: "No fue posible enviar el reporte.", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    binding.root,
+                    error.message ?: getString(R.string.registro_envio_error),
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
             enviando = false
             mostrarCarga(false)
@@ -301,5 +354,11 @@ class RegistroActividadActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_MODO_TECNICO = "modo_tecnico"
+
+        private const val STATE_FOTO_URI = "state_foto_uri"
+        private const val STATE_FOTO_RUTA = "state_foto_ruta"
+        private const val STATE_FOTO_CONFIRMADA = "state_foto_confirmada"
+        private const val STATE_LATITUD = "state_latitud"
+        private const val STATE_LONGITUD = "state_longitud"
     }
 }

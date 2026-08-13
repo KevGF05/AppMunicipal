@@ -3,13 +3,13 @@ package com.example.appmunicipal.ui.admin
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appmunicipal.R
 import com.example.appmunicipal.databinding.ItemTecnicoBinding
 import com.example.appmunicipal.model.TechnicianResponse
+import com.example.appmunicipal.util.UiFormat
 
 class TechnicianAdapter(
     private val onEdit: (TechnicianResponse) -> Unit,
@@ -28,18 +28,26 @@ class TechnicianAdapter(
 
     inner class ViewHolder(private val binding: ItemTecnicoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: TechnicianResponse) {
+            val context = binding.root.context
             binding.textNombreTecnico.text = item.name
             binding.textCorreoTecnico.text = item.email
-            binding.textTelefonoTecnico.text = item.phoneNumber?.takeIf { it.isNotBlank() } ?: "Teléfono pendiente"
-            binding.textEstadoTecnico.text = if (item.active) "Activo" else "Inactivo"
-            binding.textEstadoTecnico.setTextColor(
-                ContextCompat.getColor(
-                    binding.root.context,
-                    if (item.active) R.color.municipal_success else R.color.municipal_danger
-                )
+            binding.textTelefonoTecnico.text = item.phoneNumber?.takeIf { it.isNotBlank() }
+                ?: context.getString(R.string.tecnicos_telefono_pendiente)
+
+            // Antes era solo texto verde o rojo; ahora es una etiqueta con fondo,
+            // igual que los estados de los tickets.
+            UiFormat.aplicarActivo(
+                binding.textEstadoTecnico,
+                item.active,
+                context.getString(R.string.tecnicos_activo),
+                context.getString(R.string.tecnicos_inactivo)
             )
-            binding.textPasswordPendiente.visibility = if (item.passwordChangeRequired) View.VISIBLE else View.GONE
-            binding.buttonEstadoTecnico.text = if (item.active) "Desactivar" else "Activar"
+
+            binding.textPasswordPendiente.visibility =
+                if (item.passwordChangeRequired) View.VISIBLE else View.GONE
+            binding.buttonEstadoTecnico.text = context.getString(
+                if (item.active) R.string.accion_desactivar else R.string.accion_activar
+            )
             binding.buttonEditarTecnico.setOnClickListener { onEdit(item) }
             binding.buttonEstadoTecnico.setOnClickListener { onStatus(item) }
             binding.buttonResetPassword.setOnClickListener { onResetPassword(item) }

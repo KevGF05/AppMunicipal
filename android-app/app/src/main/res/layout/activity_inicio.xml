@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  Pantalla de entrada. Es la unica sin barra superior a proposito: aqui no hay
+  a donde volver, y la fotografia de fondo es parte de la identidad municipal.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Fotografía de fondo -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,16 +15,17 @@
         android:scaleType="centerCrop"
         android:src="@drawable/municipalidad_fondo" />
 
-    <!-- Suaviza la fotografía para que el contenido tenga mejor contraste -->
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#33FFFFFF" />
 
     <ScrollView
+        android:id="@+id/scrollInicio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
+        android:clipToPadding="false"
         android:fillViewport="true">
 
         <LinearLayout
@@ -30,34 +33,27 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="@dimen/espacio_grande">
 
-            <!-- Encabezado con superficie translúcida para asegurar legibilidad -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 app:cardBackgroundColor="@color/surface_translucent"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="3dp"
-                app:strokeColor="@color/municipal_yellow"
-                app:strokeWidth="1dp">
+                app:strokeColor="@color/municipal_yellow">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:paddingStart="18dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="18dp"
-                    android:paddingBottom="16dp">
+                    android:padding="@dimen/espacio_medio">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="App Municipal"
+                        android:text="@string/inicio_titulo"
                         android:textColor="@color/municipal_green"
                         android:textSize="30sp"
                         android:textStyle="bold" />
@@ -67,17 +63,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="Reportes viales anónimos y gestión de tickets"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:text="@string/inicio_subtitulo"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo" />
 
                     <View
                         android:layout_width="64dp"
                         android:layout_height="3dp"
                         android:layout_marginTop="12dp"
                         android:background="@color/municipal_yellow" />
-
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -86,51 +79,53 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 app:cardBackgroundColor="@color/surface_translucent"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="4dp"
-                app:strokeColor="@color/municipal_yellow"
-                app:strokeWidth="1dp">
+                app:strokeColor="@color/municipal_yellow">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="@dimen/espacio_pantalla">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ciudadanía"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:text="@string/inicio_seccion_ciudadania"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="No necesita crear una cuenta. El reporte se registra de forma anónima."
-                        android:textColor="@color/text_primary" />
+                        android:text="@string/inicio_ciudadania_detalle"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonReportar"
+                        style="@style/Widget.AppMunicipal.Boton.Primario"
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
                         android:layout_marginTop="20dp"
-                        android:text="Reportar un problema"
-                        android:textColor="@android:color/white"
-                        app:backgroundTint="@color/municipal_green" />
+                        android:text="@string/inicio_reportar" />
 
+                    <!-- Nuevo: la lista local de codigos enviados desde este telefono -->
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonSeguimiento"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:id="@+id/buttonMisReportes"
+                        style="@style/Widget.AppMunicipal.Boton.Secundario"
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
                         android:layout_marginTop="12dp"
-                        android:text="Consultar seguimiento"
-                        android:textColor="@color/municipal_green"
-                        app:strokeColor="@color/municipal_green" />
+                        android:text="@string/inicio_mis_reportes"
+                        app:icon="@drawable/ic_folder_24" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonSeguimiento"
+                        style="@style/Widget.AppMunicipal.Boton.Contorno"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/inicio_consultar" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -138,48 +133,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="@dimen/espacio_grande"
                 app:cardBackgroundColor="@color/surface_translucent"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="4dp"
-                app:strokeColor="@color/municipal_yellow"
-                app:strokeWidth="1dp">
+                app:strokeColor="@color/municipal_yellow">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="@dimen/espacio_pantalla">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Personal municipal"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:text="@string/inicio_seccion_personal"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="Acceso para administradores y técnicos autorizados."
-                        android:textColor="@color/text_primary" />
+                        android:text="@string/inicio_personal_detalle"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonPersonal"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.AppMunicipal.Boton.Contorno"
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
                         android:layout_marginTop="18dp"
-                        android:text="Acceso del personal"
-                        android:textColor="@color/municipal_green"
-                        app:strokeColor="@color/municipal_green" />
-
+                        android:text="@string/inicio_acceso_personal" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
     </ScrollView>
-
 </FrameLayout>

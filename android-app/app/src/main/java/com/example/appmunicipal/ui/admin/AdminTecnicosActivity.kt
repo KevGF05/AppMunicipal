@@ -2,17 +2,19 @@ package com.example.appmunicipal.ui.admin
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.repository.AppRepository
-import com.example.appmunicipal.ui.auth.PersonalSessionActivity
 import com.example.appmunicipal.databinding.ActivityAdminTecnicosBinding
 import com.example.appmunicipal.databinding.DialogTecnicoBinding
 import com.example.appmunicipal.model.TechnicianResponse
+import com.example.appmunicipal.ui.auth.PersonalSessionActivity
 import com.example.appmunicipal.util.applySafeSystemInsets
+import com.example.appmunicipal.util.configurarToolbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.text.Normalizer
@@ -28,7 +30,8 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminTecnicosBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+        configurarToolbar(binding.toolbar)
 
         adapter = TechnicianAdapter(
             onEdit = { mostrarFormulario(it) },
@@ -38,13 +41,20 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
         binding.recyclerTecnicos.layoutManager = LinearLayoutManager(this)
         binding.recyclerTecnicos.adapter = adapter
 
-        val filtros = listOf("Activos", "Inactivos")
-        binding.autoFiltroTecnicos.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, filtros))
-        binding.autoFiltroTecnicos.setText("Activos", false)
-        binding.autoFiltroTecnicos.setOnItemClickListener { _, _, _, _ -> aplicarFiltro() }
+        binding.chipGroupTecnicos.setOnCheckedStateChangeListener { group, checkedIds ->
+            if (checkedIds.isEmpty()) group.check(R.id.chipActivos) else aplicarFiltro()
+        }
 
-        binding.buttonVolver.setOnClickListener { finish() }
+        binding.swipeRefresh.setOnRefreshListener { cargar() }
         binding.buttonNuevoTecnico.setOnClickListener { mostrarFormulario(null) }
+
+        // El boton flotante se encoge al desplazar la lista para no tapar la ultima tarjeta.
+        binding.recyclerTecnicos.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 8) binding.buttonNuevoTecnico.shrink()
+                else if (dy < -8) binding.buttonNuevoTecnico.extend()
+            }
+        })
     }
 
     override fun onPersonalSessionResume() {
@@ -52,8 +62,8 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
     }
 
     private fun cargar() {
-        binding.progressTecnicos.visibility = View.VISIBLE
-        binding.textTecnicosVacio.visibility = View.GONE
+        binding.swipeRefresh.isRefreshing = true
+        binding.layoutVacio.visibility = View.GONE
         lifecycleScope.launch {
             runCatching { repository.tecnicosAdmin() }
                 .onSuccess {
@@ -61,15 +71,15 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
                     aplicarFiltro()
                 }
                 .onFailure { mostrarError(it) }
-            binding.progressTecnicos.visibility = View.GONE
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 
     private fun aplicarFiltro() {
-        val activos = binding.autoFiltroTecnicos.text.toString() != "Inactivos"
+        val activos = binding.chipGroupTecnicos.checkedChipId != R.id.chipInactivos
         val filtrados = todos.filter { it.active == activos }
         adapter.submitList(filtrados)
-        binding.textTecnicosVacio.visibility = if (filtrados.isEmpty()) View.VISIBLE else View.GONE
+        binding.layoutVacio.visibility = if (filtrados.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun mostrarFormulario(tecnico: TechnicianResponse?) {
@@ -88,9 +98,9 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
             val apellido = form.editApellidoTecnico.text?.toString()?.trim().orEmpty()
             val correo = correoVistaPrevia(nombre, apellido)
             form.textCorreoGenerado.text = if (correo == null) {
-                "Correo generado: pendiente"
+                getString(R.string.tecnicos_correo_pendiente)
             } else {
-                "Correo generado: $correo"
+                getString(R.string.tecnicos_correo_generado, correo)
             }
         }
 
@@ -98,11 +108,14 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
         form.editApellidoTecnico.doAfterTextChanged { actualizarCorreo() }
         actualizarCorreo()
 
+        // La contrasena temporal solo aplica a cuentas nuevas.
+        form.textPasswordTecnico.visibility = if (editando) View.GONE else View.VISIBLE
+
         val dialog = AlertDialog.Builder(this)
-            .setTitle(if (editando) "Editar técnico" else "Crear técnico")
+            .setTitle(if (editando) R.string.tecnicos_editar else R.string.tecnicos_crear)
             .setView(form.root)
-            .setPositiveButton(if (editando) "Guardar" else "Crear", null)
-            .setNegativeButton("Cancelar", null)
+            .setPositiveButton(if (editando) R.string.accion_guardar else R.string.accion_crear, null)
+            .setNegativeButton(R.string.accion_cancelar, null)
             .create()
 
         dialog.setOnShowListener {
@@ -117,15 +130,15 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
 
                 var valido = true
                 if (nombre.length < 2) {
-                    form.layoutNombreTecnico.error = "Ingrese el nombre del técnico."
+                    form.layoutNombreTecnico.error = getString(R.string.tecnicos_falta_nombre)
                     valido = false
                 }
                 if (apellido.length < 2) {
-                    form.layoutApellidoTecnico.error = "Ingrese el apellido del técnico."
+                    form.layoutApellidoTecnico.error = getString(R.string.tecnicos_falta_apellido)
                     valido = false
                 }
                 if (!telefono.matches(Regex("^[+0-9() -]{8,30}$"))) {
-                    form.layoutTelefonoTecnico.error = "Ingrese un teléfono válido."
+                    form.layoutTelefonoTecnico.error = getString(R.string.tecnicos_falta_telefono)
                     valido = false
                 }
                 if (!valido) return@setOnClickListener
@@ -138,7 +151,7 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
     }
 
     private fun guardar(tecnico: TechnicianResponse?, nombre: String, apellido: String, telefono: String) {
-        binding.progressTecnicos.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
             runCatching {
                 if (tecnico == null) {
@@ -148,67 +161,74 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
                 }
             }.onSuccess { actualizado ->
                 val mensaje = if (tecnico == null) {
-                    "Técnico creado. Correo: ${actualizado.email}. Contraseña temporal: Tecnico123*"
+                    getString(R.string.tecnicos_creado, actualizado.email)
                 } else {
-                    "Técnico actualizado. Correo: ${actualizado.email}"
+                    getString(R.string.tecnicos_actualizado, actualizado.email)
                 }
                 mostrarMensaje(mensaje)
                 cargar()
-            }.onFailure { mostrarError(it) }
-            binding.progressTecnicos.visibility = View.GONE
+            }.onFailure {
+                mostrarError(it)
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
     }
 
     private fun confirmarCambioEstado(tecnico: TechnicianResponse) {
         val activar = !tecnico.active
         AlertDialog.Builder(this)
-            .setTitle(if (activar) "Activar técnico" else "Desactivar técnico")
+            .setTitle(if (activar) R.string.tecnicos_activar_titulo else R.string.tecnicos_desactivar_titulo)
             .setMessage(
-                if (activar) {
-                    "${tecnico.name} podrá volver a iniciar sesión y recibir asignaciones."
-                } else {
-                    "${tecnico.name} no podrá iniciar sesión ni recibir nuevas asignaciones."
-                }
+                getString(
+                    if (activar) R.string.tecnicos_activar_mensaje else R.string.tecnicos_desactivar_mensaje,
+                    tecnico.name
+                )
             )
-            .setPositiveButton(if (activar) "Activar" else "Desactivar") { _, _ ->
+            .setPositiveButton(if (activar) R.string.accion_activar else R.string.accion_desactivar) { _, _ ->
                 cambiarEstado(tecnico, activar)
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(R.string.accion_cancelar, null)
             .show()
     }
 
     private fun cambiarEstado(tecnico: TechnicianResponse, activo: Boolean) {
-        binding.progressTecnicos.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
             runCatching { repository.cambiarEstadoTecnico(tecnico.id, activo) }
                 .onSuccess {
-                    mostrarMensaje(if (activo) "Técnico activado." else "Técnico desactivado.")
+                    mostrarMensaje(
+                        getString(if (activo) R.string.tecnicos_activado else R.string.tecnicos_desactivado)
+                    )
                     cargar()
                 }
-                .onFailure { mostrarError(it) }
-            binding.progressTecnicos.visibility = View.GONE
+                .onFailure {
+                    mostrarError(it)
+                    binding.swipeRefresh.isRefreshing = false
+                }
         }
     }
 
     private fun confirmarResetPassword(tecnico: TechnicianResponse) {
         AlertDialog.Builder(this)
-            .setTitle("Restablecer contraseña")
-            .setMessage("La contraseña de ${tecnico.name} volverá a ser Tecnico123*. Se cerrará su sesión y deberá crear una contraseña nueva al ingresar.")
-            .setPositiveButton("Restablecer") { _, _ -> resetPassword(tecnico) }
-            .setNegativeButton("Cancelar", null)
+            .setTitle(R.string.tecnicos_reset_titulo)
+            .setMessage(getString(R.string.tecnicos_reset_mensaje, tecnico.name))
+            .setPositiveButton(R.string.tecnicos_reset_titulo) { _, _ -> resetPassword(tecnico) }
+            .setNegativeButton(R.string.accion_cancelar, null)
             .show()
     }
 
     private fun resetPassword(tecnico: TechnicianResponse) {
-        binding.progressTecnicos.visibility = View.VISIBLE
+        binding.swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
             runCatching { repository.resetPasswordTecnico(tecnico.id) }
                 .onSuccess {
-                    mostrarMensaje("Contraseña restablecida a Tecnico123*.")
+                    mostrarMensaje(getString(R.string.tecnicos_reset_ok))
                     cargar()
                 }
-                .onFailure { mostrarError(it) }
-            binding.progressTecnicos.visibility = View.GONE
+                .onFailure {
+                    mostrarError(it)
+                    binding.swipeRefresh.isRefreshing = false
+                }
         }
     }
 
@@ -239,6 +259,9 @@ class AdminTecnicosActivity : PersonalSessionActivity() {
         return withoutAccents.replace(Regex("[^a-z0-9]"), "")
     }
 
-    private fun mostrarError(error: Throwable) = mostrarMensaje(error.message ?: "No fue posible completar la acción.")
-    private fun mostrarMensaje(message: String) = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    private fun mostrarError(error: Throwable) =
+        mostrarMensaje(error.message ?: getString(R.string.detalle_accion_error))
+
+    private fun mostrarMensaje(message: String) =
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
 }

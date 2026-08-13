@@ -1,27 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.AppMunicipal" parent="Theme.Material3.DayNight.NoActionBar">
 
-        <!-- Colores principales de la Municipalidad -->
+        <!-- Identidad municipal -->
         <item name="colorPrimary">@color/municipal_green</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">@color/municipal_green_soft</item>
+        <item name="colorOnPrimaryContainer">@color/municipal_green_dark</item>
+
         <item name="colorSecondary">@color/municipal_yellow</item>
+        <item name="colorOnSecondary">#2A2100</item>
 
-        <!-- Fondo y superficies -->
-        <item name="android:colorBackground">@color/surface_translucent</item>
+        <item name="colorError">@color/municipal_danger</item>
+        <item name="colorOnError">#FFFFFF</item>
 
-        <!-- Barras del sistema -->
-        <item name="android:statusBarColor">@color/municipal_green</item>
-        <item name="android:navigationBarColor">@color/surface_translucent</item>
+        <!-- Superficies -->
+        <item name="colorSurface">@color/municipal_surface</item>
+        <item name="colorOnSurface">@color/municipal_text</item>
+        <item name="colorSurfaceVariant">@color/municipal_surface_alt</item>
+        <item name="colorOnSurfaceVariant">@color/municipal_muted</item>
+        <item name="colorOutline">@color/municipal_border</item>
+        <item name="android:colorBackground">@color/municipal_background</item>
 
-        <!-- Texto / apariencia -->
-        <item name="android:fontFamily">sans</item>
+        <!-- Barras del sistema. La app es edge-to-edge en API 35+, el inset se
+             aplica por codigo con applySafeSystemInsets(). -->
+        <item name="android:statusBarColor">@color/toolbar_background</item>
+        <item name="android:navigationBarColor">@color/municipal_background</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
 
-        <item name="android:windowActionModeOverlay">true</item>
+        <!-- Tipografia. "sans" no era un alias valido; el correcto es sans-serif. -->
+        <item name="android:fontFamily">sans-serif</item>
+
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
 
-        <!-- Permitir Dark Mode -->
-        <item name="android:forceDarkAllowed" tools:targetApi="q">true</item>
+        <!-- Ya existe un tema nocturno propio en values-night, por lo tanto NO se
+             deja que Android aplique ademas su oscurecimiento automatico. -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
+        <!-- Estilos por defecto de los componentes -->
+        <item name="toolbarStyle">@style/Widget.AppMunicipal.Toolbar</item>
+        <item name="materialCardViewStyle">@style/Widget.AppMunicipal.Card</item>
 
     </style>
 

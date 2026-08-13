@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="estado_creado_bg">#15304A</color>
+    <color name="estado_creado_fg">#9FC9EC</color>
+
+    <color name="estado_aprobado_bg">#1E3524</color>
+    <color name="estado_aprobado_fg">#8FD69C</color>
+
+    <color name="estado_rechazado_bg">#40201C</color>
+    <color name="estado_rechazado_fg">#FFACA3</color>
+
+    <color name="estado_asignado_bg">#252048</color>
+    <color name="estado_asignado_fg">#B9B0F5</color>
+
+    <color name="estado_proceso_bg">#3D2A15</color>
+    <color name="estado_proceso_fg">#F0B072</color>
+
+    <color name="estado_pausado_bg">#3A3418</color>
+    <color name="estado_pausado_fg">#F2D27A</color>
+
+    <color name="estado_cerrado_bg">#262C32</color>
+    <color name="estado_cerrado_fg">#B9C2CC</color>
+
+    <color name="prioridad_baja_bg">#262C32</color>
+    <color name="prioridad_baja_fg">#B9C2CC</color>
+
+    <color name="prioridad_media_bg">#15304A</color>
+    <color name="prioridad_media_fg">#9FC9EC</color>
+
+    <color name="prioridad_alta_bg">#3D2A15</color>
+    <color name="prioridad_alta_fg">#F0B072</color>
+
+    <color name="prioridad_urgente_bg">#40201C</color>
+    <color name="prioridad_urgente_fg">#FFACA3</color>
+
+</resources>

@@ -9,12 +9,12 @@ import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.appmunicipal.R
 import com.example.appmunicipal.databinding.ActivityMapaUbicacionBinding
 import com.example.appmunicipal.util.applySafeSystemInsets
+import com.example.appmunicipal.util.configurarToolbar
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -22,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 
@@ -42,11 +43,7 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
             if (concedido) {
                 habilitarUbicacionDelDispositivo()
             } else {
-                Snackbar.make(
-                    binding.root,
-                    "Sin permiso de ubicación puede seleccionar el punto manualmente en el mapa.",
-                    Snackbar.LENGTH_LONG
-                ).show()
+                Snackbar.make(binding.root, R.string.permiso_ubicacion_denegado, Snackbar.LENGTH_LONG).show()
             }
         }
 
@@ -54,9 +51,9 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
         super.onCreate(savedInstanceState)
         binding = ActivityMapaUbicacionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+        configurarToolbar(binding.toolbar)
 
-        binding.buttonCancelarMapa.setOnClickListener { finish() }
         binding.buttonConfirmarUbicacion.setOnClickListener { confirmarUbicacion() }
 
         val fragment = supportFragmentManager.findFragmentById(R.id.mapContainer)
@@ -98,18 +95,12 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
                 shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (debeExplicar) {
-            AlertDialog.Builder(this)
-                .setTitle("Permiso de ubicación")
-                .setMessage(
-                    "Permita el acceso a la ubicación para mostrar su posición en el mapa y facilitar la selección del lugar del reporte."
-                )
-                .setPositiveButton("Continuar") { _, _ -> pedirPermisoUbicacion() }
-                .setNegativeButton("Ahora no") { _, _ ->
-                    Snackbar.make(
-                        binding.root,
-                        "Puede seleccionar la ubicación manualmente en el mapa.",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.permiso_ubicacion_titulo)
+                .setMessage(R.string.permiso_ubicacion_mensaje)
+                .setPositiveButton(R.string.accion_continuar) { _, _ -> pedirPermisoUbicacion() }
+                .setNegativeButton(R.string.accion_ahora_no) { _, _ ->
+                    Snackbar.make(binding.root, R.string.permiso_ubicacion_manual, Snackbar.LENGTH_LONG).show()
                 }
                 .show()
         } else {
@@ -149,7 +140,9 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
             marcador = mapa.addMarker(
                 MarkerOptions().position(punto).title(getString(R.string.ubicacion_reporte)).draggable(true)
             )
-        } else marcador?.position = punto
+        } else {
+            marcador?.position = punto
+        }
 
         if (moverCamara) mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(punto, 17f))
         binding.buttonConfirmarUbicacion.isEnabled = true
@@ -157,7 +150,9 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
         if (buscarDireccion) {
             direccionSeleccionada = ""
             obtenerDireccion(punto)
-        } else mostrarDireccion(direccionSeleccionada.ifBlank { direccionPorCoordenadas(punto) })
+        } else {
+            mostrarDireccion(direccionSeleccionada.ifBlank { direccionPorCoordenadas(punto) })
+        }
     }
 
     private fun actualizarCoordenadas(punto: LatLng) {
@@ -191,7 +186,9 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
         mostrarDireccion(direccionSeleccionada)
     }
 
-    private fun mostrarDireccion(value: String) { binding.textDireccionMapa.text = value }
+    private fun mostrarDireccion(value: String) {
+        binding.textDireccionMapa.text = value
+    }
 
     private fun direccionPorCoordenadas(punto: LatLng) = getString(
         R.string.direccion_coordenadas, punto.latitude, punto.longitude
@@ -208,11 +205,15 @@ class MapaUbicacionActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onMarkerDragStart(marker: Marker) = Unit
+
     override fun onMarkerDrag(marker: Marker) {
         ubicacionSeleccionada = marker.position
         actualizarCoordenadas(marker.position)
     }
-    override fun onMarkerDragEnd(marker: Marker) { seleccionarPunto(marker.position, false) }
+
+    override fun onMarkerDragEnd(marker: Marker) {
+        seleccionarPunto(marker.position, false)
+    }
 
     companion object {
         const val EXTRA_DIRECCION = "extra_direccion"

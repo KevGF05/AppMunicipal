@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+      Solo se sobrescribe lo que realmente cambia en modo oscuro.
+      Los colores ya cambian solos porque values-night/colors.xml redefine los mismos nombres.
+    -->
     <style name="Theme.AppMunicipal" parent="Theme.Material3.DayNight.NoActionBar">
 
-        <!-- Colores principales -->
         <item name="colorPrimary">@color/municipal_green</item>
-        <item name="colorOnPrimary">#102114</item>
+        <item name="colorOnPrimary">#0E2213</item>
+        <item name="colorPrimaryContainer">@color/municipal_green_soft</item>
+        <item name="colorOnPrimaryContainer">@color/municipal_green</item>
+
         <item name="colorSecondary">@color/municipal_yellow</item>
         <item name="colorOnSecondary">#2A2100</item>
 
-        <!-- Superficies Material: fondo oscuro + texto claro -->
+        <item name="colorError">@color/municipal_danger</item>
+        <item name="colorOnError">#3A1210</item>
+
         <item name="colorSurface">@color/municipal_surface</item>
-        <item name="colorOnSurface">@color/dark_input_text</item>
-        <item name="colorOnSurfaceVariant">@color/dark_input_hint</item>
+        <item name="colorOnSurface">@color/municipal_text</item>
+        <item name="colorSurfaceVariant">@color/municipal_surface_alt</item>
+        <item name="colorOnSurfaceVariant">@color/municipal_muted</item>
+        <item name="colorOutline">@color/municipal_border</item>
         <item name="android:colorBackground">@color/municipal_background</item>
 
-        <!-- Hace legibles EditText, TextInput y listas desplegables -->
-        <item name="android:textColor">@color/municipal_text</item>
-        <item name="android:textColorHint">@color/dark_input_hint</item>
-
-        <!-- Barras del sistema -->
-        <item name="android:statusBarColor">#0B0D0E</item>
-        <item name="android:navigationBarColor">#0B0D0E</item>
+        <item name="android:statusBarColor">@color/toolbar_background</item>
+        <item name="android:navigationBarColor">@color/municipal_background</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
 
-        <item name="android:fontFamily">sans</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
+        <item name="toolbarStyle">@style/Widget.AppMunicipal.Toolbar</item>
+        <item name="materialCardViewStyle">@style/Widget.AppMunicipal.Card</item>
+
     </style>
 
 </resources>

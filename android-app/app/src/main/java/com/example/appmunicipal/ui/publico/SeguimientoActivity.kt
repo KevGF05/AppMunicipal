@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.SeguimientoDbHelper
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivitySeguimientoBinding
+import com.example.appmunicipal.util.FechaFormat
 import com.example.appmunicipal.util.UiFormat
+import com.example.appmunicipal.util.applySafeSystemInsets
+import com.example.appmunicipal.util.configurarToolbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import com.example.appmunicipal.util.applySafeSystemInsets
 
 class SeguimientoActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySeguimientoBinding
@@ -21,20 +24,21 @@ class SeguimientoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySeguimientoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+        configurarToolbar(binding.toolbar)
 
-        binding.buttonVolver.setOnClickListener { finish() }
         binding.buttonConsultar.setOnClickListener { consultar() }
 
         val requestedCode = intent.getStringExtra(EXTRA_CODIGO)
         val saved = database.ultimo()
         binding.editCodigo.setText(requestedCode ?: saved?.codigo.orEmpty())
+        if (!requestedCode.isNullOrBlank()) consultar()
     }
 
     private fun consultar() {
         val code = binding.editCodigo.text?.toString()?.trim()?.uppercase().orEmpty()
         if (code.isBlank()) {
-            Snackbar.make(binding.root, "Ingrese el código de seguimiento.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, R.string.seguimiento_ingrese_codigo, Snackbar.LENGTH_LONG).show()
             return
         }
         binding.progressSeguimiento.visibility = View.VISIBLE
@@ -45,28 +49,33 @@ class SeguimientoActivity : AppCompatActivity() {
                     database.guardar(report.code, report.status)
                     binding.cardResultado.visibility = View.VISIBLE
                     binding.textResultadoCodigo.text = report.code
-                    binding.textResultadoEstado.text = UiFormat.estado(report.status)
+                    UiFormat.aplicarEstado(binding.textResultadoEstado, report.status)
                     binding.textResultadoMensaje.text = report.message
 
-                    val showPauseReason = report.status == "PAUSADO" && !report.pauseReason.isNullOrBlank()
-                    binding.cardMotivoPausa.visibility = if (showPauseReason) View.VISIBLE else View.GONE
+                    val mostrarPausa = report.status == "PAUSADO" && !report.pauseReason.isNullOrBlank()
+                    binding.cardMotivoPausa.visibility = if (mostrarPausa) View.VISIBLE else View.GONE
                     binding.textMotivoPausa.text = report.pauseReason.orEmpty()
 
-                    val showClosureNotes = report.status == "CERRADO" && !report.closureComment.isNullOrBlank()
-                    binding.cardTrabajoRealizado.visibility = if (showClosureNotes) View.VISIBLE else View.GONE
+                    val mostrarCierre = report.status == "CERRADO" && !report.closureComment.isNullOrBlank()
+                    binding.cardTrabajoRealizado.visibility = if (mostrarCierre) View.VISIBLE else View.GONE
                     binding.textTrabajoRealizado.text = report.closureComment.orEmpty()
 
-                    binding.textResultadoActualizado.text = report.updatedAt
-                        ?.replace("T", " ")
-                        ?.substringBefore('.')
-                        ?.let { "Última actualización: $it" }
-                        ?: "Última actualización no disponible"
+                    val actualizado = FechaFormat.desdeIso(report.updatedAt)
+                    binding.textResultadoActualizado.text = if (actualizado == null) {
+                        getString(R.string.seguimiento_sin_actualizacion)
+                    } else {
+                        getString(R.string.seguimiento_actualizado, actualizado)
+                    }
                 }
                 .onFailure { error ->
                     binding.cardResultado.visibility = View.GONE
                     binding.cardMotivoPausa.visibility = View.GONE
                     binding.cardTrabajoRealizado.visibility = View.GONE
-                    Snackbar.make(binding.root, error.message ?: "No fue posible consultar.", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.root,
+                        error.message ?: getString(R.string.seguimiento_error),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             binding.progressSeguimiento.visibility = View.GONE
             binding.buttonConsultar.isEnabled = true

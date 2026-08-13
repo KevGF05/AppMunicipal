@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Misma paleta en modo oscuro. Los nombres son identicos a values/colors.xml. -->
 <resources>
-    <!-- App Municipal - Dark Mode -->
-    <color name="municipal_primary">#7BD389</color>
-    <color name="municipal_secondary">#FFD54F</color>
-    <color name="municipal_background">#121417</color>
-    <color name="municipal_surface">#1B1F22</color>
-    <color name="municipal_text">#F7F8FA</color>
-    <color name="municipal_muted">#C7CDD5</color>
-    <color name="municipal_success">#7BD389</color>
+
+    <color name="municipal_green">#6FC97F</color>
+    <color name="municipal_green_dark">#4FA860</color>
+    <color name="municipal_green_soft">#1E3524</color>
+    <color name="municipal_yellow">#FFD54F</color>
+    <color name="municipal_yellow_soft">#3A3418</color>
+
+    <color name="municipal_background">#111417</color>
+    <color name="municipal_surface">#1B1F23</color>
+    <color name="municipal_surface_alt">#23282D</color>
+    <color name="municipal_text">#F5F7FA</color>
+    <color name="municipal_muted">#B9C2CC</color>
+    <color name="municipal_border">#39414A</color>
+
+    <color name="municipal_success">#6FC97F</color>
     <color name="municipal_danger">#FF8A80</color>
 
-    <!-- Colores del nuevo diseño municipal -->
-    <color name="municipal_green">#7BD389</color>
-    <color name="municipal_yellow">#FFD54F</color>
-    <color name="surface_translucent">#E61B1F22</color>
-    <color name="text_primary">#F7F8FA</color>
+    <color name="toolbar_background">#14311C</color>
+    <color name="toolbar_on_background">#FFFFFF</color>
+    <color name="toolbar_subtitle">#B6D3BE</color>
 
-    <!-- Texto y campos en modo oscuro -->
-    <color name="dark_input_text">#FFFFFfFF</color>
-    <color name="dark_input_hint">#C7CDD5</color>
+    <color name="municipal_primary">@color/municipal_green</color>
+    <color name="municipal_secondary">@color/municipal_yellow</color>
+    <color name="text_primary">@color/municipal_text</color>
+    <color name="surface_translucent">#E61B1F23</color>
+
 </resources>

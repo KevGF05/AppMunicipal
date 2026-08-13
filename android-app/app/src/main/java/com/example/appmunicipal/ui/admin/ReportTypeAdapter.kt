@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.core.content.ContextCompat
 import com.example.appmunicipal.R
 import com.example.appmunicipal.databinding.ItemReportTypeBinding
 import com.example.appmunicipal.model.ReportTypeResponse
+import com.example.appmunicipal.util.UiFormat
 
 class ReportTypeAdapter(
     private val onEdit: (ReportTypeResponse) -> Unit,
@@ -26,14 +26,21 @@ class ReportTypeAdapter(
 
     inner class ViewHolder(private val binding: ItemReportTypeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ReportTypeResponse, position: Int) {
+            val context = binding.root.context
             binding.textNumeroTipo.text = position.toString()
             binding.textNombreTipo.text = item.name
-            binding.textEstadoTipo.text = if (item.active) "Disponible para reportes" else "Inactivo"
-            binding.textEstadoTipo.setTextColor(
-                ContextCompat.getColor(binding.root.context, if (item.active) R.color.dashboard_green else R.color.dashboard_muted)
+
+            UiFormat.aplicarActivo(
+                binding.textEstadoTipo,
+                item.active,
+                context.getString(R.string.tipos_disponible),
+                context.getString(R.string.tipos_inactivo)
             )
+
             binding.buttonEditarTipo.setOnClickListener { onEdit(item) }
-            binding.buttonEstadoTipo.text = if (item.active) "Desactivar" else "Activar"
+            binding.buttonEstadoTipo.text = context.getString(
+                if (item.active) R.string.accion_desactivar else R.string.accion_activar
+            )
             binding.buttonEstadoTipo.setOnClickListener { onToggle(item) }
         }
     }

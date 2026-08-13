@@ -3,7 +3,9 @@ package com.example.appmunicipal.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.TokenStore
 import com.example.appmunicipal.data.repository.AppRepository
 import com.example.appmunicipal.databinding.ActivityCambiarPasswordBinding
@@ -27,17 +29,20 @@ class CambiarPasswordActivity : PersonalSessionActivity() {
         }
         binding = ActivityCambiarPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.root.applySafeSystemInsets(topAnchor = binding.toolbar)
+
+        // Sustituye al override de onBackPressed(), que quedo obsoleto en Android 13.
+        // La barra tampoco lleva flecha: la contrasena temporal debe cambiarse antes de seguir.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = Unit
+        })
+
         binding.buttonGuardarPassword.setOnClickListener { guardar() }
         binding.buttonCerrarSesion.setOnClickListener {
             tokenStore.limpiar()
             NotificationScheduler.cancelar(this)
             volverAlInicio()
         }
-    }
-
-    override fun onBackPressed() {
-        // La contraseña temporal debe cambiarse antes de continuar.
     }
 
     private fun guardar() {
@@ -48,15 +53,15 @@ class CambiarPasswordActivity : PersonalSessionActivity() {
 
         var valido = true
         if (nueva.length < 8) {
-            binding.layoutNuevaPassword.error = "Use al menos 8 caracteres."
+            binding.layoutNuevaPassword.error = getString(R.string.password_min_caracteres)
             valido = false
         }
         if (nueva.none { it.isLetter() } || nueva.none { it.isDigit() }) {
-            binding.layoutNuevaPassword.error = "Incluya al menos una letra y un número."
+            binding.layoutNuevaPassword.error = getString(R.string.password_letra_numero)
             valido = false
         }
         if (confirmar != nueva) {
-            binding.layoutConfirmarPassword.error = "Las contraseñas no coinciden."
+            binding.layoutConfirmarPassword.error = getString(R.string.password_no_coincide)
             valido = false
         }
         if (!valido) return
@@ -75,7 +80,11 @@ class CambiarPasswordActivity : PersonalSessionActivity() {
                     finish()
                 }
                 .onFailure { error ->
-                    Snackbar.make(binding.root, error.message ?: "No fue posible cambiar la contraseña.", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.root,
+                        error.message ?: getString(R.string.password_error),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             binding.progressPassword.visibility = View.GONE
             binding.buttonGuardarPassword.isEnabled = true
@@ -83,7 +92,10 @@ class CambiarPasswordActivity : PersonalSessionActivity() {
     }
 
     private fun volverAlInicio() {
-        startActivity(Intent(this, InicioActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK))
+        startActivity(
+            Intent(this, InicioActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
         finish()
     }
 }

@@ -3,12 +3,14 @@ package com.example.appmunicipal.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.TokenStore
 import com.example.appmunicipal.databinding.ActivityInicioBinding
 import com.example.appmunicipal.notifications.NotificationScheduler
 import com.example.appmunicipal.ui.admin.AdminDashboardActivity
 import com.example.appmunicipal.ui.auth.CambiarPasswordActivity
 import com.example.appmunicipal.ui.auth.LoginActivity
+import com.example.appmunicipal.ui.publico.MisReportesActivity
 import com.example.appmunicipal.ui.publico.RegistroActividadActivity
 import com.example.appmunicipal.ui.publico.SeguimientoActivity
 import com.example.appmunicipal.ui.tecnico.TecnicoDashboardActivity
@@ -22,10 +24,14 @@ class InicioActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInicioBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.applySafeSystemInsets()
+        binding.scrollInicio.applySafeSystemInsets(extraTopDp = 8)
 
         binding.buttonReportar.setOnClickListener {
             startActivity(Intent(this, RegistroActividadActivity::class.java))
+        }
+        // Nuevo acceso a la lista local de codigos enviados desde este telefono.
+        binding.buttonMisReportes.setOnClickListener {
+            startActivity(Intent(this, MisReportesActivity::class.java))
         }
         binding.buttonSeguimiento.setOnClickListener {
             startActivity(Intent(this, SeguimientoActivity::class.java))
@@ -48,8 +54,8 @@ class InicioActivity : AppCompatActivity() {
         }
 
         val rolLegible = when (store.rol()) {
-            "ADMINISTRADOR" -> "Administrador"
-            "TECNICO" -> "Técnico"
+            "ADMINISTRADOR" -> getString(R.string.rol_administrador)
+            "TECNICO" -> getString(R.string.rol_tecnico)
             else -> {
                 store.limpiar()
                 abrirLogin()
@@ -58,10 +64,10 @@ class InicioActivity : AppCompatActivity() {
         }
 
         MaterialAlertDialogBuilder(this)
-            .setTitle("Sesión activa")
+            .setTitle(R.string.inicio_sesion_activa)
             .setMessage("${store.nombre()}\n$rolLegible")
-            .setPositiveButton("Continuar") { _, _ -> continuarSesion(store) }
-            .setNegativeButton("Iniciar con otra cuenta") { _, _ ->
+            .setPositiveButton(R.string.accion_continuar) { _, _ -> continuarSesion(store) }
+            .setNegativeButton(R.string.inicio_otra_cuenta) { _, _ ->
                 NotificationScheduler.cancelar(this)
                 store.limpiar()
                 abrirLogin()

@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.AppMunicipal.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="@color/dashboard_surface"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="0dp"
-    app:strokeColor="@color/dashboard_border"
-    app:strokeWidth="1dp">
+    android:layout_marginTop="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="14dp">
+        android:padding="@dimen/espacio_medio">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,8 +24,7 @@
                 android:layout_height="38dp"
                 android:background="@drawable/bg_dashboard_icon_green"
                 android:gravity="center"
-                android:text="1"
-                android:textColor="@android:color/white"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -44,18 +38,15 @@
                     android:id="@+id/textNombreTipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dashboard_text"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textEstadoTipo"
+                    style="@style/Widget.AppMunicipal.Etiqueta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="Disponible para reportes"
-                    android:textColor="@color/dashboard_green"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="6dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -67,22 +58,19 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonEditarTipo"
+                style="@style/Widget.AppMunicipal.Boton.Secundario"
                 android:layout_width="0dp"
-                android:layout_height="46dp"
+                android:layout_height="@dimen/alto_boton"
                 android:layout_weight="1"
-                android:text="Editar"
-                android:textColor="@color/dashboard_green"
-                app:backgroundTint="@color/dashboard_green_soft" />
+                android:text="@string/accion_editar" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonEstadoTipo"
+                style="@style/Widget.AppMunicipal.Boton.Atencion"
                 android:layout_width="0dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:text="Desactivar"
-                android:textColor="@color/dashboard_button_dark_text"
-                app:backgroundTint="@color/dashboard_yellow" />
+                android:layout_height="@dimen/alto_boton"
+                android:layout_marginStart="@dimen/espacio_chico"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
