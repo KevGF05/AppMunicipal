@@ -135,7 +135,6 @@
     <string name="login_correo">Correo</string>
     <string name="login_password">Contrasena</string>
     <string name="login_entrar">Iniciar sesion</string>
-    <string name="login_nota_demo">Usuarios de demostracion incluidos en el manual.</string>
     <string name="login_falta_correo">Ingrese el correo.</string>
     <string name="login_falta_password">Ingrese la contrasena.</string>
     <string name="login_error">No fue posible iniciar sesion.</string>

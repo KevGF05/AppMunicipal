@@ -85,12 +85,6 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/login_entrar" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/espacio_grande"
-                android:text="@string/login_nota_demo"
-                android:textAppearance="@style/TextAppearance.AppMunicipal.Apoyo" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
