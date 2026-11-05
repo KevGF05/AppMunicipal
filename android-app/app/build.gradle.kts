@@ -13,7 +13,7 @@ val localProperties = Properties().apply {
 
 val apiBaseUrl = localProperties.getProperty(
     "API_BASE_URL",
-    "http://10.0.2.2:8080/"
+    "https://appmunicipal-api.onrender.com/"
 ).let { if (it.endsWith("/")) it else "$it/" }
 
 android {

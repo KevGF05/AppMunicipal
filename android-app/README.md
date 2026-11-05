@@ -14,10 +14,10 @@ Copie `local.properties.example` como `local.properties` y coloque:
 
 ```properties
 MAPS_API_KEY=SU_CLAVE_REAL
-API_BASE_URL=http://10.0.2.2:8080/
+API_BASE_URL=https://appmunicipal-api.onrender.com/
 ```
 
-`10.0.2.2` permite que el emulador acceda al backend que se ejecuta en la computadora. Para un teléfono físico use la IP local de la computadora, por ejemplo `http://192.168.1.50:8080/`.
+La app usa el backend público de Render por HTTPS tanto en emulador como en teléfono físico. Esta URL también es el valor predeterminado cuando no se define `API_BASE_URL` en `local.properties`. Las conexiones HTTP sin cifrar están deshabilitadas.
 
 ## Requisitos
 
@@ -44,7 +44,7 @@ API_BASE_URL=http://10.0.2.2:8080/
 - La app no solicita nombre, correo ni identidad al ciudadano.
 - Los módulos privados requieren un token de sesión emitido por el backend.
 
-Para producción, cambie el backend a HTTPS y desactive el tráfico HTTP sin cifrar.
+El backend está configurado con HTTPS y el manifiesto desactiva el tráfico HTTP sin cifrar.
 
 
 ## Seguimiento ciudadano
