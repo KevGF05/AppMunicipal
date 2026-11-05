@@ -166,6 +166,44 @@
                         android:text="@string/inicio_acceso_personal" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/espacio_grande"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/municipal_yellow">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/espacio_pantalla">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:text="@string/inicio_aviso_titulo"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Seccion" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/inicio_aviso_academico"
+                        android:textAppearance="@style/TextAppearance.AppMunicipal.Cuerpo" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonPrivacidad"
+                        style="@style/Widget.AppMunicipal.Boton.Contorno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/inicio_politica_privacidad" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

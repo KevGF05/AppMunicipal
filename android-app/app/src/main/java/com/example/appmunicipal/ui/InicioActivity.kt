@@ -1,7 +1,10 @@
 package com.example.appmunicipal.ui
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.appmunicipal.R
 import com.example.appmunicipal.data.local.TokenStore
@@ -37,6 +40,14 @@ class InicioActivity : AppCompatActivity() {
             startActivity(Intent(this, SeguimientoActivity::class.java))
         }
         binding.buttonPersonal.setOnClickListener { abrirPersonal() }
+        binding.buttonPrivacidad.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.politica_privacidad_url)))
+            try {
+                startActivity(intent)
+            } catch (_: ActivityNotFoundException) {
+                Toast.makeText(this, R.string.privacidad_sin_navegador, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun abrirPersonal() {

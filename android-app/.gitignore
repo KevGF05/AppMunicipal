@@ -10,3 +10,6 @@
 app/build/
 .tools/
 .scratch/
+app/release/
+*.jks
+*.keystore

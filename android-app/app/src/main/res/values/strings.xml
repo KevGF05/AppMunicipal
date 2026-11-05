@@ -42,6 +42,11 @@
     <string name="rol_tecnico">Tecnico</string>
     <string name="inicio_sesion_activa">Sesion activa</string>
     <string name="inicio_otra_cuenta">Iniciar con otra cuenta</string>
+    <string name="inicio_aviso_titulo">Proyecto universitario independiente</string>
+    <string name="inicio_aviso_academico">Esta aplicación no está afiliada, autorizada ni administrada por la Municipalidad de El Progreso, Yoro, Honduras. Los reportes se utilizan para una demostración académica y no se envían a las autoridades municipales. No es un canal oficial de atención ni de emergencias.</string>
+    <string name="inicio_politica_privacidad">Política de privacidad</string>
+    <string name="politica_privacidad_url" translatable="false">https://kevgf05.github.io/AppMunicipal/android-app/docs/politica-de-privacidad.html</string>
+    <string name="privacidad_sin_navegador">No hay un navegador disponible para abrir la política de privacidad.</string>
 
     <!-- ===================== Crear reporte ===================== -->
     <string name="registro_titulo">Crear reporte anonimo</string>

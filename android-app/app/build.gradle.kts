@@ -21,7 +21,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.appmunicipal"
+        applicationId = "com.kevingalindo.reportesviales"
         minSdk = 24
         targetSdk = 36
         versionCode = 17
